@@ -5,7 +5,7 @@
 //
 //  Batch Export plugin
 //
-//  Copyright (C)2008-2011 Werner Schweer and others
+//  Copyright (C)2008-2012 Werner Schweer and others
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2.
@@ -31,23 +31,28 @@ var inFormats;
 var form;
 
 
-//---------------------------------------------------------
+//-----------------------------------------------------------------------------
 //    init
 //    this function will be called on initial load of
 //    this plugin, currently at start of mscore
-//---------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 function init () {
-  //QMessageBox.information(0, pluginName, "init()");
-};
+  //QMessageBox.information(this, pluginName, "init()");
+}
 
 
-// generates a <format> file from the specified file, if no up-to-date one already exists
-// returns filename of generated file, or empty string if no file generated
-function process_one (source, inFormat, outFormatnotused) {
+//-----------------------------------------------------------------------------
+// generates <outFormats> file(s) from the specified file, if no up-to-date
+// one(s) already exist(s).
+// returns filename(s) of generated file(s), or empty string if no file
+// generated, or filename + "failed!" in case of an error.
+//-----------------------------------------------------------------------------
+
+function process_one (source, inFormat) {
   var inFile = new QFileInfo(source);
   var theScore; 
-  var list ="";
+  var list = "";
 
   for (i=0; i<outFormats.length; i++) {
     var target = source.replace(inFormat, outFormats[i]);
@@ -61,32 +66,46 @@ function process_one (source, inFormat, outFormatnotused) {
       if (targetHandle.remove())
         doit = true;
       else
-        QMessageBox.warning(0, pluginName, qsTr("Unable to delete %1") .arg(target));
+        QMessageBox.warning(this, pluginName, qsTr("Unable to delete %1") .arg(target.fileName()));
     }
-    if (doit) { // got for it
-      if (!theScore) { //( not yet open
-        theScore = new Score();
-        theScore.load(source);
-      }
-      theScore.save(target, outFormats[i]);
+    if (doit) { // go for it
+      var loaded;
 
-      list += targetFile.fileName() + "\n";
+      if (!theScore) { // not yet open
+        theScore = new Score();
+        loaded = theScore.load(source);
+        if (!loaded)
+          QMessageBox.warning(this, pluginName, qsTr("Unable to open %1") .arg(source.fileName));
+      }
+      if (loaded && theScore.save(target, outFormats[i]))
+        list += targetFile.fileName() + "\n";
+      else {
+        list += targetFile.fileName() + qsTr(" failed!\n");
+          if (loaded)
+            QMessageBox.warning(this, pluginName, qsTr("Unable to save %1") .arg(target.fileName()));
+      }
     }
-  }
-  if (theScore) // is a score open?
+  } // end for loop
+
+  // is a score open? Is this check really needed or included in the next check?
+  if (theScore)
     if (typeof theScore.close === 'function') // does not exist on 1.1 or earlier
       theScore.close();
   return list;
-};
+}
 
+
+//-----------------------------------------------------------------------------
 // query user for directory
 // loop through all files in folder
 // process all ".<inFormats[i]>$" files using process_one()
 // export them to all <outFormats[j]>
+//-----------------------------------------------------------------------------
+
 function work () {
-  var dirString = QFileDialog.getExistingDirectory(0, pluginName + qsTr(": Select Folder"), "", 0);
+  var dirString = QFileDialog.getExistingDirectory(this, pluginName + qsTr(": Select Folder"), "", 0);
   if (!dirString) {
-    QMessageBox.warning(0, pluginName, qsTr("No folder selected"));
+    QMessageBox.warning(this, pluginName, qsTr("No folder selected"));
     return;
   }
 
@@ -106,8 +125,9 @@ function work () {
   else
     scoreList = qsTr("\n\nFile(s) exported:\n\n%1") .arg(scoreList);
 
-  QMessageBox.information(0, pluginName, dirString + scoreList);
-};
+  QMessageBox.information(this, pluginName, dirString + scoreList);
+}
+
 
 function evalForm () {
   if (form.groupBox_inFormats.checkBox_mscz.checked) inFormats.push("mscz");
@@ -122,10 +142,10 @@ function evalForm () {
   if (form.groupBox_inFormats.checkBox_cap.checked)  inFormats.push("cap");
   if (form.groupBox_inFormats.checkBox_bww.checked)  inFormats.push("bww");
   if (form.groupBox_inFormats.checkBox_mgu.checked)  inFormats.push("mgu");
-// upercase needed too?
+// uppercase needed too?
 //if (form.groupBox_inFormats.checkBox_MGU.checked)  inFormats.push("MGU");
   if (form.groupBox_inFormats.checkBox_sgu.checked)  inFormats.push("sgu");
-// upper case needed too?
+// uppercase needed too?
 //if (form.groupBox_inFormats.checkBox_SGU.checked)  inFormats.push("SGU");
   if (form.groupBox_inFormats.checkBox_ove.checked)  inFormats.push("ove");
   if (form.groupBox_inFormats.checkBox_scw.checked)  inFormats.push("scw");
@@ -133,8 +153,8 @@ function evalForm () {
   if (form.groupBox_inFormats.checkBox_GP3.checked)  inFormats.push("GP3");
   if (form.groupBox_inFormats.checkBox_GP4.checked)  inFormats.push("GP4");
   if (form.groupBox_inFormats.checkBox_GP5.checked)  inFormats.push("GP5");
-  if (inFormats.length == 0) {
-    QMessageBox.warning(0, pluginName, qsTr("No input format selected"));
+  if (inFormats.length === 0) {
+    QMessageBox.warning(this, pluginName, qsTr("No input format selected"));
     exit();
   }
 
@@ -152,17 +172,18 @@ function evalForm () {
   if (form.groupBox_outFormats.checkBox_flac.checked) outFormats.push("flac");
   if (form.groupBox_outFormats.checkBox_ogg.checked)  outFormats.push("ogg");
   if (form.groupBox_outFormats.checkBox_mp3.checked)  outFormats.push("mp3");
-  if (outFormats.length == 0) {
-    QMessageBox.warning(0, pluginName, qsTr("No output format selected"));
+  if (outFormats.length === 0) {
+    QMessageBox.warning(this, pluginName, qsTr("No output format selected"));
     exit();
   }
 
   work();
-};
+}
+
 
 function setDefaults () {
   if (form) {
-    // enable/disable, depening on version
+    // enable/disable, depending on version
     if ( mscoreMajorVersion >= 2) {
       form.groupBox_inFormats.checkBox_msc.enabled =  false; // no longer supported?
       form.groupBox_inFormats.checkBox_scw.enabled =  true;
@@ -180,6 +201,7 @@ function setDefaults () {
       form.groupBox_inFormats.checkBox_GP5.enabled =  false;
       form.groupBox_outFormats.checkBox_mp3.enabled = false;
     }
+
     // check/uncheck to the default, inFormats "mscz", outformats "pdf"
     form.groupBox_inFormats.checkBox_mscz.checked =  true;
     toggle_mscz(true); // disable corresponding outFormat
@@ -209,7 +231,7 @@ function setDefaults () {
     form.groupBox_inFormats.checkBox_GP3.checked =   false;
     form.groupBox_inFormats.checkBox_GP4.checked =   false;
     form.groupBox_inFormats.checkBox_GP5.checked =   false;
-    inFormats =  new Array(); // empty array, work() will fill it
+    inFormats =  new Array(); // empty array, evalForm() will fill it
 
     form.groupBox_outFormats.checkBox_mscx.checked = false;
     form.groupBox_outFormats.checkBox_xml.checked =  false;
@@ -226,7 +248,7 @@ function setDefaults () {
     form.groupBox_outFormats.checkBox_flac.checked = false;
     form.groupBox_outFormats.checkBox_ogg.checked =  false;
     form.groupBox_outFormats.checkBox_mp3.checked =  false;
-    outFormats = new Array(); // empty array, work() will fill it
+    outFormats = new Array(); // empty array, evalForm() will fill it
   } else {
     // no UI, fall back to behavoir of previous version
     inFormats =  new Array("mscz");
@@ -234,17 +256,18 @@ function setDefaults () {
     outFormats = new Array("pdf");
   //outFormats = new Array("xml", "pdf");
   }
-};
+}
 
 
 function toggle_mscz (enable) {
   if (enable) {
     form.groupBox_outFormats.checkBox_mscz.checked  = false;
     form.groupBox_outFormats.checkBox_mscz.enabled  = false;
- } else {
+  } else {
     form.groupBox_outFormats.checkBox_mscz.enabled  = true;
- }
-};
+  }
+}
+
 
 function toggle_mscx (enable) {
   if (enable) {
@@ -253,7 +276,8 @@ function toggle_mscx (enable) {
   } else {
     form.groupBox_outFormats.checkBox_mscx.enabled  = true;
   }
-};
+}
+
 
 function toggle_xml (enable) {
   if (enable) {
@@ -262,7 +286,8 @@ function toggle_xml (enable) {
   } else {
     form.groupBox_outFormats.checkBox_xml.enabled  = true;
   }
-};
+}
+
 
 function toggle_mxl (enable) {
   if (enable) {
@@ -271,7 +296,8 @@ function toggle_mxl (enable) {
   } else {
     form.groupBox_outFormats.checkBox_mxl.enabled  = true;
   }
-};
+}
+
 
 function toggle_mid (enable) {
   if (enable) {
@@ -280,7 +306,7 @@ function toggle_mid (enable) {
   } else {
     form.groupBox_outFormats.checkBox_mid.enabled  = true;
   }
-};
+}
 
 
 function run () {
@@ -290,11 +316,11 @@ function run () {
   uiFile.open(QIODevice.OpenMode(QIODevice.ReadOnly, QIODevice.Text));
   form = loader.load(uiFile, null);
 
-  if (form) { // Todo!!
+  setDefaults();
+
+  if (form) {
     // initialize some widget values
     form.windowTitle = pluginName + ": " + form.windowTitle;
-
-    setDefaults();
     
     // connect signals
     form.buttonBox.accepted.connect(evalForm);
@@ -309,31 +335,29 @@ function run () {
     // show the form
     form.show();
   } else {
-    // Why doesn't this work but gives an empty message?
-    //QMessageBox.warning(0, pluginName, qsTr("Can't load GUI dialog %1, continuing with default settings (%2 to %3)") .arg(uiFile) .arg(inFormats) .arg(outFormats));
     // fallback to behavoir of the previous non-GUI version
-    setDefaults();
+  //QMessageBox.warning(this, pluginName, qsTr("Can't load GUI dialog \"%1\", continuing with default settings (%2 to %3)") .arg(uiFile.fileName()) .arg(inFormats.toString()) .arg(outFormats.toString()));
     work();
   }
-};
+}
 
 
-//---------------------------------------------------------
+//-----------------------------------------------------------------------------
 //    close
 //    this function will be called on close (unload)
 //    of this plugin, currently at close of mscore
 //    optional...
-//---------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 function close() {
-  //QMessageBox.information(0, pluginName, "close()");
-};
+  //QMessageBox.information(this, pluginName, "close()");
+}
 
 
-//---------------------------------------------------------
+//-----------------------------------------------------------------------------
 //    menu:  defines where the function will be placed
 //           in the menu structure
-//---------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 var mscorePlugin = {
   menu: 'Plugins.' + pluginName,
