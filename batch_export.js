@@ -354,7 +354,7 @@ function close() {
 //-----------------------------------------------------------------------------
 
 var mscorePlugin = {
-  menu: 'Plugins.' + pluginName,
+  menu: qsTr("Plugins", "but see http://musescore.org/en/node/15470 first") +'.' + pluginName,
   init: init,
   run:  run,
   onClose: close

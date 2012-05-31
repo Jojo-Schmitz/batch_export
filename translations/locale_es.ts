@@ -163,39 +163,40 @@
         <translation>Exportación por lotes</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="64"/>
+        <location filename="../batch_export.js" line="69"/>
         <source>Unable to delete %1</source>
         <translation>Imposible de suprimir %1</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="73"/>
+        <location filename="../batch_export.js" line="80"/>
         <source>Unable to open %1</source>
         <translation>Imposible de abrir %1</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="78"/>
+        <location filename="../batch_export.js" line="70"/>
+        <location filename="../batch_export.js" line="85"/>
         <source> failed!
 </source>
         <translation> falló!
 </translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="79"/>
+        <location filename="../batch_export.js" line="87"/>
         <source>Unable to save %1</source>
         <translation>Imposible de guardar %1</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="95"/>
+        <location filename="../batch_export.js" line="108"/>
         <source>: Select Folder</source>
         <translation>: Seleccionar carpeta</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="97"/>
+        <location filename="../batch_export.js" line="110"/>
         <source>No folder selected</source>
         <translation>Ninguna carpeta seleccionada</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="113"/>
+        <location filename="../batch_export.js" line="126"/>
         <source>
 
 All files are up to date
@@ -206,7 +207,7 @@ Todos los archivos están al día
 </translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="115"/>
+        <location filename="../batch_export.js" line="128"/>
         <source>
 
 File(s) exported:
@@ -219,14 +220,20 @@ Archivo(s) exportado(s):
 %1</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="145"/>
+        <location filename="../batch_export.js" line="155"/>
         <source>No input format selected</source>
         <translation>Ningún formato de entrada seleccionado</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="164"/>
+        <location filename="../batch_export.js" line="174"/>
         <source>No output format selected</source>
         <translation>Ningún formato de salida seleccionado</translation>
+    </message>
+    <message>
+        <location filename="../batch_export.js" line="357"/>
+        <source>Plugins</source>
+        <comment>but see http://musescore.org/en/node/15470 first</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
