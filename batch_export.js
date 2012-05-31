@@ -32,26 +32,27 @@
 
 var pluginName = "Batch Export";
 // Here you can specify which formats get exported
-// by specifyiong their extensions in a commy separated list
-//var formats = new Array("pdf", "xml");
-var formats = new Array("pdf");
+// by specifying their extensions in a comma separated list
+//var outFormats = new Array("pdf", "xml");
+var outFormats = new Array("pdf");
+// Here you can specify, which format gets imported
+var inFormat = "mscz";
 
 function init () {
 }
 
-function process_one (mscz, format) {
 // generates a <format> file from the specified file, if no up-to-date one already exists
 // returns filename of generated file, or empty string if no file generated
-
-  var reg = "mscz";
-  var target = mscz.replace(reg, format);
-  var msczFile = new QFileInfo(mscz);
+function process_one (source, outFormat) {
+  var reg = inFormat;
+  var target = source.replace(reg, outFormat);
+  var inFile = new QFileInfo(source);
   var targetFile = new QFileInfo(target);
   var doit = false;
 
   if (!targetFile.exists())
     doit = true;
-  else if (targetFile.lastModified() < msczFile.lastModified()) {
+  else if (targetFile.lastModified() < inFile.lastModified()) {
     var targetHandle = new QFile(target);
     if (targetHandle.remove())
       doit = true;
@@ -60,9 +61,9 @@ function process_one (mscz, format) {
   }
   if (doit) {
     var theScore = new Score();
-    theScore.load(mscz);
-    theScore.save(target, format);
-    if (typeof theScore.close === 'function') // does not exist on some systems
+    theScore.load(source);
+    theScore.save(target, outFormat);
+    if (typeof theScore.close === 'function') // does not exist on some versions
       theScore.close();
     return targetFile.fileName() + "\n";
   }
@@ -71,8 +72,9 @@ function process_one (mscz, format) {
 
 // query user for directory
 // loop through all files in folder
-// process all ".mscz" files using process_one()
-function batch () {
+// process all ".<inFormat>$" files using process_one()
+// export them to <outFormats>
+function run () {
   var scoreList = "";
 
   var dirString = QFileDialog.getExistingDirectory(0, "MuseScore: Select Folder", "", 0);
@@ -86,9 +88,9 @@ function batch () {
 
   while (dirIt.hasNext()) {
     var file = dirIt.next();
-    if (file.match("\.mscz$"))
-      for(i=0; i<formats.length; i++)
-        scoreList += process_one(file, formats[i]);
+    if (file.match("\." + inFormat + "$"))
+      for(i=0; i<outFormats.length; i++)
+        scoreList += process_one(file, outFormats[i]);
   }
 
   if (scoreList == "")
@@ -100,9 +102,6 @@ function batch () {
 
 }
 
-function run () {
-  batch();
-}
 
 //---------------------------------------------------------
 //    menu:  defines where the function will be placed
