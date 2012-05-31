@@ -160,39 +160,39 @@
     <message>
         <location filename="../batch_export.js" line="28"/>
         <source>Batch Export</source>
-        <translation>Export par lot</translation>
+        <translation>Exportación por lotes</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="64"/>
         <source>Unable to delete %1</source>
-        <translation>Impossible de supprimer %1</translation>
+        <translation>Imposible de suprimir %1</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="73"/>
         <source>Unable to open %1</source>
-        <translation>Impossible de ouvrir %1</translation>
+        <translation>Imposible de abrir %1</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="78"/>
         <source> failed!
 </source>
-        <translation> échec!
+        <translation> falló!
 </translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="79"/>
         <source>Unable to save %1</source>
-        <translation>Impossible de enregistrer %1</translation>
+        <translation>Imposible de guardar %1</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="95"/>
         <source>: Select Folder</source>
-        <translation>: Sélectionner un répertoire</translation>
+        <translation>: Seleccionar carpeta</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="97"/>
         <source>No folder selected</source>
-        <translation>Pas de répertoire sélectionné</translation>
+        <translation>Ninguna carpeta seleccionada</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="113"/>
@@ -202,7 +202,7 @@ All files are up to date
 </source>
         <translation>
 
-Tous les Formatos sont à jour
+Todos los archivos están al día
 </translation>
     </message>
     <message>
@@ -214,19 +214,19 @@ File(s) exported:
 %1</source>
         <translation>
 
-Formato(s) exporté(s):
+Archivo(s) exportado(s):
 
 %1</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="145"/>
         <source>No input format selected</source>
-        <translation>Pas de format d&apos;entrée sélectionné</translation>
+        <translation>Ningún formato de entrada seleccionado</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="164"/>
         <source>No output format selected</source>
-        <translation>Pas de format de sortie sélectionné</translation>
+        <translation>Ningún formato de salida seleccionado</translation>
     </message>
 </context>
 </TS>
