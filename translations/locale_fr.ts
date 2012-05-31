@@ -154,6 +154,11 @@
         <source>reset to defaults</source>
         <translation>Rétablir le choix par défaut</translation>
     </message>
+    <message>
+        <location filename="../batch_export.ui" line="660"/>
+        <source>process subdirectories</source>
+        <translation>recursif</translation>
+    </message>
 </context>
 <context>
     <name>batch_export</name>
@@ -186,17 +191,17 @@
         <translation>Impossible de enregistrer %1</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="108"/>
+        <location filename="../batch_export.js" line="188"/>
         <source>: Select Folder</source>
         <translation>: Sélectionner un répertoire</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="110"/>
+        <location filename="../batch_export.js" line="190"/>
         <source>No folder selected</source>
         <translation>Pas de répertoire sélectionné</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="126"/>
+        <location filename="../batch_export.js" line="128"/>
         <source>
 
 All files are up to date
@@ -207,7 +212,7 @@ Tous les fichiers sont à jour
 </translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="128"/>
+        <location filename="../batch_export.js" line="130"/>
         <source>
 
 File(s) exported:
@@ -220,17 +225,17 @@ Fichier(s) exporté(s):
 %1</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="155"/>
+        <location filename="../batch_export.js" line="157"/>
         <source>No input format selected</source>
         <translation>Pas de format d&apos;entrée sélectionné</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="174"/>
+        <location filename="../batch_export.js" line="176"/>
         <source>No output format selected</source>
         <translation>Pas de format de sortie sélectionné</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="357"/>
+        <location filename="../batch_export.js" line="377"/>
         <source>Plugins</source>
         <comment>but see http://musescore.org/en/node/15470 first</comment>
         <translation type="unfinished"></translation>

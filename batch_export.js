@@ -49,7 +49,7 @@ function init () {
 // generated, or filename + "failed!" in case of an error.
 //-----------------------------------------------------------------------------
 
-function process_one (source, inFormat) {
+function process_one (source, inFormat, origDir) {
   var inFile = new QFileInfo(source);
   var theScore; 
   var list = "";
@@ -57,6 +57,7 @@ function process_one (source, inFormat) {
   for (i=0; i<outFormats.length; i++) {
     var target = source.replace(inFormat, outFormats[i]);
     var targetFile = new QFileInfo(target);
+    var targetFilePath = origDir.relativeFilePath(targetFile.absoluteFilePath());
     var doit = false;
 
     if (!targetFile.exists())
@@ -66,8 +67,8 @@ function process_one (source, inFormat) {
       if (targetHandle.remove())
         doit = true;
       else {
-        QMessageBox.warning(this, pluginName, qsTr("Unable to delete %1") .arg(targetFile.fileName()));
-        list += targetFile.fileName() + qsTr(" failed!\n");
+        QMessageBox.warning(this, pluginName, qsTr("Unable to delete %1") .arg(targetFilePath));
+        list += targetFilePath + qsTr(" failed!\n");
       }
     }
     if (doit) { // go for it
@@ -80,11 +81,11 @@ function process_one (source, inFormat) {
           QMessageBox.warning(this, pluginName, qsTr("Unable to open %1") .arg(inFile.fileName));
       }
       if (loaded && theScore.save(target, outFormats[i]))
-        list += targetFile.fileName() + "\n";
+        list += targetFilePath + "\n";
       else {
-        list += targetFile.fileName() + qsTr(" failed!\n");
+        list += targetFilePath + qsTr(" failed!\n");
           if (loaded)
-            QMessageBox.warning(this, pluginName, qsTr("Unable to save %1") .arg(targetFile.fileName()));
+            QMessageBox.warning(this, pluginName, qsTr("Unable to save %1") .arg(targetFilePath));
       }
     }
   } // end for loop
@@ -98,36 +99,30 @@ function process_one (source, inFormat) {
 
 
 //-----------------------------------------------------------------------------
-// query user for directory
 // loop through all files in folder
 // process all ".<inFormats[i]>$" files using process_one()
 // export them to all <outFormats[j]>
 //-----------------------------------------------------------------------------
 
-function work () {
-  var dirString = QFileDialog.getExistingDirectory(this, pluginName + qsTr(": Select Folder"), "", 0);
-  if (!dirString) {
-    QMessageBox.warning(this, pluginName, qsTr("No folder selected"));
-    return;
-  }
-
+function work (dirString, traverse, origDir) {
   var dir = new QDir(dirString);
   var dirIt = new QDirIterator(dir);
   var scoreList = "";
 
   while (dirIt.hasNext()) {
     var file = dirIt.next();
-    for (i=0; i<inFormats.length; i++)
-      if (file.match("\." + inFormats[i] + "$"))
-        scoreList += process_one(file, inFormats[i]);
+    if (dirIt.fileInfo().isDir()) {
+      if (file.match("\./..$") || file.match("\./.$"))
+	continue;
+      if (traverse)
+        scoreList += work(file, traverse, origDir);
+    } else
+      for (i=0; i<inFormats.length; i++)
+        if (file.match("\." + inFormats[i] + "$"))
+          scoreList += process_one(file, inFormats[i], origDir);
   }
 
-  if (scoreList == "")
-    scoreList = qsTr("\n\nAll files are up to date\n");
-  else
-    scoreList = qsTr("\n\nFile(s) exported:\n\n%1") .arg(scoreList);
-
-  QMessageBox.information(this, pluginName, dirString + scoreList);
+  return scoreList;
 }
 
 
@@ -174,13 +169,36 @@ function evalForm () {
     QMessageBox.warning(this, pluginName, qsTr("No output format selected"));
     exit();
   }
+  selDir(form.checkBox_traverseSubdirs.checked);
+}
 
-  work();
+
+//-----------------------------------------------------------------------------
+// query user for directory
+//-----------------------------------------------------------------------------
+
+function selDir (traverse) {
+  var dirString = QFileDialog.getExistingDirectory(this, pluginName + qsTr(": Select Folder"), "", 0);
+  if (!dirString) {
+    QMessageBox.warning(this, pluginName, qsTr("No folder selected"));
+    return;
+  }
+
+  var origDir = new QDir(dirString);
+  var scoreList = work(dirString, traverse, origDir);
+  if (scoreList == "")
+    scoreList = qsTr("\n\nAll files are up to date\n");
+  else
+    scoreList = qsTr("\n\nFile(s) exported:\n\n%1") .arg(scoreList);
+  QMessageBox.information(this, pluginName, dirString + scoreList);
 }
 
 
 function setDefaults () {
   if (form) {
+    form.checkBox_traverseSubdirs.enabled = true;
+    form.checkBox_traverseSubdirs.checked = false;
+
     // enable/disable, depending on version
     if ( mscoreMajorVersion >= 2) {
       form.groupBox_inFormats.checkBox_msc.enabled =  false; // no longer supported
@@ -331,7 +349,7 @@ function run () {
   } else {
     // fallback to behavoir of the previous non-GUI version
   //QMessageBox.warning(this, pluginName, qsTr("Can't load GUI dialog \"%1\", continuing with default settings (%2 to %3)") .arg(uiFile.fileName()) .arg(inFormats.toString()) .arg(outFormats.toString()));
-    work();
+    selDir(false);
   }
 }
 
