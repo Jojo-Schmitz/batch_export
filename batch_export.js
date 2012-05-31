@@ -1,11 +1,11 @@
 //=============================================================================
 //  MuseScore
-//  Linux Music Score Editor
+//  Music Score Editor
 //  $Id:$
 //
 //  Batch Export plugin
 //
-//  Copyright (C)2008-2012 Werner Schweer and others
+//  Copyright (C)2011-2012 Marc Sabatella and Joachim Schmitz
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2.
@@ -65,8 +65,10 @@ function process_one (source, inFormat) {
       var targetHandle = new QFile(target);
       if (targetHandle.remove())
         doit = true;
-      else
-        QMessageBox.warning(this, pluginName, qsTr("Unable to delete %1") .arg(target.fileName()));
+      else {
+        QMessageBox.warning(this, pluginName, qsTr("Unable to delete %1") .arg(targetFile.fileName()));
+        list += targetFile.fileName() + qsTr(" failed!\n");
+      }
     }
     if (doit) { // go for it
       var loaded;
@@ -75,14 +77,14 @@ function process_one (source, inFormat) {
         theScore = new Score();
         loaded = theScore.load(source);
         if (!loaded)
-          QMessageBox.warning(this, pluginName, qsTr("Unable to open %1") .arg(source.fileName));
+          QMessageBox.warning(this, pluginName, qsTr("Unable to open %1") .arg(inFile.fileName));
       }
       if (loaded && theScore.save(target, outFormats[i]))
         list += targetFile.fileName() + "\n";
       else {
         list += targetFile.fileName() + qsTr(" failed!\n");
           if (loaded)
-            QMessageBox.warning(this, pluginName, qsTr("Unable to save %1") .arg(target.fileName()));
+            QMessageBox.warning(this, pluginName, qsTr("Unable to save %1") .arg(targetFile.fileName()));
       }
     }
   } // end for loop
@@ -132,7 +134,7 @@ function work () {
 function evalForm () {
   if (form.groupBox_inFormats.checkBox_mscz.checked) inFormats.push("mscz");
   if (form.groupBox_inFormats.checkBox_mscx.checked) inFormats.push("mscx");
-  if (form.groupBox_inFormats.checkBox_msc.checked)  inFormats.push("msc");
+  if (form.groupBox_inFormats.checkBox_msc.checked)  inFormats.push("msc"); // < 2.0
   if (form.groupBox_inFormats.checkBox_xml.checked)  inFormats.push("xml");
   if (form.groupBox_inFormats.checkBox_mxl.checked)  inFormats.push("mxl");
   if (form.groupBox_inFormats.checkBox_mid.checked)  inFormats.push("mid");
@@ -141,18 +143,14 @@ function evalForm () {
   if (form.groupBox_inFormats.checkBox_md.checked)   inFormats.push("md");
   if (form.groupBox_inFormats.checkBox_cap.checked)  inFormats.push("cap");
   if (form.groupBox_inFormats.checkBox_bww.checked)  inFormats.push("bww");
-  if (form.groupBox_inFormats.checkBox_mgu.checked)  inFormats.push("mgu");
-// uppercase needed too?
-//if (form.groupBox_inFormats.checkBox_MGU.checked)  inFormats.push("MGU");
-  if (form.groupBox_inFormats.checkBox_sgu.checked)  inFormats.push("sgu");
-// uppercase needed too?
-//if (form.groupBox_inFormats.checkBox_SGU.checked)  inFormats.push("SGU");
+  if (form.groupBox_inFormats.checkBox_mgu.checked)  inFormats.push("mgu", "MGU");
+  if (form.groupBox_inFormats.checkBox_sgu.checked)  inFormats.push("sgu", "SGU");
   if (form.groupBox_inFormats.checkBox_ove.checked)  inFormats.push("ove");
-  if (form.groupBox_inFormats.checkBox_scw.checked)  inFormats.push("scw");
-  if (form.groupBox_inFormats.checkBox_GTP.checked)  inFormats.push("GTP");
-  if (form.groupBox_inFormats.checkBox_GP3.checked)  inFormats.push("GP3");
-  if (form.groupBox_inFormats.checkBox_GP4.checked)  inFormats.push("GP4");
-  if (form.groupBox_inFormats.checkBox_GP5.checked)  inFormats.push("GP5");
+  if (form.groupBox_inFormats.checkBox_scw.checked)  inFormats.push("scw"); // >= 2.0
+  if (form.groupBox_inFormats.checkBox_GTP.checked)  inFormats.push("GTP"); // >= 2.0
+  if (form.groupBox_inFormats.checkBox_GP3.checked)  inFormats.push("GP3"); // >= 2.0
+  if (form.groupBox_inFormats.checkBox_GP4.checked)  inFormats.push("GP4"); // >= 2.0
+  if (form.groupBox_inFormats.checkBox_GP5.checked)  inFormats.push("GP5"); // >= 2.0
   if (inFormats.length === 0) {
     QMessageBox.warning(this, pluginName, qsTr("No input format selected"));
     exit();
@@ -171,7 +169,7 @@ function evalForm () {
   if (form.groupBox_outFormats.checkBox_wav.checked)  outFormats.push("wav");
   if (form.groupBox_outFormats.checkBox_flac.checked) outFormats.push("flac");
   if (form.groupBox_outFormats.checkBox_ogg.checked)  outFormats.push("ogg");
-  if (form.groupBox_outFormats.checkBox_mp3.checked)  outFormats.push("mp3");
+  if (form.groupBox_outFormats.checkBox_mp3.checked)  outFormats.push("mp3"); // >= 2.0
   if (outFormats.length === 0) {
     QMessageBox.warning(this, pluginName, qsTr("No output format selected"));
     exit();
@@ -185,13 +183,13 @@ function setDefaults () {
   if (form) {
     // enable/disable, depending on version
     if ( mscoreMajorVersion >= 2) {
-      form.groupBox_inFormats.checkBox_msc.enabled =  false; // no longer supported?
+      form.groupBox_inFormats.checkBox_msc.enabled =  false; // no longer supported
       form.groupBox_inFormats.checkBox_scw.enabled =  true;
       form.groupBox_inFormats.checkBox_GTP.enabled =  true;
       form.groupBox_inFormats.checkBox_GP3.enabled =  true;
       form.groupBox_inFormats.checkBox_GP4.enabled =  true;
       form.groupBox_inFormats.checkBox_GP5.enabled =  true;
-      form.groupBox_outFormats.checkBox_mp3.enabled = true;
+      form.groupBox_outFormats.checkBox_mp3.enabled = true; // needs help of a DLL
     } else {
       form.groupBox_inFormats.checkBox_msc.enabled =  true;
       form.groupBox_inFormats.checkBox_scw.enabled =  false;
@@ -220,11 +218,7 @@ function setDefaults () {
     form.groupBox_inFormats.checkBox_cap.checked =   false;
     form.groupBox_inFormats.checkBox_bww.checked =   false;
     form.groupBox_inFormats.checkBox_mgu.checked =   false;
-  // upercase needed too?
-  //form.groupBox_inFormats.checkBox_MGU.checked =   false;
     form.groupBox_inFormats.checkBox_sgu.checked =   false;
-  // upercase needed too?
-  //form.groupBox_inFormats.checkBox_SGU.checked =   false;
     form.groupBox_inFormats.checkBox_ove.checked =   false;
     form.groupBox_inFormats.checkBox_scw.checked =   false;
     form.groupBox_inFormats.checkBox_GTP.checked =   false;
