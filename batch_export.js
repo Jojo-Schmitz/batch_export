@@ -24,19 +24,20 @@
 //    This is ECMAScript code (ECMA-262 aka "Java Script")
 //
 
-//---------------------------------------------------------
-//    init
-//    this function will be called on startup of
-//    mscore
-//---------------------------------------------------------
-
-var pluginName = "Batch Export";
+// Setup some global variables
+var pluginName = qsTr("Batch Export");
 // Here you can specify which formats get exported
 // by specifying their extensions in a comma separated list
 //var outFormats = new Array("pdf", "xml");
 var outFormats = new Array("pdf");
 // Here you can specify, which format gets imported
 var inFormat = "mscz";
+
+//---------------------------------------------------------
+//    init
+//    this function will be called on startup of
+//    mscore
+//---------------------------------------------------------
 
 function init () {
 }
@@ -57,7 +58,7 @@ function process_one (source, outFormat) {
     if (targetHandle.remove())
       doit = true;
     else
-      QMessageBox.warning(0, pluginName, "Unable to delete " + target);
+      QMessageBox.warning(0, pluginName, qsTr("Unable to delete") + " " + target);
   }
   if (doit) {
     var theScore = new Score();
@@ -77,9 +78,9 @@ function process_one (source, outFormat) {
 function run () {
   var scoreList = "";
 
-  var dirString = QFileDialog.getExistingDirectory(0, "MuseScore: Select Folder", "", 0);
+  var dirString = QFileDialog.getExistingDirectory(0, "MuseScore: " + pluginName + ": " + qsTr("Select Folder"), "", 0);
   if (!dirString) {
-    QMessageBox.warning(0, pluginName, "No folder selected");
+    QMessageBox.warning(0, pluginName, qsTr("No folder selected"));
     return;
   }
 
@@ -94,11 +95,11 @@ function run () {
   }
 
   if (scoreList == "")
-    scoreList = "All files up to date\n";
+    scoreList = qsTr("All files up to date") + "\n";
   else
-    scoreList = "File exported:\n\n" + scoreList;
+    scoreList = qsTr("File(s) exported") + ":\n\n" + scoreList;
 
-  QMessageBox.information(0, pluginName, dirString + "\n\n"+ scoreList);
+  QMessageBox.information(0, pluginName, dirString + "\n\n" + scoreList);
 
 }
 
@@ -109,7 +110,7 @@ function run () {
 //---------------------------------------------------------
 
 var mscorePlugin = {
-      menu: 'Plugins.Batch Export',
+      menu: 'Plugins.' + pluginName,
       init: init,
       run:  run
 }
