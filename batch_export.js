@@ -3,7 +3,7 @@
 //  Linux Music Score Editor
 //  $Id:$
 //
-//  Batch PDF Export plugin
+//  Batch Export plugin
 //
 //  Copyright (C)2008-2011 Werner Schweer and others
 //
@@ -30,55 +30,55 @@
 //    mscore
 //---------------------------------------------------------
 
-var pluginName = "Batch PDF Export";
+var pluginName = "Batch Export";
+// Here you can specify which formats get exported
+// by specifyiong their extensions in a commy separated list
+//var formats = new Array("pdf", "xml");
+var formats = new Array("pdf");
 
 function init () {
 }
 
-function process_one (mscz) {
-// generates a PDF from the specified file, if no up-to-date PDF already exists
-// returns filename of generated PDF file, or empty string if no file generated
+function process_one (mscz, format) {
+// generates a <format> file from the specified file, if no up-to-date one already exists
+// returns filename of generated file, or empty string if no file generated
 
   var reg = "mscz";
-  var pdf = mscz.replace(reg,"pdf");
+  var target = mscz.replace(reg, format);
   var msczFile = new QFileInfo(mscz);
-  var pdfFile = new QFileInfo(pdf);
+  var targetFile = new QFileInfo(target);
   var doit = false;
 
-  if (!pdfFile.exists()) {
+  if (!targetFile.exists())
     doit = true;
-  } else if (pdfFile.lastModified() < msczFile.lastModified()) {
-    var pdfHandle = new QFile(pdf);
-    if (pdfHandle.remove()) {
+  else if (targetFile.lastModified() < msczFile.lastModified()) {
+    var targetHandle = new QFile(target);
+    if (targetHandle.remove())
       doit = true;
-    } else {
-      QMessageBox.warning(0,pluginName,"Unable to delete "+pdf);
-    }
+    else
+      QMessageBox.warning(0, pluginName, "Unable to delete " + target);
   }
   if (doit) {
     var theScore = new Score();
     theScore.load(mscz);
-    theScore.save(pdf,"pdf");
-    if (typeof theScore.close === 'function') { // does not exist on some systems
+    theScore.save(target, format);
+    if (typeof theScore.close === 'function') // does not exist on some systems
       theScore.close();
-    }
-    return pdfFile.fileName() + "\n";
-  } else {
-    return "";
+    return targetFile.fileName() + "\n";
   }
-
+  return "";
 }
 
-function batch_pdf () {
 // query user for directory
 // loop through all files in folder
 // process all ".mscz" files using process_one()
-
+function batch () {
   var scoreList = "";
 
-  var dirString = QFileDialog.getExistingDirectory(0,"MuseScore: Select Folder","",0);
+  var dirString = QFileDialog.getExistingDirectory(0, "MuseScore: Select Folder", "", 0);
   if (!dirString) {
-    QMessageBox.warning(0,pluginName,"No folder selected");
+    QMessageBox.warning(0, pluginName, "No folder selected");
+    return;
   }
 
   var dir = new QDir(dirString);
@@ -86,23 +86,22 @@ function batch_pdf () {
 
   while (dirIt.hasNext()) {
     var file = dirIt.next();
-    if (file.match("\.mscz$")) {
-      scoreList += process_one(file);
-    }
+    if (file.match("\.mscz$"))
+      for(i=0; i<formats.length; i++)
+        scoreList += process_one(file, formats[i]);
   }
 
-  if (scoreList == "") {
+  if (scoreList == "")
     scoreList = "All files up to date\n";
-  } else {
+  else
     scoreList = "File exported:\n\n" + scoreList;
-  }
 
-  QMessageBox.information(0,pluginName,dirString+"\n\n"+scoreList);
+  QMessageBox.information(0, pluginName, dirString + "\n\n"+ scoreList);
 
 }
 
 function run () {
-  batch_pdf();
+  batch();
 }
 
 //---------------------------------------------------------
@@ -111,7 +110,7 @@ function run () {
 //---------------------------------------------------------
 
 var mscorePlugin = {
-      menu: 'Plugins.Batch PDF Export',
+      menu: 'Plugins.Batch Export',
       init: init,
       run:  run
 }
