@@ -417,7 +417,7 @@
      <string notr="true">*.midi</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_car">
+   <widget class="QCheckBox" name="checkBox_kar">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -430,7 +430,7 @@
      <string>MIDI Files</string>
     </property>
     <property name="text">
-     <string notr="true">*.car</string>
+     <string notr="true">*.kar</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_md">

@@ -134,7 +134,7 @@ function evalForm () {
   if (form.groupBox_inFormats.checkBox_mxl.checked)  inFormats.push("mxl");
   if (form.groupBox_inFormats.checkBox_mid.checked)  inFormats.push("mid");
   if (form.groupBox_inFormats.checkBox_midi.checked) inFormats.push("midi");
-  if (form.groupBox_inFormats.checkBox_car.checked)  inFormats.push("car");
+  if (form.groupBox_inFormats.checkBox_kar.checked)  inFormats.push("kar");
   if (form.groupBox_inFormats.checkBox_md.checked)   inFormats.push("md");
   if (form.groupBox_inFormats.checkBox_cap.checked)  inFormats.push("cap");
   if (form.groupBox_inFormats.checkBox_bww.checked)  inFormats.push("bww");
@@ -231,7 +231,7 @@ function setDefaults () {
     form.groupBox_inFormats.checkBox_mid.checked =   false;
     toggle_mid(false); // enable corresponding outFormat
     form.groupBox_inFormats.checkBox_midi.checked =  false;
-    form.groupBox_inFormats.checkBox_car.checked =   false;
+    form.groupBox_inFormats.checkBox_kar.checked =   false;
     form.groupBox_inFormats.checkBox_md.checked =    false;
     form.groupBox_inFormats.checkBox_cap.checked =   false;
     form.groupBox_inFormats.checkBox_bww.checked =   false;
