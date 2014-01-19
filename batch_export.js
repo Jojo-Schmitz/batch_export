@@ -5,7 +5,7 @@
 //
 //  Batch Export plugin
 //
-//  Copyright (C)2011-2012 Marc Sabatella and Joachim Schmitz
+//  Copyright (C)2011-2014 Marc Sabatella and Joachim Schmitz
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2.
@@ -137,6 +137,7 @@ function evalForm () {
   if (form.groupBox_inFormats.checkBox_kar.checked)  inFormats.push("kar");
   if (form.groupBox_inFormats.checkBox_md.checked)   inFormats.push("md");
   if (form.groupBox_inFormats.checkBox_cap.checked)  inFormats.push("cap");
+//if (form.groupBox_inFormats.checkBox_capx.checked) inFormats.push("capx"); // >= 2.0
   if (form.groupBox_inFormats.checkBox_bww.checked)  inFormats.push("bww");
   if (form.groupBox_inFormats.checkBox_mgu.checked)  inFormats.push("mgu", "MGU");
   if (form.groupBox_inFormats.checkBox_sgu.checked)  inFormats.push("sgu", "SGU");
@@ -160,7 +161,7 @@ function evalForm () {
   if (form.groupBox_outFormats.checkBox_ps.checked)   outFormats.push("ps");
   if (form.groupBox_outFormats.checkBox_png.checked)  outFormats.push("png");
   if (form.groupBox_outFormats.checkBox_svg.checked)  outFormats.push("svg");
-  if (form.groupBox_outFormats.checkBox_ly.checked)   outFormats.push("ly");
+  if (form.groupBox_outFormats.checkBox_ly.checked)   outFormats.push("ly"); // < 2.0
   if (form.groupBox_outFormats.checkBox_wav.checked)  outFormats.push("wav");
   if (form.groupBox_outFormats.checkBox_flac.checked) outFormats.push("flac");
   if (form.groupBox_outFormats.checkBox_ogg.checked)  outFormats.push("ogg");
@@ -201,65 +202,70 @@ function setDefaults () {
 
     // enable/disable, depending on version
     if ( mscoreMajorVersion >= 2) {
-      form.groupBox_inFormats.checkBox_msc.enabled =  false; // no longer supported
-      form.groupBox_inFormats.checkBox_scw.enabled =  true;
-      form.groupBox_inFormats.checkBox_GTP.enabled =  true;
-      form.groupBox_inFormats.checkBox_GP3.enabled =  true;
-      form.groupBox_inFormats.checkBox_GP4.enabled =  true;
-      form.groupBox_inFormats.checkBox_GP5.enabled =  true;
+      form.groupBox_inFormats.checkBox_msc.enabled  = false; // no longer supported
+      form.groupBox_inFormats.checkBox_scw.enabled  = true;
+      form.groupBox_inFormats.checkBox_GTP.enabled  = true;
+      form.groupBox_inFormats.checkBox_GP3.enabled  = true;
+      form.groupBox_inFormats.checkBox_GP4.enabled  = true;
+      form.groupBox_inFormats.checkBox_GP5.enabled  = true;
+    //form.groupBox_inFormats.checkBox_capx.enabled = true;
       form.groupBox_outFormats.checkBox_mp3.enabled = true; // needs help of a DLL
+      form.groupBox_outFormats.checkBox_ly.enabled  = false; // no longer supported
     } else {
-      form.groupBox_inFormats.checkBox_msc.enabled =  true;
-      form.groupBox_inFormats.checkBox_scw.enabled =  false;
-      form.groupBox_inFormats.checkBox_GTP.enabled =  false;
-      form.groupBox_inFormats.checkBox_GP3.enabled =  false;
-      form.groupBox_inFormats.checkBox_GP4.enabled =  false;
-      form.groupBox_inFormats.checkBox_GP5.enabled =  false;
+      form.groupBox_inFormats.checkBox_msc.enabled  = true;
+      form.groupBox_inFormats.checkBox_scw.enabled  = false;
+      form.groupBox_inFormats.checkBox_GTP.enabled  = false;
+      form.groupBox_inFormats.checkBox_GP3.enabled  = false;
+      form.groupBox_inFormats.checkBox_GP4.enabled  = false;
+      form.groupBox_inFormats.checkBox_GP5.enabled  = false;
+    //form.groupBox_inFormats.checkBox_capx.enabled = false;
       form.groupBox_outFormats.checkBox_mp3.enabled = false;
+      form.groupBox_outFormats.checkBox_ly.enabled  = true;
     }
 
     // check/uncheck to the default, inFormats "mscz", outformats "pdf"
-    form.groupBox_inFormats.checkBox_mscz.checked =  true;
+    form.groupBox_inFormats.checkBox_mscz.checked = true;
     toggle_mscz(true); // disable corresponding outFormat
-    form.groupBox_inFormats.checkBox_mscx.checked =  false;
+    form.groupBox_inFormats.checkBox_mscx.checked = false;
     toggle_mscx(false); // enable corresponding outFormat
-    form.groupBox_inFormats.checkBox_msc.checked =   false;
-    form.groupBox_inFormats.checkBox_xml.checked =   false;
+    form.groupBox_inFormats.checkBox_msc.checked  = false;
+    form.groupBox_inFormats.checkBox_xml.checked  = false;
     toggle_xml(false); // enable corresponding outFormat
-    form.groupBox_inFormats.checkBox_mxl.checked =   false;
+    form.groupBox_inFormats.checkBox_mxl.checked  = false;
     toggle_mxl(false); // enable corresponding outFormat
-    form.groupBox_inFormats.checkBox_mid.checked =   false;
+    form.groupBox_inFormats.checkBox_mid.checked  = false;
     toggle_mid(false); // enable corresponding outFormat
-    form.groupBox_inFormats.checkBox_midi.checked =  false;
-    form.groupBox_inFormats.checkBox_kar.checked =   false;
-    form.groupBox_inFormats.checkBox_md.checked =    false;
-    form.groupBox_inFormats.checkBox_cap.checked =   false;
-    form.groupBox_inFormats.checkBox_bww.checked =   false;
-    form.groupBox_inFormats.checkBox_mgu.checked =   false;
-    form.groupBox_inFormats.checkBox_sgu.checked =   false;
-    form.groupBox_inFormats.checkBox_ove.checked =   false;
-    form.groupBox_inFormats.checkBox_scw.checked =   false;
-    form.groupBox_inFormats.checkBox_GTP.checked =   false;
-    form.groupBox_inFormats.checkBox_GP3.checked =   false;
-    form.groupBox_inFormats.checkBox_GP4.checked =   false;
-    form.groupBox_inFormats.checkBox_GP5.checked =   false;
+    form.groupBox_inFormats.checkBox_midi.checked = false;
+    form.groupBox_inFormats.checkBox_kar.checked  = false;
+    form.groupBox_inFormats.checkBox_md.checked   = false;
+    form.groupBox_inFormats.checkBox_cap.checked  = false;
+  //form.groupBox_inFormats.checkBox_capx.checked = false;
+    form.groupBox_inFormats.checkBox_bww.checked  = false;
+    form.groupBox_inFormats.checkBox_mgu.checked  = false;
+    form.groupBox_inFormats.checkBox_sgu.checked  = false;
+    form.groupBox_inFormats.checkBox_ove.checked  = false;
+    form.groupBox_inFormats.checkBox_scw.checked  = false;
+    form.groupBox_inFormats.checkBox_GTP.checked  = false;
+    form.groupBox_inFormats.checkBox_GP3.checked  = false;
+    form.groupBox_inFormats.checkBox_GP4.checked  = false;
+    form.groupBox_inFormats.checkBox_GP5.checked  = false;
     inFormats =  new Array(); // empty array, evalForm() will fill it
 
     form.groupBox_outFormats.checkBox_mscx.checked = false;
-    form.groupBox_outFormats.checkBox_xml.checked =  false;
-  //form.groupBox_outFormats.checkBox_xml.checked =  true;
+    form.groupBox_outFormats.checkBox_xml.checked  = false;
+  //form.groupBox_outFormats.checkBox_xml.checked  = true;
   //toggle_xml(true);
-    form.groupBox_outFormats.checkBox_mxl.checked =  false;
-    form.groupBox_outFormats.checkBox_mid.checked =  false;
-    form.groupBox_outFormats.checkBox_pdf.checked =  true;
-    form.groupBox_outFormats.checkBox_ps.checked =   false;
-    form.groupBox_outFormats.checkBox_png.checked =  false;
-    form.groupBox_outFormats.checkBox_svg.checked =  false;
-    form.groupBox_outFormats.checkBox_ly.checked =   false;
-    form.groupBox_outFormats.checkBox_wav.checked =  false;
+    form.groupBox_outFormats.checkBox_mxl.checked  = false;
+    form.groupBox_outFormats.checkBox_mid.checked  = false;
+    form.groupBox_outFormats.checkBox_pdf.checked  = true;
+    form.groupBox_outFormats.checkBox_ps.checked   = false;
+    form.groupBox_outFormats.checkBox_png.checked  = false;
+    form.groupBox_outFormats.checkBox_svg.checked  = false;
+    form.groupBox_outFormats.checkBox_ly.checked   = false;
+    form.groupBox_outFormats.checkBox_wav.checked  = false;
     form.groupBox_outFormats.checkBox_flac.checked = false;
-    form.groupBox_outFormats.checkBox_ogg.checked =  false;
-    form.groupBox_outFormats.checkBox_mp3.checked =  false;
+    form.groupBox_outFormats.checkBox_ogg.checked  = false;
+    form.groupBox_outFormats.checkBox_mp3.checked  = false;
     outFormats = new Array(); // empty array, evalForm() will fill it
   } else {
     // no UI, fall back to behavoir of previous version
