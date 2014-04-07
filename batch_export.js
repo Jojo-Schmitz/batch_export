@@ -135,6 +135,7 @@ function evalForm () {
   if (form.groupBox_inFormats.checkBox_mid.checked)  inFormats.push("mid");
   if (form.groupBox_inFormats.checkBox_midi.checked) inFormats.push("midi");
   if (form.groupBox_inFormats.checkBox_kar.checked)  inFormats.push("kar");
+//if (form.groupBox_inFormats.checkBox_cap.checked)  inFormats.push("pdf"); // >2.0
   if (form.groupBox_inFormats.checkBox_md.checked)   inFormats.push("md");
   if (form.groupBox_inFormats.checkBox_cap.checked)  inFormats.push("cap");
 //if (form.groupBox_inFormats.checkBox_capx.checked) inFormats.push("capx"); // >= 2.0
@@ -203,6 +204,7 @@ function setDefaults () {
     // enable/disable, depending on version
     if ( mscoreMajorVersion >= 2) {
       form.groupBox_inFormats.checkBox_msc.enabled  = false; // no longer supported
+    //form.groupBox_inFormats.checkBox_pdf.enabled  = true;
       form.groupBox_inFormats.checkBox_scw.enabled  = true;
       form.groupBox_inFormats.checkBox_GTP.enabled  = true;
       form.groupBox_inFormats.checkBox_GP3.enabled  = true;
@@ -213,6 +215,7 @@ function setDefaults () {
       form.groupBox_outFormats.checkBox_ly.enabled  = false; // no longer supported
     } else {
       form.groupBox_inFormats.checkBox_msc.enabled  = true;
+    //form.groupBox_inFormats.checkBox_pdf.enabled  = false;
       form.groupBox_inFormats.checkBox_scw.enabled  = false;
       form.groupBox_inFormats.checkBox_GTP.enabled  = false;
       form.groupBox_inFormats.checkBox_GP3.enabled  = false;
@@ -235,6 +238,8 @@ function setDefaults () {
     toggle_mxl(false); // enable corresponding outFormat
     form.groupBox_inFormats.checkBox_mid.checked  = false;
     toggle_mid(false); // enable corresponding outFormat
+  //form.groupBox_inFormats.checkBox_pdf.checked  = false;
+  //toggle_pdf(false); // enable corresponding outFormat
     form.groupBox_inFormats.checkBox_midi.checked = false;
     form.groupBox_inFormats.checkBox_kar.checked  = false;
     form.groupBox_inFormats.checkBox_md.checked   = false;
@@ -327,6 +332,18 @@ function toggle_mid (enable) {
 }
 
 
+/*
+function toggle_pdf (enable) {
+  if (enable) {
+    form.groupBox_outFormats.checkBox_pdf.checked  = false;
+    form.groupBox_outFormats.checkBox_pdf.enabled  = false;
+  } else {
+    form.groupBox_outFormats.checkBox_pdf.enabled  = true;
+  }
+}
+*/
+
+
 function run () {
   // read the UI file and create a form out of it
   var loader = new QUiLoader(null);
@@ -349,6 +366,7 @@ function run () {
     form.groupBox_inFormats.checkBox_xml.toggled.connect(toggle_xml);
     form.groupBox_inFormats.checkBox_mxl.toggled.connect(toggle_mxl);
     form.groupBox_inFormats.checkBox_mid.toggled.connect(toggle_mid);
+  //form.groupBox_inFormats.checkBox_pdf.toggled.connect(toggle_pdf);
 
     // show the form
     form.show();
