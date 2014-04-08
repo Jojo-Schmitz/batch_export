@@ -16,7 +16,7 @@ MuseScore {
   }
 
   id: window
-  width: 221
+  width: 226
   height: 431
   //title: qsTr("Choose Formats") // How?
 
@@ -92,14 +92,6 @@ MuseScore {
           }
         }
         CheckBox {
-          id: inMidi
-          text: "*.midi"
-        }
-        CheckBox {
-          id: inKar
-          text: "*.kar"
-        }
-        CheckBox {
           id: inPdf
           text: "*.pdf"
           enabled: false // needs OMR, MuseScore > 2.0?
@@ -109,6 +101,14 @@ MuseScore {
             if (checked && outPdf.checked)
               outPdf.checked = false
           }
+        }
+        CheckBox {
+          id: inMidi
+          text: "*.midi"
+        }
+        CheckBox {
+          id: inKar
+          text: "*.kar"
         }
         CheckBox {
           id: inCap
@@ -259,6 +259,7 @@ MuseScore {
           } //Column
         } //outFormats
       } // RowLayout
+      Label {} // Spacer
       CheckBox {
         id: traverseSubdirs
         text: qsTr("Process\nSubdirectories")
