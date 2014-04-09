@@ -3,9 +3,9 @@ This Plugin for MuseScore will go through a specified folder and in its default 
 1. Select "Batch Export" from the Plugins menu
 2. Select the in- and output format(s), or just use the default (\*.mscz to \*.pdf)
 3. Decide whether or nor you want to also work on subdirectories of the one you'll select in the next step and check/uncheck the corresponding box
-3. Browse to the folder containing the files you wish to export
-4. Select "Choose"
-5.Confirm the dialog box that shows which files have been converted
+4. Browse to the folder containing the files you wish to export
+5. Select "Choose"
+6. Confirm the dialog box that shows which files have been converted
 
 A couple of notes to be aware of:
 
