@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.1 // FileDialog
 import MuseScore 1.0
 
 MuseScore {
-  menuPath: "Plugins." + qsTr("Batch Export")
+  menuPath: "Plugins." + qsTr("Batch Convert")
   version: "2.0"
   description: qsTr("This plugin converts mutiple files from various formats"
     + " into various formats")

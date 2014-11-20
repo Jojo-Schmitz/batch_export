@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de">
+<TS version="2.1" language="de">
 <context>
     <name>FormatChooser</name>
     <message>
@@ -161,6 +161,65 @@
     </message>
 </context>
 <context>
+    <name>batch_convert</name>
+    <message>
+        <location filename="../batch_convert.qml" line="8"/>
+        <source>Batch Convert</source>
+        <translation type="unfinished">Stapel-Konverter</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="10"/>
+        <source>This plugin converts mutiple files from various formats into various formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="36"/>
+        <source>Input Formats</source>
+        <translation>Eingabeformate</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="166"/>
+        <source>Output Formats</source>
+        <translation>Ausgabeformate</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="265"/>
+        <source>Process
+Subdirectories</source>
+        <translation>Unterverzeichnisse durchsuchen</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="269"/>
+        <source>Reset to Defaults</source>
+        <translation>Voreinstellungen wiederherstellen</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="279"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="288"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="299"/>
+        <source>Select Startfolder</source>
+        <translation type="unfinished">Verzeichnis wählen</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="300"/>
+        <source>Select Folder</source>
+        <translation>Verzeichnis wählen</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="306"/>
+        <source>No folder selected</source>
+        <translation>Kein Verzeichnis ausgewählt</translation>
+    </message>
+</context>
+<context>
     <name>batch_export</name>
     <message>
         <location filename="../batch_export.js" line="28"/>
@@ -168,40 +227,40 @@
         <translation>Stapel-Export</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="69"/>
+        <location filename="../batch_export.js" line="70"/>
         <source>Unable to delete %1</source>
         <translation>Kann %1 nicht löschen</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="80"/>
+        <location filename="../batch_export.js" line="81"/>
         <source>Unable to open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="70"/>
-        <location filename="../batch_export.js" line="85"/>
+        <location filename="../batch_export.js" line="71"/>
+        <location filename="../batch_export.js" line="86"/>
         <source> failed!
 </source>
         <translation> fehlgeschlagen!
 </translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="87"/>
+        <location filename="../batch_export.js" line="88"/>
         <source>Unable to save %1</source>
         <translation>Kann %1 nicht speichern</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="188"/>
+        <location filename="../batch_export.js" line="183"/>
         <source>: Select Folder</source>
         <translation>: Verzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="190"/>
+        <location filename="../batch_export.js" line="185"/>
         <source>No folder selected</source>
         <translation>Kein Verzeichnis ausgewählt</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="128"/>
+        <location filename="../batch_export.js" line="192"/>
         <source>
 
 All files are up to date
@@ -212,7 +271,7 @@ Alle Dateien sind aktuell
 </translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="130"/>
+        <location filename="../batch_export.js" line="194"/>
         <source>
 
 File(s) exported:
@@ -225,21 +284,21 @@ Exportierte Datei(en):
 %1</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="157"/>
+        <location filename="../batch_export.js" line="152"/>
         <source>No input format selected</source>
         <translation>Kein Eingabeformat gewählt</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="176"/>
+        <location filename="../batch_export.js" line="171"/>
         <source>No output format selected</source>
         <translation>Kein Ausgabeformat gewählt</translation>
     </message>
     <message>
-        <location filename="../batch_export.js" line="377"/>
+        <location filename="../batch_export.js" line="399"/>
         <source>Plugins</source>
         <comment>but see http://musescore.org/en/node/15470 first</comment>
         <translatorcomment>Plug-Ins</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 </TS>
