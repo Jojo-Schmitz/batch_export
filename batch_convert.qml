@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1 // FileDialog
+import Qt.labs.folderlistmodel 2.1
 import MuseScore 1.0
 
 MuseScore {
@@ -370,9 +371,71 @@ MuseScore {
     return (inFormats.extensions.length && outFormats.extensions.length)
   } // collectInOutFormats
 
+  // FolderListModel can be used to search the file system
+  FolderListModel {
+      id: files
+  }
+
+  // This timer contains the function that will be called
+  // once the FolderListModel is set.
+  Timer {
+      id: startWork
+      interval: 25
+      running: false;
+
+      // Process all files found by FolderListModel
+      onTriggered: {
+            for (var i = 0; i < files.count; i++) {
+                  // set file names for in and out files
+                  var fileName = files.get(i,"filePath");
+                  var fileBase = files.folder+"/"+files.get(i,"fileBaseName");
+                  // remove 'file://' from beginning of fileBase
+                  fileBase = fileBase.substring(7,999);
+
+                  // read file
+                  // var thisScore = readScore(fileName);
+                  console.log("read file " + fileName);
+
+                  // write for all target formats
+                  for (var j = 0; j < outFormats.extensions.length; j++) {
+                        var targetFile = fileBase + "." +
+                              outFormats.extensions[j];
+
+                        //var res=writeScore(thisScore,targetFile,outFormats.extensions[j]);
+                        console.log("write file "+targetFile);
+                  }
+            }
+
+            // done
+            Qt.quit();
+      }
+  }
+
   function work() {
     console.log((traverseSubdirs.checked?"Startfolder: ":"Folder: ")
       + fileDialog.folder)
-    Qt.quit()
+
+      if (traverseSubdirs.checked) {
+            // not yet implemented
+            console.log("traverseSubdirs set");
+      }
+
+      // collect inFormats.extensions for FolderListModel
+      var inFilters = [];
+
+      for (var i = 0; i < inFormats.extensions.length; i++) {
+            inFilters.push("*."+inFormats.extensions[i]);
+      }
+
+      // set folder and filter in FolderListModel
+      files.folder = fileDialog.folder;
+      files.nameFilters = inFilters;
+
+      // wait for FolderListModel to update
+      // therefore we start a timer that will
+      // wait for 25 millis and then start working
+      startWork.running=true;
+
+      //Qt.quit()
   } // work
 } // MuseScore
