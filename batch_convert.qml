@@ -393,7 +393,7 @@ MuseScore {
                   fileBase = fileBase.substring(7,999);
 
                   // read file
-                  // var thisScore = readScore(fileName);
+                  var thisScore = readScore(fileName);
                   console.log("read file " + fileName);
 
                   // write for all target formats
@@ -401,9 +401,12 @@ MuseScore {
                         var targetFile = fileBase + "." +
                               outFormats.extensions[j];
 
-                        //var res=writeScore(thisScore,targetFile,outFormats.extensions[j]);
+                        var res=writeScore(thisScore,targetFile,outFormats.extensions[j]);
                         console.log("write file "+targetFile);
                   }
+
+                  console.log("close score");
+                  closeScore(thisScore);
             }
 
             // done
