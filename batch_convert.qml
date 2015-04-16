@@ -14,7 +14,7 @@ MuseScore {
 
   onRun: { 
     setPrefs()
-  }
+    }
 
   id: window
   width: 226
@@ -49,7 +49,7 @@ MuseScore {
             if (checked && outMscz.checked)
               outMscz.checked = false
           }
-        }
+            }
         CheckBox {
           id: inMscx
           text: "*.mscx"
@@ -57,14 +57,14 @@ MuseScore {
           onClicked: {
             if (checked && outMscx.checked)
               outMscx.checked = false
+            }
           }
-        }
         CheckBox {
           id: inMsc
           text: "*.msc"
           enabled: false
           visible: false // < 2.0
-        }
+          }
         CheckBox {
           id: inXml
           text: "*.xml"
@@ -73,7 +73,7 @@ MuseScore {
             if (checked && outMscz.checked)
               outXml.checked = !checked
           }
-        }
+            }
         CheckBox {
           id: inMxl
           text: "*.mxl"
@@ -82,7 +82,7 @@ MuseScore {
             if (checked && outMxl.checked)
               outMxl.checked = false
           }
-        }
+            }
         CheckBox {
           id: inMid
           text: "*.mid"
@@ -91,7 +91,7 @@ MuseScore {
             if (checked && outMid.checked)
               outMid.checked = false
           }
-        }
+            }
         CheckBox {
           id: inPdf
           text: "*.pdf"
@@ -101,40 +101,40 @@ MuseScore {
           onClicked: {
             if (checked && outPdf.checked)
               outPdf.checked = false
+            }
           }
-        }
         CheckBox {
           id: inMidi
           text: "*.midi"
-        }
+          }
         CheckBox {
           id: inKar
           text: "*.kar"
-        }
+          }
         CheckBox {
           id: inCap
           text: "*.cap"
-        }
+          }
         CheckBox {
           id: inCapx
           text: "*.capx"
-        }
+          }
         CheckBox {
           id: inBww
           text: "*.bww"
-        }
+          }
         CheckBox {
           id: inMgu
           text: "*.mgu"
-        }
+          }
         CheckBox {
           id: inSgu
           text: "*.sgu"
-        }
+          }
         CheckBox {
           id: inOve
           text: "*.ove"
-        }
+          }
         CheckBox {
           id: inScw
           text: "*.scw"
@@ -142,26 +142,26 @@ MuseScore {
         CheckBox {
           id: inGTP
           text: "*.GTP"
-        }
+          }
         CheckBox {
           id: inGP3
           text: "*.GP3"
-        }
+          }
         CheckBox {
           id: inGP4
           text: "*.GP4"
-        }
+          }
         CheckBox {
           id: inGP5
           text: "*.GP5"
-        }
-      } // Column
-    } // inFormats
+          }
+        } // Column
+      } // inFormats
     ColumnLayout {
       RowLayout {
         Label {
           text: "===>"
-        }
+          }
         GroupBox {
           id: outFormats
           title: qsTr("Output Formats") // doesn't show
@@ -176,7 +176,7 @@ MuseScore {
                 if (checked && inMscz.checked)
                   inMscz.checked = false
               }
-            }
+                }
             CheckBox {
               id: outMscx
               text: "*.mscx"
@@ -185,7 +185,7 @@ MuseScore {
                 if (checked && inMscx.checked)
                   inMscx.checked = false
               }
-            }
+                }
             CheckBox {
               id: outXml
               text: "*.xml"
@@ -194,7 +194,7 @@ MuseScore {
                 if (checked && inXml.checked)
                   inXml.checked = false
               }
-            }
+                }
             CheckBox {
               id: outMxl
               text: "*.mxl"
@@ -203,7 +203,7 @@ MuseScore {
                 if (checked && inMxl.checked)
                   inMxl.checked = false
               }
-            }
+                }
             CheckBox {
               id: outMid
               text: "*.mid"
@@ -212,7 +212,7 @@ MuseScore {
                 if (checked && inMid.checked)
                   inMid.checked = false
               }
-            }
+                }
             CheckBox {
               id: outPdf
               text: "*.pdf"
@@ -221,57 +221,57 @@ MuseScore {
               onClicked: {
                 if (checked && inPdf.checked)
                   inPdf.checked = false
+                }
               }
-            }
             CheckBox {
               id: outPs
               text: "*.ps"
-            }
+              }
             CheckBox {
               id: outPng
               text: "*.png"
-            }
+              }
             CheckBox {
               id: outSvg
               text: "*.svg"
-            }
+              }
             CheckBox {
               id: outLy
               text: "*.ly"
               enabled: false // < 2.0, or via xml2ly?
               visible: false //  hide it
-            }
+              }
             CheckBox {
               id: outWav
               text: "*.wav"
-            }
+              }
             CheckBox {
               id: outFlac
               text: "*.flac"
-            }
+              }
             CheckBox {
               id: outOgg
               text: "*.ogg"
-            }
+              }
             CheckBox { // needs lame_enc.dll
               id: outMp3
               text: "*.mp3"
-            }
-          } //Column
-        } //outFormats
-      } // RowLayout
+              }
+            } //Column
+          } //outFormats
+        } // RowLayout
       Label {} // Spacer
       CheckBox {
         id: traverseSubdirs
         text: qsTr("Process\nSubdirectories")
-      } // traverseSubdirs
+        } // traverseSubdirs
       Button {
         id: reset
         text: qsTr("Reset to Defaults")
-            onClicked: {
-              resetDefaults()
-            } // onClicked
-      } // reset
+        onClicked: {
+          resetDefaults()
+          } // onClicked
+        } // reset
       GroupBox {
         id: cancelOk
         Row {
@@ -282,17 +282,17 @@ MuseScore {
             onClicked: {
               if (collectInOutFormats())
                 fileDialog.open()
-            } // onClicked
-          } // ok
+              } // onClicked
+            } // ok
           Button {
             id: cancel
             text: qsTr("Cancel")
             onClicked: Qt.quit()
-          } // Cancel
-        } // Row
-      } // cancelOk
-    } // ColumnLayout
-  } // RowLayout
+            } // Cancel
+          } // Row
+        } // cancelOk
+      } // ColumnLayout
+    } // RowLayout
 
   FileDialog {
     id: fileDialog
@@ -302,16 +302,16 @@ MuseScore {
     selectFolder: true
     onAccepted: {
       work(folder, traverseSubdirs.checked)
-    }
+      }
     onRejected: {
       console.log(qsTr("No folder selected"))
       Qt.quit()
-    }
-  } // fileDialog
+      }
+    } // fileDialog
 
   function setPrefs() {
     resetDefaults() // TODO
-  } // setPrefs
+    } // setPrefs
 
   function resetDefaults() {
     inMscx.checked = inXml.checked = inMxl.checked = inMid.checked =
@@ -326,7 +326,7 @@ MuseScore {
     traverseSubdirs.checked = false
     // 'uncheck' everything, then 'check' the next few
     inMscz.checked = outPdf.checked = true
-  } // resetDefaults
+    } // resetDefaults
 
   function collectInOutFormats() {
     if (inMscz.checked) inFormats.extensions.push("mscz")
@@ -369,76 +369,76 @@ MuseScore {
       console.log("No output format selected")
 
     return (inFormats.extensions.length && outFormats.extensions.length)
-  } // collectInOutFormats
+    } // collectInOutFormats
 
   // FolderListModel can be used to search the file system
   FolderListModel {
-      id: files
-  }
+    id: files
+    }
 
   // This timer contains the function that will be called
   // once the FolderListModel is set.
   Timer {
-      id: startWork
-      interval: 25
-      running: false;
+    id: startWork
+    interval: 25
+    running: false
 
-      // Process all files found by FolderListModel
-      onTriggered: {
-            for (var i = 0; i < files.count; i++) {
-                  // set file names for in and out files
-                  var fileName = files.get(i,"filePath");
-                  var fileBase = files.folder+"/"+files.get(i,"fileBaseName");
-                  // remove 'file://' from beginning of fileBase
-                  fileBase = fileBase.substring(7,999);
+    // Process all files found by FolderListModel
+    onTriggered: {
+      for (var i = 0; i < files.count; i++) {
+        // set file names for in and out files
+        var fileName = files.get(i, "filePath")
+        var fileBase = files.folder + "/" + files.get(i, "fileBaseName")
+        // remove 'file://' from beginning of fileBase
+        fileBase = fileBase.substring(7, 999)
 
-                  // read file
-                  var thisScore = readScore(fileName);
-                  console.log("read file " + fileName);
+        // read file
+        var thisScore = readScore(fileName)
+        console.log("read file " + fileName)
 
-                  // write for all target formats
-                  for (var j = 0; j < outFormats.extensions.length; j++) {
-                        var targetFile = fileBase + "." +
-                              outFormats.extensions[j];
+        // write for all target formats
+        for (var j = 0; j < outFormats.extensions.length; j++) {
+          var targetFile = fileBase + "." +
+          outFormats.extensions[j]
 
-                        var res=writeScore(thisScore,targetFile,outFormats.extensions[j]);
-                        console.log("write file "+targetFile);
-                  }
+          var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
+          console.log("write file "+targetFile)
+          }
 
-                  console.log("close score");
-                  closeScore(thisScore);
-            }
+        console.log("close score")
+        closeScore(thisScore)
+        }
 
-            // done
-            Qt.quit();
-      }
-  }
+       // done
+       Qt.quit()
+       }
+    }
 
   function work() {
-    console.log((traverseSubdirs.checked?"Startfolder: ":"Folder: ")
+    console.log((traverseSubdirs.checked? "Startfolder: ":"Folder: ")
       + fileDialog.folder)
 
-      if (traverseSubdirs.checked) {
-            // not yet implemented
-            console.log("traverseSubdirs set");
+    if (traverseSubdirs.checked) {
+      // not yet implemented
+      console.log("traverseSubdirs set")
       }
 
-      // collect inFormats.extensions for FolderListModel
-      var inFilters = [];
+    // collect inFormats.extensions for FolderListModel
+    var inFilters = []
 
-      for (var i = 0; i < inFormats.extensions.length; i++) {
-            inFilters.push("*."+inFormats.extensions[i]);
+    for (var i = 0; i < inFormats.extensions.length; i++) {
+      inFilters.push("*." + inFormats.extensions[i])
       }
 
-      // set folder and filter in FolderListModel
-      files.folder = fileDialog.folder;
-      files.nameFilters = inFilters;
+    // set folder and filter in FolderListModel
+    files.folder = fileDialog.folder
+    files.nameFilters = inFilters
 
-      // wait for FolderListModel to update
-      // therefore we start a timer that will
-      // wait for 25 millis and then start working
-      startWork.running=true;
+    // wait for FolderListModel to update
+    // therefore we start a timer that will
+    // wait for 25 millis and then start working
+    startWork.running = true
 
-      //Qt.quit()
-  } // work
-} // MuseScore
+    //Qt.quit()
+    } // work
+  } // MuseScore
