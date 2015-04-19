@@ -533,9 +533,8 @@ MuseScore {
           // set file names for in and out files
           var shortName = files.get(i, "fileName")
           var fileName = files.get(i, "filePath")
-          var fileBase = files.folder + "/" + files.get(i, "fileBaseName")
-          // remove 'file://' from beginning of fileBase
-          fileBase = fileBase.substring(7, 999)
+          var fileSuffix = files.get(i, "fileSuffix")
+          var fileBase = fileName.substring(0,fileName.length - fileSuffix.length -1)
           fileList.push([shortName,fileName,fileBase])
           }
         }
