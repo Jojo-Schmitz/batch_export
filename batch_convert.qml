@@ -388,43 +388,32 @@ MuseScore {
     id: workDialog
     modality: Qt.ApplicationModal
     visible: false
+    width: 720
+    standardButtons: StandardButton.Abort
 
-    contentItem: Rectangle {
-      id: workContent
-      implicitWidth: 700
-      implicitHeight: 300
-      color: "lightgrey"
+    Label {
+      id: currentStatus
+      width: 600
+      text: "Running..."   // TODO: use translation
+      }
 
-      Label {
-        id: currentStatus
-        width: parent.width
-        text: "Running..."   // TODO: use translation
+    TextArea {
+      id: resultText
+      width: 700
+      height: 250
+      anchors {
+        top: currentStatus.bottom
+        topMargin: 5
         }
+      }
 
-      TextArea {
-        id: resultText
-        width: parent.width
-        height: 250
-        anchors {
-          top: currentStatus.bottom
-          topMargin: 5
-          }
-        }
-      Button {
-        id: abortButton
-        text: "Abort"        // TODO: use translation
-        anchors {
-          top: resultText.bottom
-          topMargin: 5
-          right: workContent.right
-          rightMargin: 10
-          }
-        onClicked: {
-          workDialog.visible = false
-	  abortRequested = true
-          Qt.quit()
-          }
-        }
+    onAccepted: {
+      Qt.quit()
+      }
+
+    onRejected: {
+      abortRequested = true
+      Qt.quit()
       }
     }
 
@@ -503,8 +492,12 @@ MuseScore {
       if (!abortRequested && fileList.length > 0) {
         processTimer.running = true
         } else {
-        abortButton.text = "OK"          // TODO: use translation
-        currentStatus.text = "Done."     // TODO: use translation
+        workDialog.standardButtons = StandardButton.Ok
+        if (!abortRequested) {
+          currentStatus.text = "Done."     // TODO: use translation
+        } else {
+	  console.log("abort!")
+          }
         }
       }
     }
@@ -551,9 +544,9 @@ MuseScore {
       } else {
         // we didn't find any files
         // report this
-        resultText.append("No files found")
-        abortButton.text = "OK"          // TODO: use translation
-        currentStatus.text = "Done."     // TODO: use translation
+        resultText.append("No files found")   // TODO: use translation
+        workDialog.standardButtons = StandardButton.Ok
+        currentStatus.text = "Done."          // TODO: use translation
         }
       }
     }
