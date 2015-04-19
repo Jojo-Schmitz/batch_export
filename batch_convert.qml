@@ -386,6 +386,7 @@ MuseScore {
   // dialog to show progress
   Dialog {
     id: workDialog
+    modality: Qt.ApplicationModal
     visible: false
 
     contentItem: Rectangle {
@@ -527,7 +528,7 @@ MuseScore {
         // if we have a directory, we're supposed to
         // traverse it, so add it to folderList
         if (files.isFolder(i)) {
-          folderList.push(files.get(i, "filePath"))
+          folderList.push(files.get(i, "fileURL"))
         } else if (inInputFormats(files.get(i, "fileSuffix"))) {
           // found a file to process
           // set file names for in and out files
