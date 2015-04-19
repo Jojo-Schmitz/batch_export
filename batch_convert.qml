@@ -267,8 +267,6 @@ MuseScore {
           CheckBox {
             id: traverseSubdirs
             text: qsTr("Process\nSubdirectories")
-            enabled: false // grayed out
-            opacity: 0.5   // not yet implemented
             } // traverseSubdirs
           Button {
             id: reset
@@ -392,7 +390,7 @@ MuseScore {
 
     contentItem: Rectangle {
       id: workContent
-      implicitWidth: 500
+      implicitWidth: 700
       implicitHeight: 300
       color: "lightgrey"
 
@@ -429,6 +427,20 @@ MuseScore {
       }
     }
 
+  function inInputFormats(suffix) {
+    var found = false
+
+    for (var i = 0; i < inFormats.extensions.length; i++) {
+      if (inFormats.extensions[i] == suffix) {
+        found = true
+        break
+        }
+      }
+    return found
+    }
+
+  // global list of folders to process
+  property var folderList
   // global list of files to process
   property var fileList
 
@@ -474,10 +486,10 @@ MuseScore {
           if (srcModifiedTime > file.modifiedTime()) {
              var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
 // TODO: use translation
-             resultText.append(shortName+" -> "+outFormats.extensions[j])
+             resultText.append(fileName+" -> "+outFormats.extensions[j])
           } else {
 // TODO: use translation
-             resultText.append(shortName+"."+outFormats.extensions[j]+" is up to date")
+             resultText.append(fileBase+"."+outFormats.extensions[j]+" is up to date")
              }
           }
         closeScore(thisScore)
@@ -499,32 +511,50 @@ MuseScore {
   // This timer contains the function that will be called
   // once the FolderListModel is set.
   Timer {
-    id: startWork
+    id: collectFiles
     interval: 25
     running: false
 
-    // Process all files found by FolderListModel
+    // Add all files found by FolderListModel to our list
     onTriggered: {
       // to be able to show what we're doing
       // we must create a list of files to process
       // and then use a timer to do the work
       // otherwise, the dialog window will not update
 
-      fileList = []
-
       for (var i = 0; i < files.count; i++) {
-        // set file names for in and out files
-	var shortName = files.get(i, "fileName")
-        var fileName = files.get(i, "filePath")
-        var fileBase = files.folder + "/" + files.get(i, "fileBaseName")
-        // remove 'file://' from beginning of fileBase
-        fileBase = fileBase.substring(7, 999)
 
-	fileList.push([shortName,fileName,fileBase]);
+        // if we have a directory, we're supposed to
+        // traverse it, so add it to folderList
+        if (files.isFolder(i)) {
+          folderList.push(files.get(i, "filePath"))
+        } else if (inInputFormats(files.get(i, "fileSuffix"))) {
+          // found a file to process
+          // set file names for in and out files
+          var shortName = files.get(i, "fileName")
+          var fileName = files.get(i, "filePath")
+          var fileBase = files.folder + "/" + files.get(i, "fileBaseName")
+          // remove 'file://' from beginning of fileBase
+          fileBase = fileBase.substring(7, 999)
+          fileList.push([shortName,fileName,fileBase])
+          }
         }
 
-      // start timer do process files
-      processTimer.running = true
+      // if folderList is non-empty we need to redo this for the next folder
+      if (folderList.length > 0) {
+        files.folder = folderList.pop()
+        // restart timer for folder search
+        collectFiles.running = true
+      } else if (fileList.length > 0) {
+        // if we found files, start timer do process them
+        processTimer.running = true
+      } else {
+        // we didn't find any files
+        // report this
+        resultText.append("No files found")
+        abortButton.text = "OK"          // TODO: use translation
+        currentStatus.text = "Done."     // TODO: use translation
+        }
       }
     }
 
@@ -532,27 +562,27 @@ MuseScore {
     console.log((traverseSubdirs.checked? "Startfolder: ":"Folder: ")
       + fileDialog.folder)
 
-    if (traverseSubdirs.checked) {
-      // not yet implemented
-      console.log("traverseSubdirs set")
-      }
-
-    // collect inFormats.extensions for FolderListModel
-    var inFilters = []
-
-    for (var i = 0; i < inFormats.extensions.length; i++) {
-      inFilters.push("*." + inFormats.extensions[i])
-      }
+    // initialize global variables
+    fileList = []
+    folderList = []
 
     // set folder and filter in FolderListModel
     files.folder = fileDialog.folder
-    files.nameFilters = inFilters
+
+    if (traverseSubdirs.checked) {
+      console.log("traverseSubdirs set")
+      files.showDirs = true
+      files.showFiles = true
+    } else {
+      // only look for files
+      files.showFiles = true
+      files.showDirs = false
+      }
 
     // wait for FolderListModel to update
     // therefore we start a timer that will
     // wait for 25 millis and then start working
-    startWork.running = true
+    collectFiles.running = true
     workDialog.visible = true
-
     } // work
   } // MuseScore
