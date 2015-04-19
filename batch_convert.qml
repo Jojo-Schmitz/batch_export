@@ -3,14 +3,15 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2 // FileDialog
 import Qt.labs.folderlistmodel 2.1
+import QtQml 2.2
 import MuseScore 1.0
+import FileIO 1.0
 
 MuseScore {
   menuPath: "Plugins." + qsTr("Batch Convert")
   version: "2.0"
   description: qsTr("This plugin converts mutiple files from various formats"
     + " into various formats")
-  //pluginType: "dialog"
 
   onRun: { 
     setPrefs()
@@ -19,7 +20,7 @@ MuseScore {
   Dialog {
     id: window
     visible: true
-    title: qsTr("Choose Formats") // How?
+    title: qsTr("Choose Formats")
     contentItem: Rectangle {
       implicitWidth: 230
       implicitHeight: 440
@@ -266,8 +267,8 @@ MuseScore {
           CheckBox {
             id: traverseSubdirs
             text: qsTr("Process\nSubdirectories")
-            enabled: false
-            opacity: 0.5
+            enabled: false // grayed out
+            opacity: 0.5   // not yet implemented
             } // traverseSubdirs
           Button {
             id: reset
@@ -398,7 +399,7 @@ MuseScore {
       Label {
         id: currentStatus
         width: parent.width
-        text: "Running..."
+        text: "Running..."   // TODO: use translation
         }
 
       TextArea {
@@ -412,7 +413,7 @@ MuseScore {
         }
       Button {
         id: abortButton
-        text: "Abort"
+        text: "Abort"        // TODO: use translation
         anchors {
           top: resultText.bottom
           topMargin: 5
@@ -436,6 +437,10 @@ MuseScore {
     id: files
     }
 
+  FileIO {
+    id: file
+    }
+
   Timer {
     id: processTimer
     interval: 1
@@ -454,16 +459,30 @@ MuseScore {
 
       // make sure we have a valid score
       if (thisScore) {
+        // get modification time of source file
+        file.source = fileName
+        var srcModifiedTime = file.modifiedTime()
         // write for all target formats
         for (var j = 0; j < outFormats.extensions.length; j++) {
           var targetFile = fileBase + "." + outFormats.extensions[j]
 
-          var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
-          resultText.append(shortName+" -> "+outFormats.extensions[j])
-          }
+          // get modification time of destination file (if it exists)
+          // modifiedTime() will return 0 for non-existing files
+          file.source = targetFile
 
+          // if src is newer than existing write this file
+          if (srcModifiedTime > file.modifiedTime()) {
+             var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
+// TODO: use translation
+             resultText.append(shortName+" -> "+outFormats.extensions[j])
+          } else {
+// TODO: use translation
+             resultText.append(shortName+"."+outFormats.extensions[j]+" is up to date")
+             }
+          }
         closeScore(thisScore)
-        } else {
+      } else {
+// TODO: use translation
 	resultText.append("ERROR reading file "+shortName)
         }
       
@@ -471,8 +490,8 @@ MuseScore {
       if (!abortRequested && fileList.length > 0) {
         processTimer.running = true
         } else {
-        abortButton.text = "OK"
-        currentStatus.text = "Done."
+        abortButton.text = "OK"          // TODO: use translation
+        currentStatus.text = "Done."     // TODO: use translation
         }
       }
     }
@@ -491,7 +510,7 @@ MuseScore {
       // and then use a timer to do the work
       // otherwise, the dialog window will not update
 
-      fileList = new Array()
+      fileList = []
 
       for (var i = 0; i < files.count; i++) {
         // set file names for in and out files
@@ -535,6 +554,5 @@ MuseScore {
     startWork.running = true
     workDialog.visible = true
 
-    //Qt.quit()
     } // work
   } // MuseScore
