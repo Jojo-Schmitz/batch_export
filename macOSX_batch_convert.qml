@@ -12,7 +12,7 @@ import MuseScore 1.0
 import FileIO 1.0
 
 MuseScore {
-  menuPath: "Plugins.MacBatchConvert" // TODO: translate
+  menuPath: "Plugins." + qsTr("Batch Convert")
   version: "2.0"
   description: qsTr("This plugin converts mutiple files from various formats"
     + " into various formats")
