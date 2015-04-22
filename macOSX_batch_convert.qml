@@ -23,8 +23,8 @@ MuseScore {
     }
 
   id: window
-  width: 230
-  height: 440
+  width: 255
+  height: 450
   //title: qsTr("Choose Formats") // How?
 
   //onClose : Qt.quit() // How?
