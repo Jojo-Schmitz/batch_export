@@ -454,7 +454,7 @@ MuseScore {
       var fileBase = curFileInfo[2]
 
       // read file
-      var thisScore = readScore(fileName)
+      var thisScore = readScore(fileName,true)
 
       // make sure we have a valid score
       if (thisScore) {
