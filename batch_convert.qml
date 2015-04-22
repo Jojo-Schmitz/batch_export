@@ -16,8 +16,8 @@ MuseScore {
   MessageDialog {
     id: versionError
     visible: false
-    title: "Unsupported MuseScore Version"  // TODO: use translation
-    text: "This plugin does not work in MuseScore v2.0.0" // TODO: use translation
+    title: qsTr("Unsupported MuseScore Version")
+    text: qsTr("This plugin does not work in MuseScore v2.0.0")
     onAccepted: {
       Qt.quit();
       }
@@ -411,7 +411,7 @@ MuseScore {
     Label {
       id: currentStatus
       width: 600
-      text: "Running..."   // TODO: use translation
+      text: qsTr("Running...")
       }
 
     TextArea {
@@ -494,14 +494,12 @@ MuseScore {
              var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
              resultText.append(fileName+" -> "+outFormats.extensions[j])
           } else {
-// TODO: use translation
-             resultText.append(fileBase+"."+outFormats.extensions[j]+" is up to date")
+             resultText.append(fileBase+"."+outFormats.extensions[j]+" "+qsTr("is up to date"))
              }
           }
         closeScore(thisScore)
       } else {
-// TODO: use translation
-	resultText.append("ERROR reading file "+shortName)
+	resultText.append(qsTr("ERROR reading file ")+shortName)
         }
       
       // check if more files
@@ -510,7 +508,7 @@ MuseScore {
         } else {
         workDialog.standardButtons = StandardButton.Ok
         if (!abortRequested) {
-          currentStatus.text = "Done."     // TODO: use translation
+          currentStatus.text = qsTr("Done.")
         } else {
 	  console.log("abort!")
           }
@@ -560,9 +558,9 @@ MuseScore {
       } else {
         // we didn't find any files
         // report this
-        resultText.append("No files found")   // TODO: use translation
+        resultText.append(qsTr("No files found"))
         workDialog.standardButtons = StandardButton.Ok
-        currentStatus.text = "Done."          // TODO: use translation
+        currentStatus.text = qsTr("Done.")
         }
       }
     }
