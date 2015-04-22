@@ -13,7 +13,24 @@ MuseScore {
   description: qsTr("This plugin converts mutiple files from various formats"
     + " into various formats")
 
-  onRun: { 
+  MessageDialog {
+    id: versionError
+    visible: false
+    title: "Unsupported MuseScore Version"  // TODO: use translation
+    text: "This plugin does not work in MuseScore v2.0.0" // TODO: use translation
+    onAccepted: {
+      Qt.quit();
+      }
+    }
+
+  onRun: {
+    // check MuseScore version
+    if (mscoreMajorVersion == 2 && mscoreMinorVersion == 0
+      && mscoreUpdateVersion < 1) {
+      window.visible = false
+      versionError.open()
+      }
+
     setPrefs()
     }
 
@@ -475,7 +492,6 @@ MuseScore {
           // if src is newer than existing write this file
           if (srcModifiedTime > file.modifiedTime()) {
              var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
-// TODO: use translation
              resultText.append(fileName+" -> "+outFormats.extensions[j])
           } else {
 // TODO: use translation

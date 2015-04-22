@@ -18,7 +18,24 @@ MuseScore {
     + " into various formats")
   pluginType: "dialog"
 
+  MessageDialog {
+    id: versionError
+    visible: false
+    title: "Unsupported MuseScore Version"  // TODO: use translation
+    text: "This plugin does not work in MuseScore v2.0.0" // TODO: use translation
+    onAccepted: {
+      window.visible = false
+      Qt.quit();
+      }
+    }
+
   onRun: { 
+    // check MuseScore version
+    if (mscoreMajorVersion == 2 && mscoreMinorVersion == 0
+      && mscoreUpdateVersion < 1) {
+      versionError.open()
+      }
+
     setPrefs()
     }
 
