@@ -40,7 +40,7 @@ MuseScore {
     title: qsTr("Choose Formats")
     contentItem: Rectangle {
       implicitWidth: 230
-      implicitHeight: 440
+      implicitHeight: 450
       color: "lightgrey"
 
       // Mutally exclusive in/out formats, doesn't work properly
@@ -280,7 +280,10 @@ MuseScore {
                 } //Column
               } //outFormats
             } // RowLayout
-          Label {} // Spacer
+          CheckBox {
+            id: exportExcerpts
+            text: qsTr("Export linked parts")
+            } // exportExcerpts
           CheckBox {
             id: traverseSubdirs
             text: qsTr("Process\nSubdirectories")
@@ -350,6 +353,7 @@ MuseScore {
       outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
       outOgg.checked = outMp3.checked = false
     traverseSubdirs.checked = false
+    exportExcerpts.checked = false
     // 'uncheck' everything, then 'check' the next few
     inMscz.checked = outPdf.checked = true
     } // resetDefaults
@@ -446,10 +450,26 @@ MuseScore {
     return found
     }
 
+  // createDefaultFileName
+  // remove some special characters in a score title
+  // when creating a file name
+  function createDefaultFileName(fn) {
+    fn = fn.trim()
+    fn = fn.replace(/ /g,"_")
+    fn = fn.replace(/\n/g,"_")
+    fn = fn.replace(/[\\\/:\*\?\"<>|]/g,"_")
+    return fn
+    }
+
   // global list of folders to process
   property var folderList
   // global list of files to process
   property var fileList
+  // global list of linked parts to process
+  property var excerptsList
+
+  // variable to remember current parent score for parts
+  property var curBaseScore
 
   // FolderListModel can be used to search the file system
   FolderListModel {
@@ -461,6 +481,52 @@ MuseScore {
     }
 
   Timer {
+    id: excerptTimer
+    interval: 1
+    running: false
+
+    // this function processes one linked part and
+    // gives control back to QT to update the dialog
+    onTriggered: {
+      var curScoreInfo = excerptsList.shift()
+      var thisScore = curScoreInfo[0].partScore
+      var partTitle = curScoreInfo[0].title
+      var fileBase = curScoreInfo[1]
+      var srcModifiedTime = curScoreInfo[2]
+
+      // create file base for part
+      var targetBase = fileBase + "-" + createDefaultFileName(partTitle)
+
+      // write for all target formats
+      for (var j = 0; j < outFormats.extensions.length; j++) {
+        var targetFile = targetBase + "." + outFormats.extensions[j]
+
+        // get modification time of destination file (if it exists)
+        // modifiedTime() will return 0 for non-existing files
+        file.source = targetFile
+
+        // if src is newer than existing write this file
+        if (srcModifiedTime > file.modifiedTime()) {
+          var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
+
+          resultText.append("-> "+targetFile)
+        } else {
+          resultText.append(targetFile+" "+qsTr("is up to date"))
+          }
+        }
+
+      // check if more files
+      if (!abortRequested && excerptsList.length > 0) {
+        excerptTimer.running = true
+      } else {
+        // close base score
+        closeScore(curBaseScore)
+        processTimer.running = true
+        }
+      }
+    }
+
+  Timer {
     id: processTimer
     interval: 1
     running: false
@@ -468,7 +534,18 @@ MuseScore {
     // this function processes one file and then
     // gives control back to QT to update the dialog
     onTriggered: {
-      var curFileInfo = fileList.pop()
+      if (fileList.length == 0) {
+        // no more files to process
+        workDialog.standardButtons = StandardButton.Ok
+        if (!abortRequested) {
+          currentStatus.text = qsTr("Done.")
+        } else {
+	  console.log("abort!")
+          }
+        return
+      }
+
+      var curFileInfo = fileList.shift()
       var shortName = curFileInfo[0]
       var fileName = curFileInfo[1]
       var fileBase = curFileInfo[2]
@@ -497,22 +574,32 @@ MuseScore {
              resultText.append(fileBase+"."+outFormats.extensions[j]+" "+qsTr("is up to date"))
              }
           }
+        // check if we are supposed to export parts
+        if (exportExcerpts.checked) {
+          // reset list
+          excerptsList = []
+          // do we have excertps?
+          var excerpts = thisScore.excerpts
+          for (var ex = 0; ex < excerpts.length; ex++) {
+            if (excerpts[ex].partScore != thisScore) {
+              // only list when not base score
+              excerptsList.push([excerpts[ex],fileBase,srcModifiedTime])
+              }
+            }
+          // if we have files start timer
+          if (excerpts.length > 0) {
+            curBaseScore = thisScore // to be able to close this later
+            excerptTimer.running = true
+            return
+            }
+          }
         closeScore(thisScore)
       } else {
 	resultText.append(qsTr("ERROR reading file ")+shortName)
         }
       
-      // check if more files
-      if (!abortRequested && fileList.length > 0) {
-        processTimer.running = true
-        } else {
-        workDialog.standardButtons = StandardButton.Ok
-        if (!abortRequested) {
-          currentStatus.text = qsTr("Done.")
-        } else {
-	  console.log("abort!")
-          }
-        }
+      // next file
+      processTimer.running = true
       }
     }
 
@@ -549,7 +636,7 @@ MuseScore {
 
       // if folderList is non-empty we need to redo this for the next folder
       if (folderList.length > 0) {
-        files.folder = folderList.pop()
+        files.folder = folderList.shift()
         // restart timer for folder search
         collectFiles.running = true
       } else if (fileList.length > 0) {
@@ -577,7 +664,6 @@ MuseScore {
     files.folder = fileDialog.folder
 
     if (traverseSubdirs.checked) {
-      console.log("traverseSubdirs set")
       files.showDirs = true
       files.showFiles = true
     } else {
