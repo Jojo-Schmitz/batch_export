@@ -1,3 +1,5 @@
+<i>This branch of "Batch Export" avoids a problem in Qt on MacOS X. Use this version, if you're on Mac and experience problems with the normal version.</i>
+
 This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the [instructions in the Handbook] (http://musescore.org/en/handbook/plugins), then:
 
 1. Select "Batch Export" from the Plugins menu
