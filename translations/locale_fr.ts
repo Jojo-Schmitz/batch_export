@@ -163,60 +163,108 @@
 <context>
     <name>batch_convert</name>
     <message>
-        <location filename="../batch_convert.qml" line="8"/>
+        <location filename="../batch_convert.qml" line="11"/>
         <source>Batch Convert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="10"/>
+        <location filename="../batch_convert.qml" line="13"/>
         <source>This plugin converts mutiple files from various formats into various formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="36"/>
+        <location filename="../batch_convert.qml" line="19"/>
+        <source>Unsupported MuseScore Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="20"/>
+        <source>This plugin does not work in MuseScore v2.0.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="40"/>
+        <source>Choose Formats</source>
+        <translation>Choisir les formats</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="57"/>
         <source>Input Formats</source>
         <translation>Format d&apos;entrée</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="166"/>
+        <location filename="../batch_convert.qml" line="187"/>
         <source>Output Formats</source>
         <translation>Formats de sortie</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="265"/>
+        <location filename="../batch_convert.qml" line="285"/>
+        <source>Export linked parts</source>
+        <translation type="unfinished">Exporter les parties liée</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="289"/>
         <source>Process
 Subdirectories</source>
         <translation>Recursif</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="269"/>
+        <location filename="../batch_convert.qml" line="293"/>
         <source>Reset to Defaults</source>
         <translation>Rétablir le choix par défaut</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="279"/>
+        <location filename="../batch_convert.qml" line="303"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Or &quot;D&apos;accord&quot;?</translatorcomment>
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="288"/>
+        <location filename="../batch_convert.qml" line="313"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="299"/>
+        <location filename="../batch_convert.qml" line="329"/>
         <source>Select Startfolder</source>
-        <translation type="unfinished">Sélectionner un répertoire</translation>
+        <translation>Sélectionner un répertoire</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="300"/>
+        <location filename="../batch_convert.qml" line="330"/>
         <source>Select Folder</source>
         <translation>Sélectionner un répertoire</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="306"/>
+        <location filename="../batch_convert.qml" line="336"/>
         <source>No folder selected</source>
         <translation>Pas de répertoire sélectionné</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="418"/>
+        <source>Running...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="514"/>
+        <location filename="../batch_convert.qml" line="574"/>
+        <source>is up to date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="541"/>
+        <location filename="../batch_convert.qml" line="650"/>
+        <source>Done.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="598"/>
+        <source>ERROR reading file </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="648"/>
+        <source>No files found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
