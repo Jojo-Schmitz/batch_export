@@ -1,4 +1,4 @@
-This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the [instructions in the Handbook] (http://musescore.org/en/handbook/plugins), then:
+This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the instructions in [the 1.x Handbook](http://musescore.org/en/en/node/10129), or the [2.x Handbook](http://musescore.org/en/node/36051), then:
 
 1. Select "Batch Export" from the Plugins menu
 2. Select the in- and output format(s), or just use the default (\*.mscz to \*.pdf)
