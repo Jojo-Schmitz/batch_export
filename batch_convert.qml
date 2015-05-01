@@ -7,6 +7,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2 // FileDialog
 import Qt.labs.folderlistmodel 2.1
+import Qt.labs.settings 1.0
 import QtQml 2.2
 import MuseScore 1.0
 import FileIO 1.0
@@ -35,8 +36,6 @@ MuseScore {
       && mscoreUpdateVersion < 1) {
       versionError.open()
       }
-
-    setPrefs()
     }
 
   id: window
@@ -319,6 +318,49 @@ MuseScore {
         } // cancelOk
       } // ColumnLayout
     } // RowLayout
+
+  // remember settings
+  Settings {
+    // in options
+    property alias inMscz: inMscz.checked
+    property alias inMscx: inMscx.checked
+    property alias inMsc:  inMsc.checked
+    property alias inXml:  inXml.checked
+    property alias inMxl:  inMxl.checked
+    property alias inMid:  inMid.checked
+    property alias inPdf:  inPdf.checked
+    property alias inMidi: inMidi.checked
+    property alias inKar:  inKar.checked
+    property alias inCap:  inCap.checked
+    property alias inCapx: inCapx.checked
+    property alias inBww:  inBww.checked
+    property alias inMgu:  inMgu.checked
+    property alias inSgu:  inSgu.checked
+    property alias inOve:  inOve.checked
+    property alias inScw:  inScw.checked
+    property alias inGTP:  inGTP.checked
+    property alias inGTP3: inGP3.checked
+    property alias inGTP4: inGP4.checked
+    property alias inGTP5: inGP5.checked
+    // out options
+    property alias outMscz: outMscz.checked
+    property alias outMscx: outMscx.checked
+    property alias outXml:  outXml.checked
+    property alias outMxl:  outMxl.checked
+    property alias outMid:  outMid.checked
+    property alias outPdf:  outPdf.checked
+    property alias outPs:   outPs.checked
+    property alias outPng:  outPng.checked
+    property alias outSvg:  outSvg.checked
+    property alias outLy:   outLy.checked
+    property alias outWav:  outWav.checked
+    property alias outFlac: outFlac.checked
+    property alias outOgg:  outOgg.checked
+    property alias outMp3:  outMp3.checked
+    // other options
+    property alias exportE: exportExcerpts.checked
+    property alias travers: traverseSubdirs.checked
+    }
 
   FileDialog {
     id: fileDialog
