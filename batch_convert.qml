@@ -324,6 +324,7 @@ MuseScore {
 
   // remember settings
   Settings {
+    category: "BatchConvertPlugin"
     // in options
     property alias inMscz: inMscz.checked
     property alias inMscx: inMscx.checked
