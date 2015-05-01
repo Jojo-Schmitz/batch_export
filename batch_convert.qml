@@ -31,6 +31,9 @@ MuseScore {
       window.visible = false
       versionError.open()
       }
+    // update size of main dialog
+    window.width=mainRow.childrenRect.width;
+    window.height=mainRow.childrenRect.height;
     }
 
   Dialog {
@@ -38,8 +41,8 @@ MuseScore {
     visible: true
     title: qsTr("Choose Formats")
     contentItem: Rectangle {
-      implicitWidth: 230
-      implicitHeight: 450
+      implicitWidth: 221
+      implicitHeight: 448
       color: "lightgrey"
 
       // Mutally exclusive in/out formats, doesn't work properly
@@ -51,6 +54,7 @@ MuseScore {
       ExclusiveGroup { id: pdf }
 
       RowLayout {
+        id: mainRow
         GroupBox {
           id: inFormats
           title: qsTr("Input Formats") // doesn't show?!
