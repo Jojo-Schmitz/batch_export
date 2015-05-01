@@ -39,8 +39,10 @@ MuseScore {
     }
 
   id: window
-  width: 255
-  height: 460
+  //width: 255
+  //height: 460
+  width: mainRow.childrenRect.width
+  height: mainRow.childrenRect.height
   //title: qsTr("Choose Formats") // How?
 
   //onClose : Qt.quit() // How?
@@ -54,6 +56,7 @@ MuseScore {
   ExclusiveGroup { id: pdf }
 
   RowLayout {
+    id: mainRow
     GroupBox {
       id: inFormats
       title: qsTr("Input Formats") // doesn't show?!
