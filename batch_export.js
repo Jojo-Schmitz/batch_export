@@ -68,7 +68,7 @@ function process_one (source, inFormat, origDir) {
         doit = true;
       else {
         QMessageBox.warning(this, pluginName, qsTr("Unable to delete %1") .arg(targetFilePath));
-        list += targetFilePath + qsTr(" failed!\n");
+        list += qsTr("%1 failed!\n") .arg(taretFilePath);
       }
     }
     if (doit) { // go for it
@@ -83,9 +83,9 @@ function process_one (source, inFormat, origDir) {
       if (loaded && theScore.save(target, outFormats[i]))
         list += targetFilePath + "\n";
       else {
-        list += targetFilePath + qsTr(" failed!\n");
-          if (loaded)
-            QMessageBox.warning(this, pluginName, qsTr("Unable to save %1") .arg(targetFilePath));
+        list += qsTr("%1 failed!\n") .arg(taretFilePath);
+        if (loaded)
+          QMessageBox.warning(this, pluginName, qsTr("Unable to save %1") .arg(targetFilePath));
       }
     }
   } // end for loop

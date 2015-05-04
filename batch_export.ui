@@ -641,7 +641,7 @@
     <string/>
    </property>
    <property name="text">
-    <string>reset to defaults</string>
+    <string>Reset to defaults</string>
    </property>
    <property name="autoDefault">
     <bool>false</bool>
@@ -657,7 +657,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>process subdirectories</string>
+    <string>Process subdirectories</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">

@@ -27,13 +27,13 @@ MuseScore {
   onRun: {
     // check MuseScore version
     if (mscoreMajorVersion == 2 && mscoreMinorVersion == 0
-      && mscoreUpdateVersion < 1) {
+      && mscoreUpdateVersion == 0) {
       window.visible = false
       versionError.open()
       }
-    // update size of main dialog
-    window.width=mainRow.childrenRect.width;
-    window.height=mainRow.childrenRect.height;
+    // adjust size of main dialog
+    window.width = mainRow.childrenRect.width;
+    window.height = mainRow.childrenRect.height;
     }
 
   Dialog {
@@ -41,8 +41,6 @@ MuseScore {
     visible: true
     title: qsTr("Choose Formats")
     contentItem: Rectangle {
-      implicitWidth: 221
-      implicitHeight: 448
       color: "lightgrey"
 
       // Mutally exclusive in/out formats, doesn't work properly
@@ -57,7 +55,8 @@ MuseScore {
         id: mainRow
         GroupBox {
           id: inFormats
-          title: qsTr("Input Formats") // doesn't show?!
+          title: " " + qsTr("Input Formats") + " "
+          Layout.alignment: Qt.AlignTop | Qt.AlignLeft 
           //flat: true // no effect?!
           //checkable: true // no effect?!
           property var extensions: new Array()
@@ -85,8 +84,8 @@ MuseScore {
             CheckBox {
               id: inMsc
               text: "*.msc"
-              enabled: false
-              visible: false // < 2.0
+              enabled: false // MuseScore < 2.0
+              visible: enabled // hide if not enabled
               }
             CheckBox {
               id: inXml
@@ -119,7 +118,7 @@ MuseScore {
               id: inPdf
               text: "*.pdf"
               enabled: false // needs OMR, MuseScore > 2.0?
-              visible: false // hide it
+              visible: enabled // hide if not enabled
               //exclusiveGroup: pdf
               onClicked: {
                 if (checked && outPdf.checked)
@@ -181,13 +180,15 @@ MuseScore {
             } // Column
           } // inFormats
         ColumnLayout {
+          Layout.alignment: Qt.AlignTop | Qt.AlignRight 
           RowLayout {
             Label {
-              text: "===>"
+              text: " ===> "
+              Layout.fillWidth: true // left align (?!)
               }
             GroupBox {
               id: outFormats
-              title: qsTr("Output Formats") // doesn't show
+              title: " " + qsTr("Output Formats") + " "
               property var extensions: new Array()
               Column {
                 spacing: 1
@@ -261,8 +262,8 @@ MuseScore {
                 CheckBox {
                   id: outLy
                   text: "*.ly"
-                  enabled: false // < 2.0, or via xml2ly?
-                  visible: false //  hide it
+                  enabled: false // MuseScore < 2.0, or via xml2ly?
+                  visible: enabled //  hide if not enabled
                   }
                 CheckBox {
                   id: outWav
@@ -300,6 +301,7 @@ MuseScore {
             } // reset
           GroupBox {
             id: cancelOk
+            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Row {
               Button {
                 id: ok
@@ -330,26 +332,26 @@ MuseScore {
   Settings {
     category: "BatchConvertPlugin"
     // in options
-    property alias inMscz: inMscz.checked
-    property alias inMscx: inMscx.checked
-    property alias inMsc:  inMsc.checked
-    property alias inXml:  inXml.checked
-    property alias inMxl:  inMxl.checked
-    property alias inMid:  inMid.checked
-    property alias inPdf:  inPdf.checked
-    property alias inMidi: inMidi.checked
-    property alias inKar:  inKar.checked
-    property alias inCap:  inCap.checked
-    property alias inCapx: inCapx.checked
-    property alias inBww:  inBww.checked
-    property alias inMgu:  inMgu.checked
-    property alias inSgu:  inSgu.checked
-    property alias inOve:  inOve.checked
-    property alias inScw:  inScw.checked
-    property alias inGTP:  inGTP.checked
-    property alias inGTP3: inGP3.checked
-    property alias inGTP4: inGP4.checked
-    property alias inGTP5: inGP5.checked
+    property alias inMscz:  inMscz.checked
+    property alias inMscx:  inMscx.checked
+    property alias inMsc:   inMsc.checked
+    property alias inXml:   inXml.checked
+    property alias inMxl:   inMxl.checked
+    property alias inMid:   inMid.checked
+    property alias inPdf:   inPdf.checked
+    property alias inMidi:  inMidi.checked
+    property alias inKar:   inKar.checked
+    property alias inCap:   inCap.checked
+    property alias inCapx:  inCapx.checked
+    property alias inBww:   inBww.checked
+    property alias inMgu:   inMgu.checked
+    property alias inSgu:   inSgu.checked
+    property alias inOve:   inOve.checked
+    property alias inScw:   inScw.checked
+    property alias inGTP:   inGTP.checked
+    property alias inGTP3:  inGP3.checked
+    property alias inGTP4:  inGP4.checked
+    property alias inGTP5:  inGP5.checked
     // out options
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
@@ -384,10 +386,6 @@ MuseScore {
       Qt.quit()
       }
     } // fileDialog
-
-  function setPrefs() {
-    resetDefaults() // TODO
-    } // setPrefs
 
   function resetDefaults() {
     inMscx.checked = inXml.checked = inMxl.checked = inMid.checked =
@@ -556,9 +554,9 @@ MuseScore {
         if (srcModifiedTime > file.modifiedTime()) {
           var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
 
-          resultText.append("-> "+targetFile)
+          resultText.append(" -> %1".arg(targetFile))
         } else {
-          resultText.append(targetFile+" "+qsTr("is up to date"))
+          resultText.append(qsTr("%1 is up to date").arg(tagetFile))
           }
         }
 
@@ -616,9 +614,9 @@ MuseScore {
           // if src is newer than existing write this file
           if (srcModifiedTime > file.modifiedTime()) {
              var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
-             resultText.append(fileName+" -> "+outFormats.extensions[j])
+             resultText.append("%1 -> %2".arg(fileName).arg(outFormats.extensions[j]))
           } else {
-             resultText.append(fileBase+"."+outFormats.extensions[j]+" "+qsTr("is up to date"))
+             resultText.append(qsTr("%1.%2 is up to date").arg(fileBase).arg(outFormats.extensions[j]))
              }
           }
         // check if we are supposed to export parts
@@ -630,7 +628,7 @@ MuseScore {
           for (var ex = 0; ex < excerpts.length; ex++) {
             if (excerpts[ex].partScore != thisScore) {
               // only list when not base score
-              excerptsList.push([excerpts[ex],fileBase,srcModifiedTime])
+              excerptsList.push([excerpts[ex], fileBase, srcModifiedTime])
               }
             }
           // if we have files start timer
@@ -642,7 +640,7 @@ MuseScore {
           }
         closeScore(thisScore)
       } else {
-	resultText.append(qsTr("ERROR reading file ")+shortName)
+	resultText.append(qsTr("ERROR reading file %1").arg(shortName))
         }
       
       // next file
@@ -677,7 +675,7 @@ MuseScore {
           var fileName = files.get(i, "filePath")
           var fileSuffix = files.get(i, "fileSuffix")
           var fileBase = fileName.substring(0,fileName.length - fileSuffix.length -1)
-          fileList.push([shortName,fileName,fileBase])
+          fileList.push([shortName, fileName, fileBase])
           }
         }
 
