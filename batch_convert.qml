@@ -556,7 +556,7 @@ MuseScore {
 
           resultText.append(" -> %1".arg(targetFile))
         } else {
-          resultText.append(qsTr("%1 is up to date").arg(tagetFile))
+          resultText.append(qsTr("%1 is up to date").arg(targetFile))
           }
         }
 
