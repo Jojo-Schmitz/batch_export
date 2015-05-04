@@ -123,12 +123,12 @@
     </message>
     <message>
         <location filename="../batch_export.ui" line="644"/>
-        <source>reset to defaults</source>
+        <source>Reset to defaults</source>
         <translation>Voreinstellungen wiederherstellen</translation>
     </message>
     <message>
         <location filename="../batch_export.ui" line="660"/>
-        <source>process subdirectories</source>
+        <source>Process subdirectories</source>
         <translation>Unterverzeichnisse durchsuchen</translation>
     </message>
     <message>
@@ -163,22 +163,22 @@
 <context>
     <name>batch_convert</name>
     <message>
-        <location filename="../batch_convert.qml" line="15"/>
+        <location filename="../batch_convert.qml" line="16"/>
         <source>Batch Convert</source>
         <translation>Stapel-Konverter</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="17"/>
+        <location filename="../batch_convert.qml" line="18"/>
         <source>This plugin converts mutiple files from various formats into various formats</source>
         <translation>Dieses Plug-In konvertiert Dateien aus verschiedenen Formaten zu verschiedenem Formaten</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="24"/>
+        <location filename="../batch_convert.qml" line="25"/>
         <source>Unsupported MuseScore Version</source>
         <translation>Nich unterstützte MuseScore Version</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="25"/>
+        <location filename="../batch_convert.qml" line="26"/>
         <source>This plugin does not work in MuseScore v2.0.0</source>
         <translation>Dieses Plug-In funktioniert nicht mit MuseScore 2.0.0</translation>
     </message>
@@ -188,75 +188,80 @@
         <translation>Eingabeformate</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="190"/>
+        <location filename="../batch_convert.qml" line="193"/>
         <source>Output Formats</source>
         <translation>Ausgabeformate</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="288"/>
+        <location filename="../batch_convert.qml" line="291"/>
         <source>Export linked parts</source>
         <translation>Verbundene Auszüge exportieren</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="292"/>
+        <location filename="../batch_convert.qml" line="295"/>
         <source>Process
 Subdirectories</source>
-        <translation>Unterverzeichnisse durchsuchen</translation>
+        <translation>Unterverzeichnisse
+durchsuchen</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="296"/>
+        <location filename="../batch_convert.qml" line="299"/>
         <source>Reset to Defaults</source>
         <translation>Voreinstellungen wiederherstellen</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="306"/>
+        <location filename="../batch_convert.qml" line="310"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="315"/>
+        <location filename="../batch_convert.qml" line="319"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="326"/>
+        <location filename="../batch_convert.qml" line="374"/>
         <source>Select Startfolder</source>
         <translation>Verzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="327"/>
+        <location filename="../batch_convert.qml" line="375"/>
         <source>Select Folder</source>
         <translation>Verzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="333"/>
+        <location filename="../batch_convert.qml" line="381"/>
         <source>No folder selected</source>
         <translation>Kein Verzeichnis ausgewählt</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="415"/>
+        <location filename="../batch_convert.qml" line="459"/>
         <source>Running...</source>
         <translation>Arbeitet...</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="511"/>
-        <location filename="../batch_convert.qml" line="571"/>
-        <source>is up to date</source>
-        <translation>ist aktuell</translation>
+        <location filename="../batch_convert.qml" line="555"/>
+        <source>%1 is up to date</source>
+        <translation>%1 ist aktuell</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="538"/>
-        <location filename="../batch_convert.qml" line="647"/>
+        <location filename="../batch_convert.qml" line="615"/>
+        <source>%1.%2 is up to date</source>
+        <translation>%1.%2 ist aktuell</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="639"/>
+        <source>ERROR reading file %1</source>
+        <translation>FEHLER beim Lesen der Datei %1</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="582"/>
+        <location filename="../batch_convert.qml" line="691"/>
         <source>Done.</source>
         <translation>Fertig.</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="595"/>
-        <source>ERROR reading file </source>
-        <translation>FEHLER beim Lesen der Datei</translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="645"/>
+        <location filename="../batch_convert.qml" line="689"/>
         <source>No files found</source>
         <translation>Keine Daien gefunden</translation>
     </message>
@@ -274,17 +279,17 @@ Subdirectories</source>
         <translation>Kann %1 nicht löschen</translation>
     </message>
     <message>
+        <location filename="../batch_export.js" line="71"/>
+        <location filename="../batch_export.js" line="86"/>
+        <source>%1 failed!
+</source>
+        <translation>%1 fehlgeschlagen!
+</translation>
+    </message>
+    <message>
         <location filename="../batch_export.js" line="81"/>
         <source>Unable to open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="71"/>
-        <location filename="../batch_export.js" line="86"/>
-        <source> failed!
-</source>
-        <translation> fehlgeschlagen!
-</translation>
     </message>
     <message>
         <location filename="../batch_export.js" line="88"/>
