@@ -41,6 +41,8 @@ MuseScore {
     visible: true
     title: qsTr("Choose Formats")
     contentItem: Rectangle {
+      implicitWidth: 215 
+      implicitHeight: 430
       color: "lightgrey"
 
       // Mutally exclusive in/out formats, doesn't work properly
