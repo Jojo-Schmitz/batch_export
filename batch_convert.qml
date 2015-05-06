@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2 // FileDialog
+import QtQuick.Window 2.2
 import Qt.labs.folderlistmodel 2.1
 import Qt.labs.settings 1.0
 import QtQml 2.2
@@ -20,7 +21,7 @@ MuseScore {
     title: qsTr("Unsupported MuseScore Version")
     text: qsTr("This plugin does not work in MuseScore v2.0.0")
     onAccepted: {
-      Qt.quit();
+      Qt.quit()
       }
     }
 
@@ -31,304 +32,304 @@ MuseScore {
       window.visible = false
       versionError.open()
       }
-    // adjust size of main dialog
-    window.width = mainRow.childrenRect.width;
-    window.height = mainRow.childrenRect.height;
     }
 
-  Dialog {
+  Window {
     id: window
     visible: true
     title: qsTr("Choose Formats")
-    contentItem: Rectangle {
-      implicitWidth: 215 
-      implicitHeight: 430
-      color: "lightgrey"
+    modality: Qt.ApplicationModal // behave like a dialog
+    color: "lightgrey"
 
-      // Mutally exclusive in/out formats, doesn't work properly
-      ExclusiveGroup { id: mscz }
-      ExclusiveGroup { id: mscx }
-      ExclusiveGroup { id: xml }
-      ExclusiveGroup { id: mxl }
-      ExclusiveGroup { id: mid }
-      ExclusiveGroup { id: pdf }
+    // center on screen
+    width: mainRow.childrenRect.width
+    height: mainRow.childrenRect.height
+    x: Screen.width / 2  - width / 2
+    y: Screen.height / 2 - height / 2
 
-      RowLayout {
-        id: mainRow
-        GroupBox {
-          id: inFormats
-          title: " " + qsTr("Input Formats") + " "
-          Layout.alignment: Qt.AlignTop | Qt.AlignLeft 
-          //flat: true // no effect?!
-          //checkable: true // no effect?!
-          property var extensions: new Array()
-          Column {
+    // Mutally exclusive in/out formats, doesn't work properly
+    ExclusiveGroup { id: mscz }
+    ExclusiveGroup { id: mscx }
+    ExclusiveGroup { id: xml }
+    ExclusiveGroup { id: mxl }
+    ExclusiveGroup { id: mid }
+    ExclusiveGroup { id: pdf }
+
+    RowLayout {
+      id: mainRow
+      GroupBox {
+        id: inFormats
+        title: " " + qsTr("Input Formats") + " "
+        Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+        //flat: true // no effect?!
+        //checkable: true // no effect?!
+        property var extensions: new Array()
+        Column {
           spacing: 1
-            CheckBox {
-              id: inMscz
-              text: "*.mscz"
-              checked: true
-              //exclusiveGroup: mscz  // doesn't work?!
-              onClicked: {
-                if (checked && outMscz.checked)
-                  outMscz.checked = false
-                }
-              }
-            CheckBox {
-              id: inMscx
-              text: "*.mscx"
-              //exclusiveGroup: mscx
-              onClicked: {
-                if (checked && outMscx.checked)
-                  outMscx.checked = false
-                }
-              }
-            CheckBox {
-              id: inMsc
-              text: "*.msc"
-              enabled: false // MuseScore < 2.0
-              visible: enabled // hide if not enabled
-              }
-            CheckBox {
-              id: inXml
-              text: "*.xml"
-              //exclusiveGroup: xml
-              onClicked: {
-                if (checked && outMscz.checked)
-                  outXml.checked = !checked
-                }
-              }
-            CheckBox {
-              id: inMxl
-              text: "*.mxl"
-              //exclusiveGroup: mxl
-              onClicked: {
-                if (checked && outMxl.checked)
-                  outMxl.checked = false
-                }
-              }
-            CheckBox {
-              id: inMid
-              text: "*.mid"
-              //exclusiveGroup: mid
-              onClicked: {
-                if (checked && outMid.checked)
-                outMid.checked = false
-                }
-              }
-            CheckBox {
-              id: inPdf
-              text: "*.pdf"
-              enabled: false // needs OMR, MuseScore > 2.0?
-              visible: enabled // hide if not enabled
-              //exclusiveGroup: pdf
-              onClicked: {
-                if (checked && outPdf.checked)
-                  outPdf.checked = false
-                }
-              }
-            CheckBox {
-              id: inMidi
-              text: "*.midi"
-              }
-            CheckBox {
-              id: inKar
-              text: "*.kar"
-              }
-            CheckBox {
-              id: inCap
-              text: "*.cap"
-              }
-            CheckBox {
-              id: inCapx
-              text: "*.capx"
-              }
-            CheckBox {
-              id: inBww
-              text: "*.bww"
-              }
-            CheckBox {
-              id: inMgu
-              text: "*.mgu"
-              }
-            CheckBox {
-              id: inSgu
-              text: "*.sgu"
-              }
-            CheckBox {
-              id: inOve
-              text: "*.ove"
-              }
-            CheckBox {
-              id: inScw
-              text: "*.scw"
-            }
-            CheckBox {
-              id: inGTP
-              text: "*.GTP"
-              }
-            CheckBox {
-              id: inGP3
-              text: "*.GP3"
-              }
-            CheckBox {
-              id: inGP4
-              text: "*.GP4"
-              }
-            CheckBox {
-              id: inGP5
-              text: "*.GP5"
-              }
-            } // Column
-          } // inFormats
-        ColumnLayout {
-          Layout.alignment: Qt.AlignTop | Qt.AlignRight 
-          RowLayout {
-            Label {
-              text: " ===> "
-              Layout.fillWidth: true // left align (?!)
-              }
-            GroupBox {
-              id: outFormats
-              title: " " + qsTr("Output Formats") + " "
-              property var extensions: new Array()
-              Column {
-                spacing: 1
-                CheckBox {
-                  id: outMscz
-                  text: "*.mscz"
-                  //exclusiveGroup: mscz
-                  onClicked: {
-                    if (checked && inMscz.checked)
-                      inMscz.checked = false
-                    }
-                  }
-                CheckBox {
-                  id: outMscx
-                  text: "*.mscx"
-                  //exclusiveGroup: mscx
-                  onClicked: {
-                    if (checked && inMscx.checked)
-                      inMscx.checked = false
-                    }
-                  }
-                CheckBox {
-                  id: outXml
-                  text: "*.xml"
-                  //exclusiveGroup: xml
-                  onClicked: {
-                    if (checked && inXml.checked)
-                      inXml.checked = false
-                    }
-                  }
-                CheckBox {
-                  id: outMxl
-                  text: "*.mxl"
-                  //exclusiveGroup: mxl
-                  onClicked: {
-                    if (checked && inMxl.checked)
-                      inMxl.checked = false
-                    }
-                  }
-                CheckBox {
-                  id: outMid
-                  text: "*.mid"
-                  //exclusiveGroup: mid
-                  onClicked: {
-                    if (checked && inMid.checked)
-                      inMid.checked = false
-                    }
-                  }
-                CheckBox {
-                  id: outPdf
-                  text: "*.pdf"
-                  checked: true
-                  //exclusiveGroup: pdf
-                  onClicked: {
-                    if (checked && inPdf.checked)
-                      inPdf.checked = false
-                    }
-                  }
-                CheckBox {
-                  id: outPs
-                  text: "*.ps"
-                  }
-                CheckBox {
-                  id: outPng
-                  text: "*.png"
-                  }
-                CheckBox {
-                  id: outSvg
-                  text: "*.svg"
-                  }
-                CheckBox {
-                  id: outLy
-                  text: "*.ly"
-                  enabled: false // MuseScore < 2.0, or via xml2ly?
-                  visible: enabled //  hide if not enabled
-                  }
-                CheckBox {
-                  id: outWav
-                  text: "*.wav"
-                  }
-                CheckBox {
-                  id: outFlac
-                  text: "*.flac"
-                  }
-                CheckBox {
-                  id: outOgg
-                  text: "*.ogg"
-                  }
-                CheckBox { // needs lame_enc.dll
-                  id: outMp3
-                  text: "*.mp3"
-                  }
-                } //Column
-              } //outFormats
-            } // RowLayout
           CheckBox {
-            id: exportExcerpts
-            text: qsTr("Export linked parts")
-            } // exportExcerpts
-          CheckBox {
-            id: traverseSubdirs
-            text: qsTr("Process\nSubdirectories")
-            } // traverseSubdirs
-          Button {
-            id: reset
-            text: qsTr("Reset to Defaults")
+            id: inMscz
+            text: "*.mscz"
+            checked: true
+            //exclusiveGroup: mscz  // doesn't work?!
             onClicked: {
-              resetDefaults()
-              } // onClicked
-            } // reset
+              if (checked && outMscz.checked)
+                outMscz.checked = false
+              }
+            }
+          CheckBox {
+            id: inMscx
+            text: "*.mscx"
+            //exclusiveGroup: mscx
+            onClicked: {
+              if (checked && outMscx.checked)
+                outMscx.checked = false
+              }
+            }
+          CheckBox {
+            id: inMsc
+            text: "*.msc"
+            enabled: false // MuseScore < 2.0
+            visible: enabled // hide if not enabled
+            }
+          CheckBox {
+            id: inXml
+            text: "*.xml"
+            //exclusiveGroup: xml
+            onClicked: {
+              if (checked && outMscz.checked)
+                outXml.checked = !checked
+              }
+            }
+          CheckBox {
+            id: inMxl
+            text: "*.mxl"
+            //exclusiveGroup: mxl
+            onClicked: {
+              if (checked && outMxl.checked)
+                outMxl.checked = false
+              }
+            }
+          CheckBox {
+            id: inMid
+            text: "*.mid"
+            //exclusiveGroup: mid
+            onClicked: {
+              if (checked && outMid.checked)
+              outMid.checked = false
+              }
+            }
+          CheckBox {
+            id: inPdf
+            text: "*.pdf"
+            enabled: false // needs OMR, MuseScore > 2.0?
+            visible: enabled // hide if not enabled
+            //exclusiveGroup: pdf
+            onClicked: {
+              if (checked && outPdf.checked)
+                outPdf.checked = false
+              }
+            }
+          CheckBox {
+            id: inMidi
+            text: "*.midi"
+            }
+          CheckBox {
+            id: inKar
+            text: "*.kar"
+            }
+          CheckBox {
+            id: inCap
+            text: "*.cap"
+            }
+          CheckBox {
+            id: inCapx
+            text: "*.capx"
+            }
+          CheckBox {
+            id: inBww
+            text: "*.bww"
+            }
+          CheckBox {
+            id: inMgu
+            text: "*.mgu"
+            }
+          CheckBox {
+            id: inSgu
+            text: "*.sgu"
+            }
+          CheckBox {
+            id: inOve
+            text: "*.ove"
+            }
+          CheckBox {
+            id: inScw
+            text: "*.scw"
+            }
+          CheckBox {
+            id: inGTP
+            text: "*.GTP"
+            }
+          CheckBox {
+            id: inGP3
+            text: "*.GP3"
+            }
+          CheckBox {
+            id: inGP4
+            text: "*.GP4"
+            }
+          CheckBox {
+            id: inGP5
+            text: "*.GP5"
+            }
+          } // Column
+        } // inFormats
+      ColumnLayout {
+        Layout.alignment: Qt.AlignTop | Qt.AlignRight
+        RowLayout {
+          Label {
+            text: " ===> "
+            Layout.fillWidth: true // left align (?!)
+            }
           GroupBox {
-            id: cancelOk
-            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
-            Row {
-              Button {
-                id: ok
-                text: qsTr("Ok")
-                //isDefault: true // needs more work
+            id: outFormats
+            title: " " + qsTr("Output Formats") + " "
+            property var extensions: new Array()
+            Column {
+              spacing: 1
+              CheckBox {
+                id: outMscz
+                text: "*.mscz"
+                //exclusiveGroup: mscz
                 onClicked: {
-                  window.visible = false
-                  if (collectInOutFormats())
-                    fileDialog.open()
-                  } // onClicked
-                } // ok
-              Button {
-                id: cancel
-                text: qsTr("Cancel")
-                onClicked: {
-                  window.visible = false
-                  Qt.quit()
+                  if (checked && inMscz.checked)
+                    inMscz.checked = false
                   }
-                } // Cancel
-              } // Row
-            } // cancelOk
-          } // ColumnLayout
-        } // RowLayout
-    } // ContentItem
-  } // Dialog
+                }
+              CheckBox {
+                id: outMscx
+                text: "*.mscx"
+                //exclusiveGroup: mscx
+                onClicked: {
+                  if (checked && inMscx.checked)
+                    inMscx.checked = false
+                  }
+                }
+              CheckBox {
+                id: outXml
+                text: "*.xml"
+                //exclusiveGroup: xml
+                onClicked: {
+                  if (checked && inXml.checked)
+                    inXml.checked = false
+                  }
+                }
+              CheckBox {
+                id: outMxl
+                text: "*.mxl"
+                //exclusiveGroup: mxl
+                onClicked: {
+                  if (checked && inMxl.checked)
+                    inMxl.checked = false
+                  }
+                }
+              CheckBox {
+                id: outMid
+                text: "*.mid"
+                //exclusiveGroup: mid
+                onClicked: {
+                  if (checked && inMid.checked)
+                    inMid.checked = false
+                  }
+                }
+              CheckBox {
+                id: outPdf
+                text: "*.pdf"
+                checked: true
+                //exclusiveGroup: pdf
+                onClicked: {
+                  if (checked && inPdf.checked)
+                    inPdf.checked = false
+                  }
+                }
+              CheckBox {
+                id: outPs
+                text: "*.ps"
+                }
+              CheckBox {
+                id: outPng
+                text: "*.png"
+                }
+              CheckBox {
+                id: outSvg
+                text: "*.svg"
+                }
+              CheckBox {
+                id: outLy
+                text: "*.ly"
+                enabled: false // MuseScore < 2.0, or via xml2ly?
+                visible: enabled //  hide if not enabled
+                }
+              CheckBox {
+                id: outWav
+                text: "*.wav"
+                }
+              CheckBox {
+                id: outFlac
+                text: "*.flac"
+                }
+              CheckBox {
+                id: outOgg
+                text: "*.ogg"
+                }
+              CheckBox { // needs lame_enc.dll
+                id: outMp3
+                text: "*.mp3"
+                }
+              } //Column
+            } //outFormats
+          } // RowLayout
+        CheckBox {
+          id: exportExcerpts
+          text: qsTr("Export linked parts")
+          } // exportExcerpts
+        CheckBox {
+          id: traverseSubdirs
+          text: qsTr("Process\nSubdirectories")
+          } // traverseSubdirs
+        Button {
+          id: reset
+          text: qsTr("Reset to Defaults")
+          onClicked: {
+            resetDefaults()
+            } // onClicked
+          } // reset
+        GroupBox {
+          id: cancelOk
+          Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+          Row {
+            Button {
+              id: ok
+              text: qsTr("Ok")
+              //isDefault: true // needs more work
+              onClicked: {
+                window.visible = false
+                if (collectInOutFormats())
+                  fileDialog.open()
+                } // onClicked
+              } // ok
+            Button {
+              id: cancel
+              text: qsTr("Cancel")
+              onClicked: {
+                window.visible = false
+                Qt.quit()
+                }
+              } // Cancel
+            } // Row
+          } // cancelOk
+        } // ColumnLayout
+      } // RowLayout
+    } // Window
 
   // remember settings
   Settings {
