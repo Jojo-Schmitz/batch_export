@@ -483,7 +483,7 @@ MuseScore {
     var found = false
 
     for (var i = 0; i < inFormats.extensions.length; i++) {
-      if (inFormats.extensions[i] == suffix) {
+      if (inFormats.extensions[i].toUpperCase() === suffix.toUpperCase()) {
         found = true
         break
         }
@@ -667,10 +667,10 @@ MuseScore {
         } else if (inInputFormats(files.get(i, "fileSuffix"))) {
           // found a file to process
           // set file names for in and out files
-          var shortName = files.get(i, "fileName")
-          var fileName = files.get(i, "filePath")
+          var shortName  = files.get(i, "fileName")
+          var fileName   = files.get(i, "filePath")
           var fileSuffix = files.get(i, "fileSuffix")
-          var fileBase = fileName.substring(0,fileName.length - fileSuffix.length -1)
+          var fileBase   = fileName.substring(0, fileName.length - fileSuffix.length - 1)
           fileList.push([shortName, fileName, fileBase])
           }
         }
