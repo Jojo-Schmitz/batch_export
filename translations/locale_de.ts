@@ -268,7 +268,7 @@ durchsuchen</translation>
     <message>
         <location filename="../batch_convert.qml" line="699"/>
         <source>No files found</source>
-        <translation>Keine Daien gefunden</translation>
+        <translation>Keine Dateien gefunden</translation>
     </message>
 </context>
 <context>
