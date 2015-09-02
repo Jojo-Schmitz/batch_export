@@ -409,7 +409,7 @@ MuseScore {
   function collectInOutFormats() {
     if (inMscz.checked) inFormats.extensions.push("mscz")
     if (inMscx.checked) inFormats.extensions.push("mscx")
-    if (inXml.checked)  inFormats.extensions.push("xml")
+    if (inXml.checked)  inFormats.extensions.push("xml", "XML")
     if (inMxl.checked)  inFormats.extensions.push("mxl")
     if (inMid.checked)  inFormats.extensions.push("mid")
     if (inPdf.checked)  inFormats.extensions.push("pdf")
