@@ -610,7 +610,7 @@ MuseScore {
           // if src is newer than existing write this file
           if (srcModifiedTime > file.modifiedTime()) {
              var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
-             resultText.append("%1 -> %2".arg(filename).arg(outFormats.extensions[j]))
+             resultText.append("%1 -> %2".arg(fileName).arg(outFormats.extensions[j]))
           } else {
              resultText.append(qsTr("%1.%2 is up to date").arg(fileBase).arg(outFormats.extensions[j]))
              }
