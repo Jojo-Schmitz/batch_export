@@ -63,7 +63,7 @@ MuseScore {
         Layout.alignment: Qt.AlignTop | Qt.AlignLeft
         //flat: true // no effect?!
         //checkable: true // no effect?!
-        property var extensions: new Array()
+        property var extensions: new Array
         Column {
           spacing: 1
           CheckBox {
@@ -193,7 +193,7 @@ MuseScore {
           GroupBox {
             id: outFormats
             title: " " + qsTr("Output Formats") + " "
-            property var extensions: new Array()
+            property var extensions: new Array
             Column {
               spacing: 1
               CheckBox {
@@ -534,7 +534,7 @@ MuseScore {
     running: false
 
     // this function processes one linked part and
-    // gives control back to QT to update the dialog
+    // gives control back to Qt to update the dialog
     onTriggered: {
       var curScoreInfo = excerptsList.shift()
       var thisScore = curScoreInfo[0].partScore
@@ -580,9 +580,9 @@ MuseScore {
     running: false
 
     // this function processes one file and then
-    // gives control back to QT to update the dialog
+    // gives control back to Qt to update the dialog
     onTriggered: {
-      if (fileList.length == 0) {
+      if (fileList.length === 0) {
         // no more files to process
         workDialog.standardButtons = StandardButton.Ok
         if (!abortRequested) {
@@ -629,7 +629,7 @@ MuseScore {
           // do we have excertps?
           var excerpts = thisScore.excerpts
           for (var ex = 0; ex < excerpts.length; ex++) {
-            if (excerpts[ex].partScore != thisScore) {
+            if (excerpts[ex].partScore !== thisScore) {
               // only list when not base score
               excerptsList.push([excerpts[ex], fileBase, srcModifiedTime])
               }
