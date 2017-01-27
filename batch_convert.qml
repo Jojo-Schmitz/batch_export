@@ -181,6 +181,10 @@ MuseScore {
             id: inGP5
             text: "*.GP5"
             }
+          CheckBox {
+            id: inGPX
+            text: "*.GPX"
+            }
           } // Column
         } // inFormats
       ColumnLayout {
@@ -355,6 +359,7 @@ MuseScore {
     property alias inGTP3:  inGP3.checked
     property alias inGTP4:  inGP4.checked
     property alias inGTP5:  inGP5.checked
+    property alias inGTPX:  inGPX.checked
     // out options
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
@@ -395,7 +400,7 @@ MuseScore {
       inPdf.checked = inMidi.checked = inKar.checked = inCap.checked =
       inCapx.checked = inBww.checked = inMgu.checked = inSgu.checked =
       inOve.checked = inScw.checked = inGTP.checked = inGP3.checked =
-      inGP4.checked = inGP5.checked = false
+      inGP4.checked = inGP5.checked = inGPX.checked = false
     outMscz.checked = outMscx.checked = outXml.checked = outMxl.checked =
       outMid.checked = outPdf.checked = outPs.checked = outPng.checked =
       outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
@@ -426,6 +431,7 @@ MuseScore {
     if (inGP3.checked)  inFormats.extensions.push("GP3")
     if (inGP4.checked)  inFormats.extensions.push("GP4")
     if (inGP5.checked)  inFormats.extensions.push("GP5")
+    if (inGPX.checked)  inFormats.extensions.push("GPX")
     if (!inFormats.extensions.length)
       console.log("No input format selected")
 
