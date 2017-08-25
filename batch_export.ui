@@ -548,7 +548,7 @@
      <string notr="true">*.scw</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_GTP">
+   <widget class="QCheckBox" name="checkBox_gtp">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -564,13 +564,13 @@
      <string>Guitar Pro</string>
     </property>
     <property name="text">
-     <string notr="true">*.GTP</string>
+     <string notr="true">*.gtp</string>
     </property>
     <property name="checkable">
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_GP3">
+   <widget class="QCheckBox" name="checkBox_gp3">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -586,10 +586,10 @@
      <string>Guitar Pro</string>
     </property>
     <property name="text">
-     <string notr="true">*.GP3</string>
+     <string notr="true">*.gp3</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_GP4">
+   <widget class="QCheckBox" name="checkBox_gp4">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -605,10 +605,10 @@
      <string>Guitar Pro</string>
     </property>
     <property name="text">
-     <string notr="true">*.GP4</string>
+     <string notr="true">*.gp4</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_GP5">
+   <widget class="QCheckBox" name="checkBox_gp5">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -624,7 +624,7 @@
      <string>Guitar Pro</string>
     </property>
     <property name="text">
-     <string notr="true">*.GP5</string>
+     <string notr="true">*.gp5</string>
     </property>
    </widget>
   </widget>

@@ -140,14 +140,14 @@ function evalForm () {
   if (form.groupBox_inFormats.checkBox_cap.checked)  inFormats.push("cap");
 //if (form.groupBox_inFormats.checkBox_capx.checked) inFormats.push("capx"); // >= 2.0
   if (form.groupBox_inFormats.checkBox_bww.checked)  inFormats.push("bww");
-  if (form.groupBox_inFormats.checkBox_mgu.checked)  inFormats.push("mgu", "MGU");
-  if (form.groupBox_inFormats.checkBox_sgu.checked)  inFormats.push("sgu", "SGU");
+  if (form.groupBox_inFormats.checkBox_mgu.checked)  inFormats.push("mgu");
+  if (form.groupBox_inFormats.checkBox_sgu.checked)  inFormats.push("sgu");
   if (form.groupBox_inFormats.checkBox_ove.checked)  inFormats.push("ove");
   if (form.groupBox_inFormats.checkBox_scw.checked)  inFormats.push("scw"); // >= 2.0
-  if (form.groupBox_inFormats.checkBox_GTP.checked)  inFormats.push("GTP"); // >= 2.0
-  if (form.groupBox_inFormats.checkBox_GP3.checked)  inFormats.push("GP3"); // >= 2.0
-  if (form.groupBox_inFormats.checkBox_GP4.checked)  inFormats.push("GP4"); // >= 2.0
-  if (form.groupBox_inFormats.checkBox_GP5.checked)  inFormats.push("GP5"); // >= 2.0
+  if (form.groupBox_inFormats.checkBox_gtp.checked)  inFormats.push("gtp"); // >= 2.0
+  if (form.groupBox_inFormats.checkBox_gp3.checked)  inFormats.push("gp3"); // >= 2.0
+  if (form.groupBox_inFormats.checkBox_gp4.checked)  inFormats.push("gp4"); // >= 2.0
+  if (form.groupBox_inFormats.checkBox_gp5.checked)  inFormats.push("gp5"); // >= 2.0
   if (inFormats.length === 0) {
     QMessageBox.warning(this, pluginName, qsTr("No input format selected"));
     exit();
@@ -206,10 +206,10 @@ function setDefaults () {
       form.groupBox_inFormats.checkBox_msc.enabled  = false; // no longer supported
     //form.groupBox_inFormats.checkBox_pdf.enabled  = true;
       form.groupBox_inFormats.checkBox_scw.enabled  = true;
-      form.groupBox_inFormats.checkBox_GTP.enabled  = true;
-      form.groupBox_inFormats.checkBox_GP3.enabled  = true;
-      form.groupBox_inFormats.checkBox_GP4.enabled  = true;
-      form.groupBox_inFormats.checkBox_GP5.enabled  = true;
+      form.groupBox_inFormats.checkBox_gtp.enabled  = true;
+      form.groupBox_inFormats.checkBox_gp3.enabled  = true;
+      form.groupBox_inFormats.checkBox_gp4.enabled  = true;
+      form.groupBox_inFormats.checkBox_gp5.enabled  = true;
     //form.groupBox_inFormats.checkBox_capx.enabled = true;
       form.groupBox_outFormats.checkBox_mp3.enabled = true; // needs help of a DLL
       form.groupBox_outFormats.checkBox_ly.enabled  = false; // no longer supported
@@ -217,10 +217,10 @@ function setDefaults () {
       form.groupBox_inFormats.checkBox_msc.enabled  = true;
     //form.groupBox_inFormats.checkBox_pdf.enabled  = false;
       form.groupBox_inFormats.checkBox_scw.enabled  = false;
-      form.groupBox_inFormats.checkBox_GTP.enabled  = false;
-      form.groupBox_inFormats.checkBox_GP3.enabled  = false;
-      form.groupBox_inFormats.checkBox_GP4.enabled  = false;
-      form.groupBox_inFormats.checkBox_GP5.enabled  = false;
+      form.groupBox_inFormats.checkBox_gtp.enabled  = false;
+      form.groupBox_inFormats.checkBox_gp3.enabled  = false;
+      form.groupBox_inFormats.checkBox_gp4.enabled  = false;
+      form.groupBox_inFormats.checkBox_gp5.enabled  = false;
     //form.groupBox_inFormats.checkBox_capx.enabled = false;
       form.groupBox_outFormats.checkBox_mp3.enabled = false;
       form.groupBox_outFormats.checkBox_ly.enabled  = true;
@@ -250,10 +250,10 @@ function setDefaults () {
     form.groupBox_inFormats.checkBox_sgu.checked  = false;
     form.groupBox_inFormats.checkBox_ove.checked  = false;
     form.groupBox_inFormats.checkBox_scw.checked  = false;
-    form.groupBox_inFormats.checkBox_GTP.checked  = false;
-    form.groupBox_inFormats.checkBox_GP3.checked  = false;
-    form.groupBox_inFormats.checkBox_GP4.checked  = false;
-    form.groupBox_inFormats.checkBox_GP5.checked  = false;
+    form.groupBox_inFormats.checkBox_gtp.checked  = false;
+    form.groupBox_inFormats.checkBox_gp3.checked  = false;
+    form.groupBox_inFormats.checkBox_gp4.checked  = false;
+    form.groupBox_inFormats.checkBox_gp5.checked  = false;
     inFormats =  new Array(); // empty array, evalForm() will fill it
 
     form.groupBox_outFormats.checkBox_mscx.checked = false;
