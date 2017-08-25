@@ -164,24 +164,24 @@ MuseScore {
           text: "*.scw"
         }
         CheckBox {
-          id: inGTP
-          text: "*.GTP"
+          id: inGtp
+          text: "*.gtp"
           }
         CheckBox {
-          id: inGP3
-          text: "*.GP3"
+          id: inGp3
+          text: "*.gp3"
           }
         CheckBox {
-          id: inGP4
-          text: "*.GP4"
+          id: inGp4
+          text: "*.gp4"
           }
         CheckBox {
-          id: inGP5
-          text: "*.GP5"
+          id: inGp5
+          text: "*.gp5"
           }
         CheckBox {
-          id: inGPX
-          text: "*.GPX"
+          id: inGpx
+          text: "*.gpx"
           }
         } // Column
       } // inFormats
@@ -348,11 +348,11 @@ MuseScore {
     property alias inSgu:   inSgu.checked
     property alias inOve:   inOve.checked
     property alias inScw:   inScw.checked
-    property alias inGTP:   inGTP.checked
-    property alias inGTP3:  inGP3.checked
-    property alias inGTP4:  inGP4.checked
-    property alias inGTP5:  inGP5.checked
-    property alias inGTPX:  inGPX.checked
+    property alias inGtp:   inGtp.checked
+    property alias inGp3:   inGp3.checked
+    property alias inGp4:   inGp4.checked
+    property alias inGp5:   inGp5.checked
+    property alias inGpx:   inGpx.checked
     // out options
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
@@ -392,8 +392,8 @@ MuseScore {
     inMscx.checked = inXml.checked = inMxl.checked = inMid.checked =
       inPdf.checked = inMidi.checked = inKar.checked = inCap.checked =
       inCapx.checked = inBww.checked = inMgu.checked = inSgu.checked =
-      inOve.checked = inScw.checked = inGTP.checked = inGP3.checked =
-      inGP4.checked = inGP5.checked = inGPX.checked = false
+      inOve.checked = inScw.checked = inGtp.checked = inGp3.checked =
+      inGp4.checked = inGp5.checked = inGpx.checked = false
     outMscz.checked = outMscx.checked = outXml.checked = outMxl.checked =
       outMid.checked = outPdf.checked = outPs.checked = outPng.checked =
       outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
@@ -416,15 +416,15 @@ MuseScore {
     if (inCap.checked)  inFormats.extensions.push("cap")
     if (inCapx.checked) inFormats.extensions.push("capx")
     if (inBww.checked)  inFormats.extensions.push("bww")
-    if (inMgu.checked)  inFormats.extensions.push("mgu", "MGU")
-    if (inSgu.checked)  inFormats.extensions.push("sgu", "SGU")
+    if (inMgu.checked)  inFormats.extensions.push("mgu")
+    if (inSgu.checked)  inFormats.extensions.push("sgu")
     if (inOve.checked)  inFormats.extensions.push("ove")
     if (inScw.checked)  inFormats.extensions.push("scw")
-    if (inGTP.checked)  inFormats.extensions.push("GTP")
-    if (inGP3.checked)  inFormats.extensions.push("GP3")
-    if (inGP4.checked)  inFormats.extensions.push("GP4")
-    if (inGP5.checked)  inFormats.extensions.push("GP5")
-    if (inGPX.checked)  inFormats.extensions.push("GPX")
+    if (inGtp.checked)  inFormats.extensions.push("gtp")
+    if (inGp3.checked)  inFormats.extensions.push("gp3")
+    if (inGp4.checked)  inFormats.extensions.push("gp4")
+    if (inGp5.checked)  inFormats.extensions.push("gp5")
+    if (inGpx.checked)  inFormats.extensions.push("gpx")
     if (!inFormats.extensions.length)
       console.log("No input format selected")
 
