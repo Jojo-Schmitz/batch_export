@@ -86,7 +86,7 @@ MuseScore {
         CheckBox {
           id: inMsc
           text: "*.msc"
-          enabled: false // MuseScore  < 2.0
+          enabled: (mscoreMajorVersion < 2)?true:false // MuseScore  < 2.0
           visible: enabled // hide if not enabled
           }
         CheckBox {
@@ -94,10 +94,21 @@ MuseScore {
           text: "*.xml"
           //exclusiveGroup: xml
           onClicked: {
-            if (checked && outMscz.checked)
+            if (checked && outXml.checked)
               outXml.checked = !checked
-          }
             }
+          }
+        CheckBox {
+          id: inMusicXml
+          text: "*.musicxml"
+          //exclusiveGroup: musicxml
+          enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)?true:false // MuseScore > 2.1
+          visible: enabled // hide if not enabled
+          onClicked: {
+            if (checked && outMusicXml.checked)
+              outMusicXml.checked = !checked
+            }
+          }
         CheckBox {
           id: inMxl
           text: "*.mxl"
@@ -105,8 +116,8 @@ MuseScore {
           onClicked: {
             if (checked && outMxl.checked)
               outMxl.checked = false
-          }
             }
+          }
         CheckBox {
           id: inMid
           text: "*.mid"
@@ -114,8 +125,8 @@ MuseScore {
           onClicked: {
             if (checked && outMid.checked)
               outMid.checked = false
-          }
             }
+          }
         CheckBox {
           id: inPdf
           text: "*.pdf"
@@ -214,17 +225,19 @@ MuseScore {
               onClicked: {
                 if (checked && inMscx.checked)
                   inMscx.checked = false
-              }
                 }
+              }
             CheckBox {
               id: outXml
               text: "*.xml"
+              enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion <= 1)?true:false // MuseScore <= 2.1
+              visible: enabled // hide if not enabled
               //exclusiveGroup: xml
               onClicked: {
                 if (checked && inXml.checked)
                   inXml.checked = false
-              }
                 }
+              }
             CheckBox {
               id: outMxl
               text: "*.mxl"
@@ -232,8 +245,8 @@ MuseScore {
               onClicked: {
                 if (checked && inMxl.checked)
                   inMxl.checked = false
-              }
                 }
+              }
             CheckBox {
               id: outMid
               text: "*.mid"
@@ -241,8 +254,8 @@ MuseScore {
               onClicked: {
                 if (checked && inMid.checked)
                   inMid.checked = false
-              }
                 }
+              }
             CheckBox {
               id: outPdf
               text: "*.pdf"
@@ -268,7 +281,7 @@ MuseScore {
             CheckBox {
               id: outLy
               text: "*.ly"
-              enabled: false // MuseScopre < 2.0, or via xml2ly?
+              enabled: (mscoreMajorVersion < 2)?true:false // MuseScore < 2.0, or via xml2ly?
               visible: enabled // hide if not enabled
               }
             CheckBox {
@@ -336,6 +349,7 @@ MuseScore {
     property alias inMscx:  inMscx.checked
     property alias inMsc:   inMsc.checked
     property alias inXml:   inXml.checked
+    property alias inMusicXml:   inMusicXml.checked
     property alias inMxl:   inMxl.checked
     property alias inMid:   inMid.checked
     property alias inPdf:   inPdf.checked
@@ -357,6 +371,7 @@ MuseScore {
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
     property alias outXml:  outXml.checked
+    property alias outMusicXml:  outMusicXml.checked
     property alias outMxl:  outMxl.checked
     property alias outMid:  outMid.checked
     property alias outPdf:  outPdf.checked
@@ -389,12 +404,12 @@ MuseScore {
     } // fileDialog
 
   function resetDefaults() {
-    inMscx.checked = inXml.checked = inMxl.checked = inMid.checked =
+    inMscx.checked = inXml.checked = inMusicXml.checked = inMxl.checked = inMid.checked =
       inPdf.checked = inMidi.checked = inKar.checked = inCap.checked =
       inCapx.checked = inBww.checked = inMgu.checked = inSgu.checked =
       inOve.checked = inScw.checked = inGtp.checked = inGp3.checked =
       inGp4.checked = inGp5.checked = inGpx.checked = false
-    outMscz.checked = outMscx.checked = outXml.checked = outMxl.checked =
+    outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
       outMid.checked = outPdf.checked = outPs.checked = outPng.checked =
       outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
       outOgg.checked = outMp3.checked = false
