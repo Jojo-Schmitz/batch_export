@@ -678,6 +678,23 @@ MuseScore {
       }
     }
 
+  // FolderListModel returns what Qt calles the
+  // completeSuffix for "fileSuffix" which means everything
+  // that follows the first '.' in a file name. (e.g. 'tar.gz')
+  // However, this is not what we want:
+  // For us the suffix is the part after the last '.'
+  // because some users have dots in their file names.
+  // Qt::FileInfo::suffix() would get this, but seems not
+  // to be available in FolderListModel.
+  // So, we need to do this ourselves:
+  function getFileSuffix(fileName) {
+
+    var n = fileName.lastIndexOf(".");
+    var suffix = fileName.substring(n+1);
+
+    return suffix
+    }
+
   // This timer contains the function that will be called
   // once the FolderListModel is set.
   Timer {
@@ -698,12 +715,12 @@ MuseScore {
         // traverse it, so add it to folderList
         if (files.isFolder(i)) {
           folderList.push(files.get(i, "fileURL"))
-        } else if (inInputFormats(files.get(i, "fileSuffix"))) {
+        } else if (inInputFormats(getFileSuffix(files.get(i, "fileName")))) {
           // found a file to process
           // set file names for in and out files
           var shortName  = files.get(i, "fileName")
           var fileName   = files.get(i, "filePath")
-          var fileSuffix = files.get(i, "fileSuffix")
+          var fileSuffix = getFileSuffix(shortName);
           var fileBase   = fileName.substring(0, fileName.length - fileSuffix.length - 1)
           fileList.push([shortName, fileName, fileBase])
           }
