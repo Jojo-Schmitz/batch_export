@@ -239,6 +239,17 @@ MuseScore {
                 }
               }
             CheckBox {
+              id: outMusicXml
+              text: "*.musicxml"
+              enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)?true:false // MuseScore > 2.1
+              visible: enabled // hide if not enabled
+              //exclusiveGroup: xml
+              onClicked: {
+                if (checked && inMusicXml.checked)
+                  inXml.checked = false
+                }
+              }
+            CheckBox {
               id: outMxl
               text: "*.mxl"
               //exclusiveGroup: mxl
@@ -423,6 +434,7 @@ MuseScore {
     if (inMscz.checked) inFormats.extensions.push("mscz")
     if (inMscx.checked) inFormats.extensions.push("mscx")
     if (inXml.checked)  inFormats.extensions.push("xml")
+    if (inMusicXml.checked)  inFormats.extensions.push("musicxml")
     if (inMxl.checked)  inFormats.extensions.push("mxl")
     if (inMid.checked)  inFormats.extensions.push("mid")
     if (inPdf.checked)  inFormats.extensions.push("pdf")
@@ -446,6 +458,7 @@ MuseScore {
     if (outMscz.checked) outFormats.extensions.push("mscz")
     if (outMscx.checked) outFormats.extensions.push("mscx")
     if (outXml.checked)  outFormats.extensions.push("xml")
+    if (outMusicXml.checked)  outFormats.extensions.push("musicxml")
     if (outMxl.checked)  outFormats.extensions.push("mxl")
     if (outMid.checked)  outFormats.extensions.push("mid")
     if (outPdf.checked)  outFormats.extensions.push("pdf")
