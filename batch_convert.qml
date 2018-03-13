@@ -88,7 +88,7 @@ MuseScore {
           CheckBox {
             id: inMsc
             text: "*.msc"
-            enabled: false // MuseScore < 2.0
+            enabled: (mscoreMajorVersion < 2)?true:false // MuseScore < 2.0
             visible: enabled // hide if not enabled
             }
           CheckBox {
@@ -96,8 +96,19 @@ MuseScore {
             text: "*.xml"
             //exclusiveGroup: xml
             onClicked: {
-              if (checked && outMscz.checked)
+              if (checked && outXml.checked)
                 outXml.checked = !checked
+              }
+            }
+          CheckBox {
+            id: inMusicXml
+            text: "*.musicxml"
+            //exclusiveGroup: musicxml
+            enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)?true:false // MuseScore > 2.1
+            visible: enabled // hide if not enabled
+            onClicked: {
+              if (checked && outMusicXml.checked)
+                outMusicXml.checked = !checked
               }
             }
           CheckBox {
@@ -221,10 +232,23 @@ MuseScore {
               CheckBox {
                 id: outXml
                 text: "*.xml"
+                enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion <= 1)?true:false // MuseScore <= 2.1
+                visible: enabled // hide if not enabled
                 //exclusiveGroup: xml
                 onClicked: {
                   if (checked && inXml.checked)
                     inXml.checked = false
+                  }
+                }
+              CheckBox {
+                id: outMusicXml
+                text: "*.musicxml"
+                enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)?true:false // MuseScore > 2.1
+                visible: enabled // hide if not enabled
+                //exclusiveGroup: musicxml
+                onClicked: {
+                  if (checked && inMusicXml.checked)
+                    inMusicXml.checked = false
                   }
                 }
               CheckBox {
@@ -270,7 +294,7 @@ MuseScore {
               CheckBox {
                 id: outLy
                 text: "*.ly"
-                enabled: false // MuseScore < 2.0, or via xml2ly?
+                enabled: (mscoreMajorVersion < 2)?true:false // MuseScore < 2.0, or via xml2ly?
                 visible: enabled //  hide if not enabled
                 }
               CheckBox {
@@ -343,6 +367,7 @@ MuseScore {
     property alias inMscx:  inMscx.checked
     property alias inMsc:   inMsc.checked
     property alias inXml:   inXml.checked
+    property alias inMusicXml:   inMusicXml.checked
     property alias inMxl:   inMxl.checked
     property alias inMid:   inMid.checked
     property alias inPdf:   inPdf.checked
@@ -364,6 +389,7 @@ MuseScore {
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
     property alias outXml:  outXml.checked
+    property alias outMusicXml:  outMusicXml.checked
     property alias outMxl:  outMxl.checked
     property alias outMid:  outMid.checked
     property alias outPdf:  outPdf.checked
@@ -396,12 +422,12 @@ MuseScore {
     } // fileDialog
 
   function resetDefaults() {
-    inMscx.checked = inXml.checked = inMxl.checked = inMid.checked =
+    inMscx.checked = inXml.checked = inMusicXml.checked = inMxl.checked = inMid.checked =
       inPdf.checked = inMidi.checked = inKar.checked = inCap.checked =
       inCapx.checked = inBww.checked = inMgu.checked = inSgu.checked =
       inOve.checked = inScw.checked = inGtp.checked = inGx3.checked =
       inGp4.checked = inGp5.checked = inGpx.checked = false
-    outMscz.checked = outMscx.checked = outXml.checked = outMxl.checked =
+    outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
       outMid.checked = outPdf.checked = outPs.checked = outPng.checked =
       outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
       outOgg.checked = outMp3.checked = false
@@ -415,6 +441,7 @@ MuseScore {
     if (inMscz.checked) inFormats.extensions.push("mscz")
     if (inMscx.checked) inFormats.extensions.push("mscx")
     if (inXml.checked)  inFormats.extensions.push("xml")
+    if (inMusicXml.checked)  inFormats.extensions.push("musicxml")
     if (inMxl.checked)  inFormats.extensions.push("mxl")
     if (inMid.checked)  inFormats.extensions.push("mid")
     if (inPdf.checked)  inFormats.extensions.push("pdf")
@@ -438,6 +465,7 @@ MuseScore {
     if (outMscz.checked) outFormats.extensions.push("mscz")
     if (outMscx.checked) outFormats.extensions.push("mscx")
     if (outXml.checked)  outFormats.extensions.push("xml")
+    if (outMusicXml.checked)  outFormats.extensions.push("musicxml")
     if (outMxl.checked)  outFormats.extensions.push("mxl")
     if (outMid.checked)  outFormats.extensions.push("mid")
     if (outPdf.checked)  outFormats.extensions.push("pdf")
