@@ -425,7 +425,7 @@ MuseScore {
     inMscx.checked = inXml.checked = inMusicXml.checked = inMxl.checked = inMid.checked =
       inPdf.checked = inMidi.checked = inKar.checked = inCap.checked =
       inCapx.checked = inBww.checked = inMgu.checked = inSgu.checked =
-      inOve.checked = inScw.checked = inGtp.checked = inGx3.checked =
+      inOve.checked = inScw.checked = inGtp.checked = inGp3.checked =
       inGp4.checked = inGp5.checked = inGpx.checked = false
     outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
       outMid.checked = outPdf.checked = outPs.checked = outPng.checked =
