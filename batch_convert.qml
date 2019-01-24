@@ -86,7 +86,7 @@ MuseScore {
         CheckBox {
           id: inMsc
           text: "*.msc"
-          enabled: (mscoreMajorVersion < 2)?true:false // MuseScore  < 2.0
+          enabled: (mscoreMajorVersion < 2) ? true : false // MuseScore  < 2.0
           visible: enabled // hide if not enabled
           }
         CheckBox {
@@ -102,7 +102,7 @@ MuseScore {
           id: inMusicXml
           text: "*.musicxml"
           //exclusiveGroup: musicxml
-          enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)?true:false // MuseScore > 2.1
+          enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1) ? true : false // MuseScore > 2.1
           visible: enabled // hide if not enabled
           onClicked: {
             if (checked && outMusicXml.checked)
@@ -131,7 +131,7 @@ MuseScore {
           id: inPdf
           text: "*.pdf"
           enabled: false // needs OMR, MuseScore > 2.0?
-          visible: enabled  // hide if notr enabled
+          visible: enabled  // hide if not enabled
           //exclusiveGroup: pdf
           onClicked: {
             if (checked && outPdf.checked)
@@ -230,7 +230,7 @@ MuseScore {
             CheckBox {
               id: outXml
               text: "*.xml"
-              enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion <= 1)?true:false // MuseScore <= 2.1
+              enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion <= 1) ? true : false // MuseScore <= 2.1
               visible: enabled // hide if not enabled
               //exclusiveGroup: xml
               onClicked: {
@@ -241,7 +241,7 @@ MuseScore {
             CheckBox {
               id: outMusicXml
               text: "*.musicxml"
-              enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)?true:false // MuseScore > 2.1
+              enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1) ? true : false // MuseScore > 2.1
               visible: enabled // hide if not enabled
               //exclusiveGroup: xml
               onClicked: {
@@ -280,6 +280,8 @@ MuseScore {
             CheckBox {
               id: outPs
               text: "*.ps"
+              enabled: (mscoreMajorVersion < 2) ? true : false // MuseScore
+              visible: enabled // hide if not enabled
               }
             CheckBox {
               id: outPng
@@ -292,7 +294,7 @@ MuseScore {
             CheckBox {
               id: outLy
               text: "*.ly"
-              enabled: (mscoreMajorVersion < 2)?true:false // MuseScore < 2.0, or via xml2ly?
+              enabled: (mscoreMajorVersion < 2) ? true : false // MuseScore < 2.0, or via xml2ly?
               visible: enabled // hide if not enabled
               }
             CheckBox {
