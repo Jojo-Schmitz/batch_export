@@ -39,74 +39,74 @@
         <translation>Formatos de salida</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="323"/>
+        <location filename="../batch_convert.qml" line="326"/>
         <source>Export linked parts</source>
         <translation>Exportación partes enlazado</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="327"/>
+        <location filename="../batch_convert.qml" line="330"/>
         <source>Process
 Subdirectories</source>
         <translation>Procesar subcarpetas</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="331"/>
+        <location filename="../batch_convert.qml" line="334"/>
         <source>Reset to Defaults</source>
         <translation>Restablecer valores predeterminados</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="342"/>
+        <location filename="../batch_convert.qml" line="345"/>
         <source>Ok</source>
         <translation>Aceptar</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="352"/>
+        <location filename="../batch_convert.qml" line="355"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="414"/>
+        <location filename="../batch_convert.qml" line="417"/>
         <source>Select Startfolder</source>
         <translation>Sélectionner un répertoire</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="415"/>
+        <location filename="../batch_convert.qml" line="418"/>
         <source>Select Folder</source>
         <translation>Sélectionner un répertoire</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="421"/>
+        <location filename="../batch_convert.qml" line="424"/>
         <source>No folder selected</source>
         <translation>Ninguna carpeta seleccionada</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="502"/>
+        <location filename="../batch_convert.qml" line="505"/>
         <source>Running...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="598"/>
+        <location filename="../batch_convert.qml" line="601"/>
         <source>%1 is up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="658"/>
+        <location filename="../batch_convert.qml" line="661"/>
         <source>%1.%2 is up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="682"/>
+        <location filename="../batch_convert.qml" line="685"/>
         <source>ERROR reading file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="625"/>
-        <location filename="../batch_convert.qml" line="751"/>
+        <location filename="../batch_convert.qml" line="628"/>
+        <location filename="../batch_convert.qml" line="754"/>
         <source>Done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="749"/>
+        <location filename="../batch_convert.qml" line="752"/>
         <source>No files found</source>
         <translation type="unfinished"></translation>
     </message>
