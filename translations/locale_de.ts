@@ -2,350 +2,108 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de">
 <context>
-    <name>FormatChooser</name>
-    <message>
-        <location filename="../batch_export.ui" line="17"/>
-        <source>Choose Formats</source>
-        <translation>Formate wählen</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="48"/>
-        <source>Output Formats</source>
-        <comment>outFormats</comment>
-        <translation>Ausgabeformate</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="60"/>
-        <location filename="../batch_export.ui" line="315"/>
-        <source>Compressed MuseScore Format</source>
-        <translation>Komprimiertes MuseScore-Format</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="124"/>
-        <source>Standard MIDI File</source>
-        <translation>MIDI-Datei</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="76"/>
-        <location filename="../batch_export.ui" line="334"/>
-        <source>MuseScore Format</source>
-        <translation>MuseScore-Format</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="92"/>
-        <location filename="../batch_export.ui" line="366"/>
-        <source>MusicXML Format</source>
-        <translation>MusicXML-Format</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="108"/>
-        <location filename="../batch_export.ui" line="382"/>
-        <source>Compressed MusicXML Format</source>
-        <translation>Komprimiertes MusicXML-Format</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="297"/>
-        <source>Input Formats</source>
-        <comment>inFormat</comment>
-        <translation>Eingabeformate</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="398"/>
-        <source>Standard MIDI FIle</source>
-        <translation>MIDI-Datei</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="146"/>
-        <source>PDF File</source>
-        <translation>PDF Datei</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="165"/>
-        <source>PostScript File</source>
-        <translation>PostScript-Datei</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="181"/>
-        <source>PNG Bitmap Graphic</source>
-        <translation>PNG-Bitmap-Grafik</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="197"/>
-        <source>Scalable Vector Graphic</source>
-        <translation>Skalierbare Vektorgrafik</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="213"/>
-        <source>LilyPond Format</source>
-        <translation>LilyPond-Format</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="350"/>
-        <source>Old MuseScore Format</source>
-        <translation>Altes MuseScore-Format</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="414"/>
-        <location filename="../batch_export.ui" line="430"/>
-        <source>MIDI Files</source>
-        <translation>MIDI-Dateien</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="446"/>
-        <source>MuseData Files</source>
-        <translation>Muse Data Dateien</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="462"/>
-        <source>Capella Files</source>
-        <translation>Capella-Dateien</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="478"/>
-        <source>Bagpipe Music Writer Files</source>
-        <translation>Bagpipe Music Writer Dateien</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="494"/>
-        <location filename="../batch_export.ui" line="510"/>
-        <source>BB Files</source>
-        <translation>Band in a Box Dateien</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="526"/>
-        <source>Overture Files</source>
-        <translation>Overture Dateien</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="545"/>
-        <source>Score Writer Files</source>
-        <translation>Score Writer Dateien</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="644"/>
-        <source>Reset to defaults</source>
-        <translation>Voreinstellungen wiederherstellen</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="660"/>
-        <source>Process subdirectories</source>
-        <translation>Unterverzeichnisse durchsuchen</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="229"/>
-        <source>Wave Audio</source>
-        <translation>Wave Audio</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="245"/>
-        <source>Flac Audio</source>
-        <translation>Flac Audio</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="261"/>
-        <source>Ogg Vorbis Audio</source>
-        <translation>Ogg Vorbis Audio</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="280"/>
-        <source>MP3 Audio</source>
-        <translation>MP3 Audio</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.ui" line="564"/>
-        <location filename="../batch_export.ui" line="586"/>
-        <location filename="../batch_export.ui" line="605"/>
-        <location filename="../batch_export.ui" line="624"/>
-        <source>Guitar Pro</source>
-        <translation>Guitar Pro</translation>
-    </message>
-</context>
-<context>
     <name>batch_convert</name>
     <message>
         <location filename="../batch_convert.qml" line="16"/>
         <source>Batch Convert</source>
-        <translation>Stapel-Konverter</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="18"/>
+        <location filename="../batch_convert.qml" line="19"/>
         <source>This plugin converts mutiple files from various formats into various formats</source>
-        <translation>Dieses Plug-In konvertiert Dateien aus verschiedenen Formaten zu verschiedenem Formaten</translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="25"/>
-        <source>Unsupported MuseScore Version</source>
-        <translation>Nich unterstützte MuseScore Version</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="26"/>
-        <source>This plugin does not work in MuseScore v2.0.0</source>
-        <translation>Dieses Plug-In funktioniert nicht mit MuseScore 2.0.0</translation>
+        <source>Unsupported MuseScore Version</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="60"/>
+        <location filename="../batch_convert.qml" line="27"/>
+        <source>This plugin needs MuseScore 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="63"/>
         <source>Input Formats</source>
-        <translation>Eingabeformate</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="193"/>
+        <location filename="../batch_convert.qml" line="211"/>
         <source>Output Formats</source>
-        <translation>Ausgabeformate</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="291"/>
+        <location filename="../batch_convert.qml" line="325"/>
         <source>Export linked parts</source>
-        <translation>Verbundene Auszüge exportieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="295"/>
+        <location filename="../batch_convert.qml" line="329"/>
         <source>Process
 Subdirectories</source>
-        <translation>Unterverzeichnisse
-durchsuchen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="299"/>
+        <location filename="../batch_convert.qml" line="333"/>
         <source>Reset to Defaults</source>
-        <translation>Voreinstellungen wiederherstellen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="310"/>
+        <location filename="../batch_convert.qml" line="344"/>
         <source>Ok</source>
-        <translation>OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="319"/>
+        <location filename="../batch_convert.qml" line="353"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="374"/>
+        <location filename="../batch_convert.qml" line="411"/>
         <source>Select Startfolder</source>
-        <translation>Verzeichnis wählen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="375"/>
+        <location filename="../batch_convert.qml" line="412"/>
         <source>Select Folder</source>
-        <translation>Verzeichnis wählen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="381"/>
+        <location filename="../batch_convert.qml" line="418"/>
         <source>No folder selected</source>
-        <translation>Kein Verzeichnis ausgewählt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="459"/>
+        <location filename="../batch_convert.qml" line="499"/>
         <source>Running...</source>
-        <translation>Arbeitet...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="555"/>
+        <location filename="../batch_convert.qml" line="595"/>
         <source>%1 is up to date</source>
-        <translation>%1 ist aktuell</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="615"/>
-        <source>%1.%2 is up to date</source>
-        <translation>%1.%2 ist aktuell</translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="639"/>
-        <source>ERROR reading file %1</source>
-        <translation>FEHLER beim Lesen der Datei %1</translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="582"/>
-        <location filename="../batch_convert.qml" line="691"/>
+        <location filename="../batch_convert.qml" line="622"/>
+        <location filename="../batch_convert.qml" line="748"/>
         <source>Done.</source>
-        <translation>Fertig.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="689"/>
+        <location filename="../batch_convert.qml" line="655"/>
+        <source>%1.%2 is up to date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="679"/>
+        <source>ERROR reading file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="746"/>
         <source>No files found</source>
-        <translation>Keine Dateien gefunden</translation>
-    </message>
-</context>
-<context>
-    <name>batch_export</name>
-    <message>
-        <location filename="../batch_export.js" line="28"/>
-        <source>Batch Export</source>
-        <translation>Stapel-Export</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="70"/>
-        <source>Unable to delete %1</source>
-        <translation>Kann %1 nicht löschen</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="71"/>
-        <location filename="../batch_export.js" line="86"/>
-        <source>%1 failed!
-</source>
-        <translation>%1 fehlgeschlagen!
-</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="81"/>
-        <source>Unable to open %1</source>
-        <translation>Kann %1 nicht öffnen</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="88"/>
-        <source>Unable to save %1</source>
-        <translation>Kann %1 nicht speichern</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="183"/>
-        <source>: Select Folder</source>
-        <translation>: Verzeichnis wählen</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="185"/>
-        <source>No folder selected</source>
-        <translation>Kein Verzeichnis ausgewählt</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="192"/>
-        <source>
-
-All files are up to date
-</source>
-        <translation>
-
-Alle Dateien sind aktuell
-</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="194"/>
-        <source>
-
-File(s) exported:
-
-%1</source>
-        <translation>
-
-Exportierte Datei(en):
-
-%1</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="152"/>
-        <source>No input format selected</source>
-        <translation>Kein Eingabeformat gewählt</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="171"/>
-        <source>No output format selected</source>
-        <translation>Kein Ausgabeformat gewählt</translation>
-    </message>
-    <message>
-        <location filename="../batch_export.js" line="399"/>
-        <source>Plugins</source>
-        <comment>but see http://musescore.org/en/node/15470 first</comment>
-        <translatorcomment>Plug-Ins</translatorcomment>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

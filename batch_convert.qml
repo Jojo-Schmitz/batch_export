@@ -2,19 +2,20 @@
 // Mac OSX versions, Qt has a problem to open
 // a FileDialog by calling its open() method
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
+import QtQuick 2.9
+import QtQuick.Controls 1.5
+import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2 // FileDialog
-import Qt.labs.folderlistmodel 2.1
+import Qt.labs.folderlistmodel 2.2
 import Qt.labs.settings 1.0
-import QtQml 2.2
-import MuseScore 1.0
-import FileIO 1.0
+import QtQml 2.8
+import MuseScore 3.0
+import FileIO 3.0
 
 MuseScore {
   menuPath: "Plugins." + qsTr("Batch Convert")
-  version: "2.0"
+  version: "3.0"
+  requiresScore: false
   description: qsTr("This plugin converts mutiple files from various formats"
     + " into various formats")
   pluginType: "dialog"
@@ -23,7 +24,7 @@ MuseScore {
     id: versionError
     visible: false
     title: qsTr("Unsupported MuseScore Version")
-    text: qsTr("This plugin does not work in MuseScore v2.0.0")
+    text: qsTr("This plugin needs MuseScore 3")
     onAccepted: {
       window.visible = false
       Qt.quit();
@@ -32,10 +33,12 @@ MuseScore {
 
   onRun: {
     // check MuseScore version
-    if (mscoreMajorVersion == 2 && mscoreMinorVersion == 0
-      && mscoreUpdateVersion == 0) {
+    if (mscoreMajorVersion < 3) { // we should really never get here, but fail at the imports above already
+      window.visible = false
       versionError.open()
       }
+    else
+      window.visible = true // needed for unknown reasons
     }
 
   id: window
@@ -102,7 +105,7 @@ MuseScore {
           id: inMusicXml
           text: "*.musicxml"
           //exclusiveGroup: musicxml
-          enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1) ? true : false // MuseScore > 2.1
+          enabled: (mscoreMajorVersion >= 3 || (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)) ? true : false // MuseScore > 2.1
           visible: enabled // hide if not enabled
           onClicked: {
             if (checked && outMusicXml.checked)
@@ -241,7 +244,8 @@ MuseScore {
             CheckBox {
               id: outMusicXml
               text: "*.musicxml"
-              enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion > 1) ? true : false // MuseScore > 2.1
+              enabled: (mscoreMajorVersion >= 3 || (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)) ? true : false // MuseScore > 2.1
+              //could also export to musicxml and then rename that to xml in versions after 2.1
               visible: enabled // hide if not enabled
               //exclusiveGroup: xml
               onClicked: {
