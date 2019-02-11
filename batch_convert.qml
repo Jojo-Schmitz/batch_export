@@ -686,7 +686,8 @@ MuseScore {
         }
       
       // next file
-      processTimer.running = true
+      if(!abortRequested)
+            processTimer.running = true
       }
     }
 
