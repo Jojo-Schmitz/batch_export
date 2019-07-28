@@ -322,7 +322,7 @@ MuseScore {
         } // RowLayout
       CheckBox {
         id: exportExcerpts
-        text: qsTr("Export linked parts")
+        text: /*qsTr("Export linked parts")*/ qsTranslate("action", "Export parts")
         enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion == 0 && mscoreUpdateVersion > 2) ? true : false // MuseScore > 3.0.2
         visible: enabled //  hide if not enabled
          } // exportExcerpts
@@ -332,7 +332,7 @@ MuseScore {
         } // traverseSubdirs
       Button {
         id: reset
-        text: qsTr("Reset to Defaults")
+        text: /*qsTr("Reset to Defaults")*/ qsTranslate("QPlatformTheme", "Restore Defaults")
         onClicked: {
           resetDefaults()
           } // onClicked
@@ -343,7 +343,7 @@ MuseScore {
         Row {
           Button {
             id: ok
-            text: qsTr("Ok")
+            text: /*qsTr("Ok")*/ qsTranslate("QPlatformTheme", "OK")
             //isDefault: true // needs more work
             onClicked: {
               if (collectInOutFormats())
@@ -352,7 +352,7 @@ MuseScore {
             } // ok
           Button {
             id: cancel
-            text: qsTr("Cancel")
+            text: /*qsTr("Cancel")*/ qsTranslate("QPlatformTheme", "Cancel")
             onClicked: Qt.quit()
             } // Cancel
           } // Row
@@ -417,7 +417,7 @@ MuseScore {
       work(folder, traverseSubdirs.checked)
       }
     onRejected: {
-      console.log(qsTr("No folder selected"))
+      console.log("No folder selected")
       Qt.quit()
       }
     } // fileDialog
@@ -592,7 +592,7 @@ MuseScore {
         if (srcModifiedTime > file.modifiedTime()) {
           var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
 
-          resultText.append(" -> %1".arg(targetFile))
+          resultText.append(" → %1".arg(targetFile))
         } else {
           resultText.append(qsTr("%1 is up to date").arg(targetFile))
           }
@@ -621,7 +621,7 @@ MuseScore {
         // no more files to process
         workDialog.standardButtons = StandardButton.Ok
         if (!abortRequested) {
-          currentStatus.text = qsTr("Done.")
+          currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizzard", "Done") + "."
         } else {
 	  console.log("abort!")
           }
@@ -652,7 +652,7 @@ MuseScore {
           // if src is newer than existing write this file
           if (srcModifiedTime > file.modifiedTime()) {
              var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
-             resultText.append("%1 -> %2".arg(fileName).arg(outFormats.extensions[j]))
+             resultText.append("%1 → %2".arg(fileName).arg(outFormats.extensions[j]))
           } else {
              resultText.append(qsTr("%1.%2 is up to date").arg(fileBase).arg(outFormats.extensions[j]))
              }
@@ -748,7 +748,7 @@ MuseScore {
         // report this
         resultText.append(qsTr("No files found"))
         workDialog.standardButtons = StandardButton.Ok
-        currentStatus.text = qsTr("Done.")
+        currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizzard", "Done") + "."
         }
       }
     }

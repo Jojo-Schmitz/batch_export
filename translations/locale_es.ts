@@ -2,6 +2,41 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="es">
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <location filename="../batch_convert.qml" line="335"/>
+        <source>Restore Defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="346"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="355"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QWizzard</name>
+    <message>
+        <location filename="../batch_convert.qml" line="624"/>
+        <location filename="../batch_convert.qml" line="751"/>
+        <source>Done</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>action</name>
+    <message>
+        <location filename="../batch_convert.qml" line="325"/>
+        <source>Export parts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>batch_convert</name>
     <message>
         <location filename="../batch_convert.qml" line="16"/>
@@ -34,74 +69,43 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="325"/>
-        <source>Export linked parts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="329"/>
+        <location filename="../batch_convert.qml" line="331"/>
         <source>Process
 Subdirectories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="333"/>
-        <source>Reset to Defaults</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="344"/>
-        <source>Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="353"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="411"/>
+        <location filename="../batch_convert.qml" line="413"/>
         <source>Select Startfolder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="412"/>
+        <location filename="../batch_convert.qml" line="414"/>
         <source>Select Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="418"/>
-        <source>No folder selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="499"/>
+        <location filename="../batch_convert.qml" line="501"/>
         <source>Running...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="595"/>
+        <location filename="../batch_convert.qml" line="597"/>
         <source>%1 is up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="622"/>
-        <location filename="../batch_convert.qml" line="748"/>
-        <source>Done.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="655"/>
+        <location filename="../batch_convert.qml" line="657"/>
         <source>%1.%2 is up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="679"/>
+        <location filename="../batch_convert.qml" line="681"/>
         <source>ERROR reading file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="746"/>
+        <location filename="../batch_convert.qml" line="749"/>
         <source>No files found</source>
         <translation type="unfinished"></translation>
     </message>
