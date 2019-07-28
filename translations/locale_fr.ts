@@ -2,6 +2,41 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr">
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <location filename="../batch_convert.qml" line="334"/>
+        <source>Restore Defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="345"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="355"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>QWizzard</name>
+    <message>
+        <location filename="../batch_convert.qml" line="628"/>
+        <location filename="../batch_convert.qml" line="755"/>
+        <source>Done</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>action</name>
+    <message>
+        <location filename="../batch_convert.qml" line="326"/>
+        <source>Export parts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>batch_convert</name>
     <message>
         <location filename="../batch_convert.qml" line="13"/>
@@ -39,31 +74,10 @@
         <translation>Formats de sortie</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="326"/>
-        <source>Export linked parts</source>
-        <translation>Exporter les parties liée</translation>
-    </message>
-    <message>
         <location filename="../batch_convert.qml" line="330"/>
         <source>Process
 Subdirectories</source>
         <translation>Recursif</translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="334"/>
-        <source>Reset to Defaults</source>
-        <translation>Rétablir le choix par défaut</translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="345"/>
-        <source>Ok</source>
-        <translatorcomment>Or &quot;D&apos;accord&quot;?</translatorcomment>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="355"/>
-        <source>Cancel</source>
-        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="417"/>
@@ -74,11 +88,6 @@ Subdirectories</source>
         <location filename="../batch_convert.qml" line="418"/>
         <source>Select Folder</source>
         <translation>Sélectionner un répertoire</translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="424"/>
-        <source>No folder selected</source>
-        <translation>Pas de répertoire sélectionné</translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="505"/>
@@ -101,13 +110,7 @@ Subdirectories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="628"/>
-        <location filename="../batch_convert.qml" line="754"/>
-        <source>Done.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="752"/>
+        <location filename="../batch_convert.qml" line="753"/>
         <source>No files found</source>
         <translation type="unfinished"></translation>
     </message>
