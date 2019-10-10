@@ -389,11 +389,11 @@ MuseScore {
     property alias inSgu:   inSgu.checked
     property alias inOve:   inOve.checked
     property alias inScw:   inScw.checked
-    property alias inGTP:   inGtp.checked
-    property alias inGTP3:  inGp3.checked
-    property alias inGTP4:  inGp4.checked
-    property alias inGTP5:  inGp5.checked
-    property alias inGTPX:  inGpx.checked
+    property alias inGtp:   inGtp.checked
+    property alias inGp3:   inGp3.checked
+    property alias inGp4:   inGp4.checked
+    property alias inGp5:   inGp5.checked
+    property alias inGpx:   inGpx.checked
     // out options
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
