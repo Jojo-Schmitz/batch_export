@@ -257,10 +257,10 @@ MuseScore {
                 enabled: (mscoreMajorVersion >= 3 || (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)) ? true : false // MuseScore > 2.1
                 //could also export to musicxml and then rename that to xml in versions after 2.1
                 visible: enabled // hide if not enabled
-                //exclusiveGroup: xml
+                //exclusiveGroup: musicxml
                 onClicked: {
                   if (checked && inMusicXml.checked)
-                    inXml.checked = false
+                    inMusicXml.checked = false
                   }
                 }
               CheckBox {
