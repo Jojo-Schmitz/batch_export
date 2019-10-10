@@ -42,7 +42,7 @@ MuseScore {
     visible: true
     title: qsTr("Choose Formats")
     modality: Qt.ApplicationModal // behave like a dialog
-    color: "lightgrey"
+    color: "darkgrey"
 
     // center on screen
     width: mainRow.childrenRect.width
