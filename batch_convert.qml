@@ -47,11 +47,11 @@ MuseScore {
   //visible: true
   //title: qsTr("Choose Formats") // How?
   //modality: Qt.ApplicationModal // behave like a dialog
-  //color: "lightgrey"
+  //color: "darkgrey"
 
 
   //onClose : Qt.quit() // How?
-    // center on screen
+    // center on screen // How?
     width: mainRow.childrenRect.width
     height: mainRow.childrenRect.height
   //x: Screen.width / 2  - width / 2
