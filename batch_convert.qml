@@ -22,6 +22,7 @@ MuseScore {
     title: qsTr("Unsupported MuseScore Version")
     text: qsTr("This plugin needs MuseScore 3")
     onAccepted: {
+    //window.visible = false
       Qt.quit()
       }
     }
@@ -128,7 +129,7 @@ MuseScore {
             //exclusiveGroup: mid
             onClicked: {
               if (checked && outMid.checked)
-              outMid.checked = false
+                outMid.checked = false
               }
             }
           CheckBox {
@@ -247,6 +248,7 @@ MuseScore {
                 id: outMusicXml
                 text: "*.musicxml"
                 enabled: (mscoreMajorVersion >= 3 || (mscoreMajorVersion == 2 && mscoreMinorVersion > 1)) ? true : false // MuseScore > 2.1
+                //could also export to musicxml and then rename that to xml in versions after 2.1
                 visible: enabled // hide if not enabled
                 //exclusiveGroup: musicxml
                 onClicked: {
@@ -286,7 +288,7 @@ MuseScore {
                 id: outPs
                 text: "*.ps"
                 enabled: (mscoreMajorVersion < 2) ? true : false // MuseScore < 2.0
-                visible: enabled //  hide if not enabled
+                visible: enabled // hide if not enabled
                 }
               CheckBox {
                 id: outPng
@@ -300,7 +302,7 @@ MuseScore {
                 id: outLy
                 text: "*.ly"
                 enabled: (mscoreMajorVersion < 2) ? true : false // MuseScore < 2.0, or via xml2ly?
-                visible: enabled //  hide if not enabled
+                visible: enabled // hide if not enabled
                 }
               CheckBox {
                 id: outWav
@@ -324,6 +326,8 @@ MuseScore {
         CheckBox {
           id: exportExcerpts
           text: /*qsTr("Export linked parts")*/ qsTranslate("action", "Export parts")
+          enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion == 0 && mscoreUpdateVersion > 2) ? true : false // MuseScore > 3.0.2
+          visible: enabled //  hide if not enabled
           } // exportExcerpts
         CheckBox {
           id: traverseSubdirs
