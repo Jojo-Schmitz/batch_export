@@ -32,6 +32,12 @@ MuseScore {
       }
     }
 
+//Settings {
+  //id: mscoreSettings
+  //category: "ui/application"
+  //property var globalStyle
+  //}
+
   onRun: {
     // check MuseScore version
     if (mscoreMajorVersion < 3) { // we should really never get here, but fail at the imports above already
@@ -40,6 +46,11 @@ MuseScore {
       }
     else
       window.visible = true // needed for unknown reasons
+
+  //if (mscoreSettings.globalStyle == 0 /* MuseScoreStyleType.DARK_FUSION */)
+    //window.color = "black"
+  //else // MuseScoreStyleType.LIGHT_FUSION
+    //window.color = "lightgrey"
     }
 
 //Window {
@@ -47,10 +58,7 @@ MuseScore {
   //visible: true
   //title: qsTr("Choose Formats") // How?
   //modality: Qt.ApplicationModal // behave like a dialog
-  //color: "darkgrey"
 
-
-  //onClose : Qt.quit() // How?
     // center on screen // How?
     width: mainRow.childrenRect.width
     height: mainRow.childrenRect.height
@@ -365,6 +373,7 @@ MuseScore {
               id: cancel
               text: /*qsTr("Cancel")*/ qsTranslate("QPlatformTheme", "Cancel")
               onClicked: {
+              //window.visible = false
                 Qt.quit()
                 }
               } // Cancel
