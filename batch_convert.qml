@@ -341,7 +341,7 @@ MuseScore {
         CheckBox {
           id: exportExcerpts
           text: /*qsTr("Export linked parts")*/ qsTranslate("action", "Export parts")
-          enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion == 0 && mscoreUpdateVersion > 2) ? true : false // MuseScore > 3.0.2
+          enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion > 0 || (mscoreMinorVersion == 0 && mscoreUpdateVersion > 2)) ? true : false // MuseScore > 3.0.2
           visible: enabled //  hide if not enabled
           } // exportExcerpts
         CheckBox {
