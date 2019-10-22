@@ -16,7 +16,8 @@ A couple of notes to be aware of:
 - The scores for which files were exported may be left open in tabs. If so, you'd need to close them manually. Fixed with MuseScore 1.2+
 - These open tabs will be labeled "untitled". Fixed in MuseScore 2.0+ and not an issue anymore with MuseScore 1.2+, see above
 - The 2.x version of this plugin needs at least 2.0.1
-- If you're on MacOS X and the file dialog for step 4 does not show up, try using the Mac version of the plugin which is in the branch 'mac' (for 3.0) or mac-2.x (for 1.x and 2.x).
+- The 3.x version of this plugin needs at least 3.0.2
+- If you're on macOS and the file dialog for step 4 above does not show up, try using the Mac version of the plugin which is in the branch 'mac' (for 3.0, actually that version seems to run fine in Windows too) or mac-2.x (for 2.x).
 - All files processed by the plugin for MuseScore 2.0+ will be listed in the 'Recent File' menu.
 
 These issues are fixed with the above mentioned versions, and without re-installing the plugin.
