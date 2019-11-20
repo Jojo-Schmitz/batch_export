@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 1.5
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2 // FileDialogs
+import QtQuick.Window 2.3
 import Qt.labs.folderlistmodel 2.2
 import Qt.labs.settings 1.0
 import QtQml 2.8
@@ -25,6 +26,12 @@ MuseScore {
       window.visible = false
       Qt.quit()
       }
+    }
+  
+  Settings {
+    id: mscorePathsSettings
+    category: "application/paths"
+    property var myScores
     }
 
   onRun: {
@@ -514,14 +521,17 @@ MuseScore {
     property alias exportE: exportExcerpts.checked
     property alias travers: traverseSubdirs.checked
     property alias diffEPath: differentExportPath.checked  // different export path
+    property alias iPath: mscorePathsSettings.myScores // import path
+    property alias ePath: mscorePathsSettings.myScores // export path
     }
 
   FileDialog {
     id: sourceFolderDialog
     title: traverseSubdirs.checked ?
-      qsTr("Select Sources Startfolder") :
+      qsTr("Select Sources Startfolder"):
       qsTr("Select Sources Folder")
     selectFolder: true
+    folder: "file:///" + settings.ipath // transform to URL
     
     onAccepted: {
       if (differentExportPath.checked && !traverseSubdirs.checked)
@@ -533,13 +543,20 @@ MuseScore {
       console.log("No source folder selected")
       Qt.quit()
       }
+
+    Component.onDestruction: {
+      settings.ipath = sourceFolderDialog.folder
+      }
     } // sourceFolderDialog
     
   FileDialog {
     id: targetFolderDialog
     title: qsTr("Select Target Folder")
     selectFolder: true
+
+    folder: "file:///" + settings.epath // transform to URL
     
+    property string folderPath: ""
     onAccepted: {
       // remove the file:/// at the beginning of the return value of targetFolderDialog.folder
       // However, what needs to be done depends on the platform.
@@ -555,6 +572,9 @@ MuseScore {
     onRejected: {
       console.log("No target folder selected")
       Qt.quit()
+      }
+    Component.onDestruction: {
+      settings.epath = targetFolderDialog.folder
       }
     } // targetFolderDialog
 
