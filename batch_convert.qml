@@ -616,15 +616,15 @@ MuseScore {
           var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
 
           resultText.append(" → %1".arg(targetFile))
-        } else {
-          resultText.append(qsTr("%1 is up to date").arg(targetFile))
           }
+        else
+          resultText.append(qsTr("%1 is up to date").arg(targetFile))
         }
 
       // check if more files
-      if (!abortRequested && excerptsList.length > 0) {
+      if (!abortRequested && excerptsList.length > 0)
         excerptTimer.running = true
-      } else {
+      else {
         // close base score
         closeScore(curBaseScore)
         processTimer.running = true
@@ -643,11 +643,10 @@ MuseScore {
       if (fileList.length === 0) {
         // no more files to process
         workDialog.standardButtons = StandardButton.Ok
-        if (!abortRequested) {
+        if (!abortRequested)
           currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizzard", "Done") + "."
-        } else {
-	  console.log("abort!")
-          }
+        else
+          console.log("abort!")
         return
       }
 
@@ -674,11 +673,11 @@ MuseScore {
 
           // if src is newer than existing write this file
           if (srcModifiedTime > file.modifiedTime()) {
-             var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
-             resultText.append("%1 → %2".arg(fileName).arg(outFormats.extensions[j]))
-          } else {
-             resultText.append(qsTr("%1.%2 is up to date").arg(fileBase).arg(outFormats.extensions[j]))
-             }
+            var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
+            resultText.append("%1 → %2".arg(fileName).arg(outFormats.extensions[j]))
+            }
+          else
+            resultText.append(qsTr("%1.%2 is up to date").arg(fileBase).arg(outFormats.extensions[j]))
           }
         // check if we are supposed to export parts
         if (exportExcerpts.checked) {
@@ -687,10 +686,8 @@ MuseScore {
           // do we have excertps?
           var excerpts = thisScore.excerpts
           for (var ex = 0; ex < excerpts.length; ex++) {
-            if (excerpts[ex].partScore !== thisScore) {
-              // only list when not base score
+            if (excerpts[ex].partScore !== thisScore) // only list when not base score
               excerptsList.push([excerpts[ex], fileBase, srcModifiedTime])
-              }
             }
           // if we have files start timer
           if (excerpts.length > 0) {
@@ -700,13 +697,13 @@ MuseScore {
             }
           }
         closeScore(thisScore)
-      } else {
-	resultText.append(qsTr("ERROR reading file %1").arg(shortName))
-        }
+      }
+      else
+        resultText.append(qsTr("ERROR reading file %1").arg(shortName))
       
       // next file
       if(!abortRequested)
-            processTimer.running = true
+        processTimer.running = true
       }
     }
 
@@ -745,9 +742,9 @@ MuseScore {
 
         // if we have a directory, we're supposed to
         // traverse it, so add it to folderList
-        if (files.isFolder(i)) {
+        if (files.isFolder(i))
           folderList.push(files.get(i, "fileURL"))
-        } else if (inInputFormats(getFileSuffix(files.get(i, "fileName")))) {
+        else if (inInputFormats(getFileSuffix(files.get(i, "fileName")))) {
           // found a file to process
           // set file names for in and out files
           var shortName  = files.get(i, "fileName")
