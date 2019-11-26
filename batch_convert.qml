@@ -720,12 +720,12 @@ MuseScore {
           // modifiedTime() will return 0 for non-existing files
           // if src is newer than existing write this file
           if (srcModifiedTime > fileScore.modifiedTime()) {
-             var res = writeScore(thisScore, fileScore.source, outFormats.extensions[j])
+            var res = writeScore(thisScore, fileScore.source, outFormats.extensions[j])
              
-             if (res)
-               resultText.append("%1 → %2".arg(fileFullPath).arg(outFormats.extensions[j]))
-             else
-               resultText.append("Error: %1 → %2 not exported".arg(fileFullPath).arg(outFormats.extensions[j]))
+            if (res)
+              resultText.append("%1 → %2".arg(fileFullPath).arg(outFormats.extensions[j]))
+            else
+              resultText.append("Error: %1 → %2 not exported".arg(fileFullPath).arg(outFormats.extensions[j]))
             } 
           else
             resultText.append(qsTr("%1 is up to date").arg(fileFullPath))
