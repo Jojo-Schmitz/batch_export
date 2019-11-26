@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Controls 1.5
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2 // FileDialogs
-import QtQuick.Window 2.3
 import Qt.labs.folderlistmodel 2.2
 import Qt.labs.settings 1.0
 import QtQml 2.8
@@ -15,7 +14,7 @@ MuseScore {
   requiresScore: false
   description: qsTr("This plugin converts mutiple files from various formats"
     + " into various formats")
-//pluginType: "dialog"
+  pluginType: "dialog"
 
   MessageDialog {
     id: versionError
@@ -23,15 +22,9 @@ MuseScore {
     title: qsTr("Unsupported MuseScore Version")
     text: qsTr("This plugin needs MuseScore 3")
     onAccepted: {
-    //window.visible = false
+      window.visible = false
       Qt.quit()
       }
-    }
-
-  Settings {
-    id: mscoreSettings
-    category: "ui/application"
-    property var globalStyle
     }
 
   onRun: {
@@ -42,24 +35,13 @@ MuseScore {
       }
     else
       window.visible = true // needed for unknown reasons
-
-    if (mscoreSettings.globalStyle == 0 /* MuseScoreStyleType.DARK_FUSION */)
-      window.color = "black"
-    else // MuseScoreStyleType.LIGHT_FUSION
-      window.color = "lightgrey"
     }
 
-  Window {
+//Window {
     id: window
-    visible: true
-    title: qsTr("Choose Formats")
-    modality: Qt.ApplicationModal // behave like a dialog
 
-    // center on screen
     width: mainRow.childrenRect.width
     height: mainRow.childrenRect.height
-    x: Screen.width / 2  - width / 2
-    y: Screen.height / 2 - height / 2
 
     // Mutally exclusive in/out formats, doesn't work properly
     ExclusiveGroup { id: mscz }
@@ -336,7 +318,7 @@ MuseScore {
           } // RowLayout
         CheckBox {
           id: exportExcerpts
-          text: /*qsTr("Export linked parts")*/ qsTranslate("action", "Export Parts")
+          text: /*qsTr("Export linked parts")*/ qsTranslate("action", "Export parts")
           enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion > 0 || (mscoreMinorVersion == 0 && mscoreUpdateVersion > 2)) ? true : false // MuseScore > 3.0.2
           visible: enabled //  hide if not enabled
           } // exportExcerpts
@@ -368,7 +350,6 @@ MuseScore {
               text: /*qsTr("Ok")*/ qsTranslate("QPlatformTheme", "OK")
               //isDefault: true // needs more work
               onClicked: {
-                window.visible = false
                 if (collectInOutFormats())
                   sourceFolderDialog.open()
                 } // onClicked
@@ -377,7 +358,6 @@ MuseScore {
               id: cancel
               text: /*qsTr("Cancel")*/ qsTranslate("QPlatformTheme", "Cancel")
               onClicked: {
-                window.visible = false
                 Qt.quit()
                 }
               } // Cancel
@@ -385,8 +365,7 @@ MuseScore {
           } // cancelOk
         } // ColumnLayout
       } // RowLayout
-    } // Window
-
+  //} // Window
   // remember settings
   Settings {
     id: settings
