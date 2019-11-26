@@ -5,7 +5,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.5
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs 1.2 // FileDialog
+import QtQuick.Dialogs 1.2 // FileDialogs
 //import QtQuick.Window 2.3
 import Qt.labs.folderlistmodel 2.2
 import Qt.labs.settings 1.0
@@ -340,7 +340,7 @@ MuseScore {
           } // RowLayout
         CheckBox {
           id: exportExcerpts
-          text: /*qsTr("Export linked parts")*/ qsTranslate("action", "Export parts")
+          text: /*qsTr("Export linked parts")*/ qsTranslate("action", "Export Parts")
           enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion > 0 || (mscoreMinorVersion == 0 && mscoreUpdateVersion > 2)) ? true : false // MuseScore > 3.0.2
           visible: enabled //  hide if not enabled
           } // exportExcerpts
@@ -348,6 +348,14 @@ MuseScore {
           id: traverseSubdirs
           text: qsTr("Process\nSubdirectories")
           } // traverseSubdirs
+        CheckBox {
+          id: differentExportPath
+          // Only allow different export path if not traversing subdirs. 
+          // Would be better disabled than invisible, but couldn't find the way to change to disabled color, 
+          // and having the same enabled and disabled is very confusing.
+          visible: !traverseSubdirs.checked 
+          text: qsTr("Different Export\nPath")
+          } // differentExportPath
         Button {
           id: reset
           text: /*qsTr("Reset to Defaults")*/ qsTranslate("QPlatformTheme", "Restore Defaults")
@@ -366,7 +374,7 @@ MuseScore {
               onClicked: {
               //window.visible = false
                 if (collectInOutFormats())
-                  fileDialog.open()
+                  sourceFolderDialog.open()
                 } // onClicked
               } // ok
             Button {
@@ -385,6 +393,7 @@ MuseScore {
 
   // remember settings
   Settings {
+    id: settings
     category: "BatchConvertPlugin"
     // in options
     property alias inMscz:  inMscz.checked
@@ -428,22 +437,50 @@ MuseScore {
     // other options
     property alias exportE: exportExcerpts.checked
     property alias travers: traverseSubdirs.checked
+    property alias diffEPath: differentExportPath.checked  // different export path
     }
 
   FileDialog {
-    id: fileDialog
-    title: traverseSubdirs.checked?
-      qsTr("Select Startfolder"):
-      qsTr("Select Folder")
+    id: sourceFolderDialog
+    title: traverseSubdirs.checked ?
+      qsTr("Select Sources Startfolder") :
+      qsTr("Select Sources Folder")
     selectFolder: true
+    
     onAccepted: {
-      work(folder, traverseSubdirs.checked)
+      if (differentExportPath.checked && !traverseSubdirs.checked)
+        targetFolderDialog.open(); // work we be called from within the target folder dialog
+      else
+        work() 
       }
     onRejected: {
-      console.log("No folder selected")
+      console.log("No source folder selected")
       Qt.quit()
       }
-    } // fileDialog
+    } // sourceFolderDialog
+    
+  FileDialog {
+    id: targetFolderDialog
+    title: qsTr("Select Target Folder")
+    selectFolder: true
+    
+    onAccepted: {
+      // remove the file:/// at the beginning of the return value of targetFolderDialog.folder
+      // However, what needs to be done depends on the platform.
+      // See this stackoverflow post for more details:
+      // https://stackoverflow.com/questions/24927850/get-the-path-from-a-qml-url
+      if (folder.toString().indexOf("file:///") != -1) // startsWith is EcmaScript6, so not for now
+        folderPath = folder.toString().substring(folder.toString().charAt(9) === ':' ? 8 : 7)
+      else
+        folderPath = folder
+      work()
+    }
+
+    onRejected: {
+      console.log("No target folder selected")
+      Qt.quit()
+      }
+    } // targetFolderDialog
 
   function resetDefaults() {
     inMscx.checked = inXml.checked = inMusicXml.checked = inMxl.checked = inMid.checked =
@@ -459,6 +496,7 @@ MuseScore {
     exportExcerpts.checked = false
     // 'uncheck' everything, then 'check' the next few
     inMscz.checked = outPdf.checked = true
+    differentExportPath.checked = false
     } // resetDefaults
 
   function collectInOutFormats() {
@@ -583,7 +621,12 @@ MuseScore {
     }
 
   FileIO {
-    id: file
+    id: fileExcerpt
+    }
+    
+  FileIO {
+    id: fileScore // We need two because they they are used from 2 different processes, 
+                   // which could cause threading problems
     }
 
   Timer {
@@ -597,28 +640,33 @@ MuseScore {
       var curScoreInfo = excerptsList.shift()
       var thisScore = curScoreInfo[0].partScore
       var partTitle = curScoreInfo[0].title
-      var fileBase = curScoreInfo[1]
-      var srcModifiedTime = curScoreInfo[2]
+      var filePath = curScoreInfo[1]
+      var fileName = curScoreInfo[2]
+      var srcModifiedTime = curScoreInfo[3]
 
-      // create file base for part
-      var targetBase = fileBase + "-" + createDefaultFileName(partTitle)
+      // create full file path for part
+      var targetBase;
+      if (differentExportPath.checked && !traverseSubdirs.checked)
+        targetBase = targetFolderDialog.folderPath + "/" + fileName 
+                                    + "-" + createDefaultFileName(partTitle) + "." 
+      else
+        targetBase = filePath + fileName + "-" + createDefaultFileName(partTitle) + "." 
 
       // write for all target formats
       for (var j = 0; j < outFormats.extensions.length; j++) {
-        var targetFile = targetBase + "." + outFormats.extensions[j]
-
         // get modification time of destination file (if it exists)
         // modifiedTime() will return 0 for non-existing files
-        file.source = targetFile
-
         // if src is newer than existing write this file
-        if (srcModifiedTime > file.modifiedTime()) {
-          var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
-
-          resultText.append(" → %1".arg(targetFile))
+        fileExcerpt.source = targetBase + outFormats.extensions[j]
+        if (srcModifiedTime > fileExcerpt.modifiedTime()) {
+          var res = writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j])
+          if (res) 
+            resultText.append("%1 → %2".arg(fileExcerpt.source).arg(outFormats.extensions[j]))
+          else
+            resultText.append("Error: %1 → %2 not exported".arg(fileExcerpt.source).arg(outFormats.extensions[j]))
           }
-        else
-          resultText.append(qsTr("%1 is up to date").arg(targetFile))
+        else // file already up to date
+          resultText.append(qsTr("%1 is up to date").arg(fileExcerpt.source))
         }
 
       // check if more files
@@ -651,33 +699,40 @@ MuseScore {
       }
 
       var curFileInfo = fileList.shift()
-      var shortName = curFileInfo[0]
+      var filePath = curFileInfo[0]
       var fileName = curFileInfo[1]
-      var fileBase = curFileInfo[2]
+      var fileExt = curFileInfo[2]
+      
+      var fileFullPath = filePath + fileName + "." + fileExt
 
       // read file
-      var thisScore = readScore(fileName,true)
+      var thisScore = readScore(fileFullPath, true)
 
       // make sure we have a valid score
       if (thisScore) {
         // get modification time of source file
-        file.source = fileName
-        var srcModifiedTime = file.modifiedTime()
+        fileScore.source = fileFullPath
+        var srcModifiedTime = fileScore.modifiedTime()
         // write for all target formats
         for (var j = 0; j < outFormats.extensions.length; j++) {
-          var targetFile = fileBase + "." + outFormats.extensions[j]
+          if (differentExportPath.checked && !traverseSubdirs.checked)
+            fileScore.source = targetFolderDialog.folderPath + "/" + fileName + "." + outFormats.extensions[j]
+          else
+            fileScore.source = filePath + fileName + "." + outFormats.extensions[j]
 
           // get modification time of destination file (if it exists)
           // modifiedTime() will return 0 for non-existing files
-          file.source = targetFile
-
           // if src is newer than existing write this file
-          if (srcModifiedTime > file.modifiedTime()) {
-            var res = writeScore(thisScore, targetFile, outFormats.extensions[j])
-            resultText.append("%1 → %2".arg(fileName).arg(outFormats.extensions[j]))
-            }
+          if (srcModifiedTime > fileScore.modifiedTime()) {
+             var res = writeScore(thisScore, fileScore.source, outFormats.extensions[j])
+             
+             if (res)
+               resultText.append("%1 → %2".arg(fileFullPath).arg(outFormats.extensions[j]))
+             else
+               resultText.append("Error: %1 → %2 not exported".arg(fileFullPath).arg(outFormats.extensions[j]))
+            } 
           else
-            resultText.append(qsTr("%1.%2 is up to date").arg(fileBase).arg(outFormats.extensions[j]))
+            resultText.append(qsTr("%1 is up to date").arg(fileFullPath))
           }
         // check if we are supposed to export parts
         if (exportExcerpts.checked) {
@@ -687,7 +742,7 @@ MuseScore {
           var excerpts = thisScore.excerpts
           for (var ex = 0; ex < excerpts.length; ex++) {
             if (excerpts[ex].partScore !== thisScore) // only list when not base score
-              excerptsList.push([excerpts[ex], fileBase, srcModifiedTime])
+              excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime])
             }
           // if we have files start timer
           if (excerpts.length > 0) {
@@ -697,12 +752,12 @@ MuseScore {
             }
           }
         closeScore(thisScore)
-      }
+        }
       else
-        resultText.append(qsTr("ERROR reading file %1").arg(shortName))
+        resultText.append(qsTr("ERROR reading file %1").arg(fileName))
       
       // next file
-      if(!abortRequested)
+      if (!abortRequested)
         processTimer.running = true
       }
     }
@@ -747,11 +802,28 @@ MuseScore {
         else if (inInputFormats(getFileSuffix(files.get(i, "fileName")))) {
           // found a file to process
           // set file names for in and out files
-          var shortName  = files.get(i, "fileName")
-          var fileName   = files.get(i, "filePath")
-          var fileSuffix = getFileSuffix(shortName);
-          var fileBase   = fileName.substring(0, fileName.length - fileSuffix.length - 1)
-          fileList.push([shortName, fileName, fileBase])
+          
+          // We need 3 things:
+          // 1) The file path: C:/Path/To/
+          // 2) The file name:            my_score
+          //                                      .
+          // 3) The file's extension:              mscz
+          
+          var fln = files.get(i, "fileName") // returns  "my_score.mscz"
+          var flp = files.get(i, "filePath") // returns  "C:/Path/To/my_score.mscz"
+          
+          var fileExt  = getFileSuffix(fln);  // mscz
+          var fileName = fln.substring(0, fln.length - fileExt.length - 1)
+          var filePath = flp.substring(0, flp.length - fln.length)
+          
+          /// in doubt uncomment to double check
+          // console.log("fln", fln)
+          // console.log("flp", flp)
+          // console.log("fileExt", fileExt)
+          // console.log("fileName", fileName)
+          // console.log("filePath", filePath)
+          
+          fileList.push([filePath, fileName, fileExt])
           }
         }
 
@@ -763,7 +835,8 @@ MuseScore {
       } else if (fileList.length > 0) {
         // if we found files, start timer do process them
         processTimer.running = true
-      } else {
+        } 
+      else {
         // we didn't find any files
         // report this
         resultText.append(qsTr("No files found"))
@@ -774,20 +847,24 @@ MuseScore {
     }
 
   function work() {
-    console.log((traverseSubdirs.checked? "Startfolder: ":"Folder: ")
-      + fileDialog.folder)
+    console.log((traverseSubdirs.checked? "Sources Startfolder: ":"Sources Folder: ")
+      + sourceFolderDialog.folder)
+      
+    if (differentExportPath.checked && !traverseSubdirs.checked)
+      console.log("Export folder: " + targetFolderDialog.folderPath)
 
     // initialize global variables
     fileList = []
     folderList = []
 
     // set folder and filter in FolderListModel
-    files.folder = fileDialog.folder
+    files.folder = sourceFolderDialog.folder
 
     if (traverseSubdirs.checked) {
       files.showDirs = true
       files.showFiles = true
-    } else {
+      } 
+    else {
       // only look for files
       files.showFiles = true
       files.showDirs = false
