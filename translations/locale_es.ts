@@ -4,17 +4,17 @@
 <context>
     <name>QPlatformTheme</name>
     <message>
-        <location filename="../batch_convert.qml" line="334"/>
+        <location filename="../batch_convert.qml" line="357"/>
         <source>Restore Defaults</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="345"/>
+        <location filename="../batch_convert.qml" line="368"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="355"/>
+        <location filename="../batch_convert.qml" line="378"/>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
     </message>
@@ -22,8 +22,8 @@
 <context>
     <name>QWizzard</name>
     <message>
-        <location filename="../batch_convert.qml" line="628"/>
-        <location filename="../batch_convert.qml" line="755"/>
+        <location filename="../batch_convert.qml" line="691"/>
+        <location filename="../batch_convert.qml" line="840"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
@@ -31,8 +31,8 @@
 <context>
     <name>action</name>
     <message>
-        <location filename="../batch_convert.qml" line="326"/>
-        <source>Export parts</source>
+        <location filename="../batch_convert.qml" line="339"/>
+        <source>Export Parts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -49,68 +49,75 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="22"/>
+        <location filename="../batch_convert.qml" line="23"/>
         <source>Unsupported MuseScore Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="23"/>
+        <location filename="../batch_convert.qml" line="24"/>
         <source>This plugin needs MuseScore 3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="42"/>
+        <location filename="../batch_convert.qml" line="55"/>
         <source>Choose Formats</source>
         <translation>Seleccionar Formatos</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="64"/>
+        <location filename="../batch_convert.qml" line="76"/>
         <source>Input Formats</source>
         <translation>Formatos de entrada</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="212"/>
+        <location filename="../batch_convert.qml" line="224"/>
         <source>Output Formats</source>
         <translation>Formatos de salida</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="330"/>
+        <location filename="../batch_convert.qml" line="345"/>
         <source>Process
 Subdirectories</source>
         <translation>Procesar subcarpetas</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="417"/>
-        <source>Select Startfolder</source>
-        <translation>Sélectionner un répertoire</translation>
+        <location filename="../batch_convert.qml" line="353"/>
+        <source>Different Export
+Path</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="418"/>
-        <source>Select Folder</source>
-        <translation>Sélectionner un répertoire</translation>
+        <location filename="../batch_convert.qml" line="442"/>
+        <source>Select Sources Startfolder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="505"/>
+        <location filename="../batch_convert.qml" line="443"/>
+        <source>Select Sources Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="460"/>
+        <source>Select Target Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="558"/>
         <source>Running...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="601"/>
+        <location filename="../batch_convert.qml" line="665"/>
+        <location filename="../batch_convert.qml" line="731"/>
         <source>%1 is up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="661"/>
-        <source>%1.%2 is up to date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="685"/>
+        <location filename="../batch_convert.qml" line="753"/>
         <source>ERROR reading file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="753"/>
+        <location filename="../batch_convert.qml" line="838"/>
         <source>No files found</source>
         <translation type="unfinished"></translation>
     </message>
