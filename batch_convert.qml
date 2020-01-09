@@ -88,6 +88,7 @@ MuseScore {
             text: "*.msc"
             enabled: (mscoreMajorVersion < 2) ? true : false // MuseScore < 2.0
             visible: enabled // hide if not enabled
+            tooltip: qsTranslate("Ms::MuseScore", "MuseScore Files")
             }
           CheckBox {
             id: inXml
