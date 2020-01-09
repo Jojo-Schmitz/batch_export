@@ -71,6 +71,7 @@ MuseScore {
               if (checked && outMscz.checked)
                 outMscz.checked = false
               }
+            tooltip: qsTranslate("Ms::MuseScore", "MuseScore Files")
             }
           CheckBox {
             id: inMscx
@@ -80,6 +81,7 @@ MuseScore {
               if (checked && outMscx.checked)
                 outMscx.checked = false
               }
+            tooltip: qsTranslate("Ms::MuseScore", "MuseScore Files")
             }
           CheckBox {
             id: inMsc
@@ -95,6 +97,7 @@ MuseScore {
               if (checked && outXml.checked)
                 outXml.checked = !checked
               }
+            tooltip: qsTranslate("Ms::MuseScore", "MusicXML Files")
             }
           CheckBox {
             id: inMusicXml
@@ -106,6 +109,7 @@ MuseScore {
               if (checked && outMusicXml.checked)
                 outMusicXml.checked = !checked
               }
+            tooltip: qsTranslate("Ms::MuseScore", "MusicXML Files")
             }
           CheckBox {
             id: inMxl
@@ -115,6 +119,7 @@ MuseScore {
               if (checked && outMxl.checked)
                 outMxl.checked = false
               }
+            tooltip: qsTranslate("Ms::MuseScore", "MusicXML Files")
             }
           CheckBox {
             id: inMid
@@ -124,6 +129,7 @@ MuseScore {
               if (checked && outMid.checked)
                 outMid.checked = false
               }
+            tooltip: qsTranslate("Ms::MuseScore", "MIDI Files")
             }
           CheckBox {
             id: inPdf
@@ -135,68 +141,84 @@ MuseScore {
               if (checked && outPdf.checked)
                 outPdf.checked = false
               }
+            tooltip: qsTranslate("Ms::MuseScore", "PDF Files (experimental OMR)")
             }
           CheckBox {
             id: inMidi
             text: "*.midi"
+            tooltip: qsTranslate("Ms::MuseScore", "MIDI Files")
             }
           CheckBox {
             id: inKar
             text: "*.kar"
+            tooltip: qsTranslate("Ms::MuseScore", "MIDI Files")
             }
           CheckBox {
             id: inCap
             text: "*.cap"
+            tooltip: qsTranslate("Ms::MuseScore", "Capella Files")
             }
           CheckBox {
             id: inCapx
             text: "*.capx"
+            tooltip: qsTranslate("Ms::MuseScore", "Capella Files")
             }
           CheckBox {
             id: inBww
             text: "*.bww"
+            tooltip: qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
             }
           CheckBox {
             id: inMgu
             text: "*.mgu"
+            tooltip: qsTranslate("Ms::MuseScore", "BB Files (experimental)")
             }
           CheckBox {
             id: inSgu
             text: "*.sgu"
+            tooltip: qsTranslate("Ms::MuseScore", "BB Files (experimental)")
             }
           CheckBox {
             id: inOve
             text: "*.ove"
+            tooltip: qsTranslate("Ms::MuseScore", "Overture / Score Writer Files (experimental)")
             }
           CheckBox {
             id: inScw
             text: "*.scw"
+            tooltip: qsTranslate("Ms::MuseScore", "Overture / Score Writer Files (experimental)")
             }
           CheckBox {
             id: inGtp
             text: "*.gtp"
+            tooltip: qsTranslate("Ms::MuseScore", "Guitar Pro")
             }
           CheckBox {
             id: inGp3
             text: "*.gp3"
+            tooltip: qsTranslate("Ms::MuseScore", "Guitar Pro")
             }
           CheckBox {
             id: inGp4
             text: "*.gp4"
+            tooltip: qsTranslate("Ms::MuseScore", "Guitar Pro")
             }
           CheckBox {
             id: inGp5
             text: "*.gp5"
+            tooltip: qsTranslate("Ms::MuseScore", "Guitar Pro")
             }
           CheckBox {
             id: inGpx
             text: "*.gpx"
+            tooltip: qsTranslate("Ms::MuseScore", "Guitar Pro")
             }
           CheckBox {
             id: inPtb
             enabled: (mscoreMajorVersion >= 3) ? true : false // MuseScore 3
             visible: enabled // hide if not enabled
             text: "*.ptb"
+            tooltip: qsTranslate("Ms::MuseScore", "Power Tab Editor Files (experimental)")
             }
           } // Column
         } // inFormats
@@ -221,6 +243,7 @@ MuseScore {
                   if (checked && inMscz.checked)
                     inMscz.checked = false
                   }
+                tooltip: qsTranslate("Ms::MuseScore", "MuseScore 3 File")
                 }
               CheckBox {
                 id: outMscx
@@ -230,6 +253,7 @@ MuseScore {
                   if (checked && inMscx.checked)
                     inMscx.checked = false
                   }
+                tooltip: qsTranslate("Ms::MuseScore", "Uncompressed MuseScore 3 File")
                 }
               CheckBox {
                 id: outXml
@@ -242,6 +266,7 @@ MuseScore {
                   if (checked && inXml.checked)
                     inXml.checked = false
                   }
+                tooltip: qsTranslate("Ms::MuseScore", "Uncompressed MusicXML File (outdated)")
                 }
               CheckBox {
                 id: outMusicXml
@@ -254,6 +279,7 @@ MuseScore {
                   if (checked && inMusicXml.checked)
                     inMusicXml.checked = false
                   }
+                tooltip: qsTranslate("Ms::MuseScore", "Uncompressed MusicXML File")
                 }
               CheckBox {
                 id: outMxl
@@ -263,6 +289,7 @@ MuseScore {
                   if (checked && inMxl.checked)
                     inMxl.checked = false
                   }
+                tooltip: qsTranslate("Ms::MuseScore", "Compressed MusicXML File")
                 }
               CheckBox {
                 id: outMid
@@ -272,6 +299,7 @@ MuseScore {
                   if (checked && inMid.checked)
                     inMid.checked = false
                   }
+                tooltip: qsTranslate("Ms::MuseScore", "Standard MIDI File")
                 }
               CheckBox {
                 id: outPdf
@@ -282,42 +310,51 @@ MuseScore {
                   if (checked && inPdf.checked)
                     inPdf.checked = false
                   }
+                tooltip: qsTranslate("Ms::MuseScore", "PDF File")
                 }
               CheckBox {
                 id: outPs
                 text: "*.ps"
                 enabled: (mscoreMajorVersion < 2) ? true : false // MuseScore < 2.0
                 visible: enabled // hide if not enabled
+                tooltip: qsTranslate("Ms::MuseScore", "PostStript File")
                 }
               CheckBox {
                 id: outPng
                 text: "*.png"
+                tooltip: qsTranslate("Ms::MuseScore", "PNG Bitmap Graphic")
                 }
               CheckBox {
                 id: outSvg
                 text: "*.svg"
+                tooltip: qsTranslate("Ms::MuseScore", "Scalable Vector Graphics")
                 }
               CheckBox {
                 id: outLy
                 text: "*.ly"
                 enabled: (mscoreMajorVersion < 2) ? true : false // MuseScore < 2.0, or via xml2ly?
                 visible: enabled // hide if not enabled
+                tooltip: qsTranslate("Ms::MuseScore", "LilyPond Format")
                 }
               CheckBox {
                 id: outWav
                 text: "*.wav"
+                tooltip: qsTranslate("Ms::MuseScore", "Wave Audio")
                 }
               CheckBox {
                 id: outFlac
                 text: "*.flac"
+                tooltip: qsTranslate("Ms::MuseScore", "FLAC Audio")
                 }
               CheckBox {
                 id: outOgg
                 text: "*.ogg"
+                tooltip: qsTranslate("Ms::MuseScore", "Ogg Vorbis Audio")
                 }
               CheckBox { // needs lame_enc.dll
                 id: outMp3
                 text: "*.mp3"
+                tooltip: qsTranslate("Ms::MuseScore", "MP3 Audio")
                 }
               } //Column
             } //outFormats
