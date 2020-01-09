@@ -192,6 +192,12 @@ MuseScore {
             id: inGpx
             text: "*.gpx"
             }
+          CheckBox {
+            id: inPtb
+            enabled: (mscoreMajorVersion >= 3) ? true : false // MuseScore 3
+            visible: enabled // hide if not enabled
+            text: "*.ptb"
+            }
           } // Column
         } // inFormats
       ColumnLayout {
@@ -393,6 +399,7 @@ MuseScore {
     property alias inGp4:   inGp4.checked
     property alias inGp5:   inGp5.checked
     property alias inGpx:   inGpx.checked
+    property alias inPtb:   inPtb.checked
     // out options
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
@@ -462,7 +469,7 @@ MuseScore {
       inPdf.checked = inMidi.checked = inKar.checked = inCap.checked =
       inCapx.checked = inBww.checked = inMgu.checked = inSgu.checked =
       inOve.checked = inScw.checked = inGtp.checked = inGp3.checked =
-      inGp4.checked = inGp5.checked = inGpx.checked = false
+      inGp4.checked = inGp5.checked = inGpx.checked = inPtb.checked = false
     outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
       outMid.checked = outPdf.checked = outPs.checked = outPng.checked =
       outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
@@ -496,6 +503,7 @@ MuseScore {
     if (inGp4.checked)  inFormats.extensions.push("gp4")
     if (inGp5.checked)  inFormats.extensions.push("gp5")
     if (inGpx.checked)  inFormats.extensions.push("gpx")
+    if (inPtb.checked)  inFormats.extensions.push("ptb")
     if (!inFormats.extensions.length)
       console.log("No input format selected")
 
