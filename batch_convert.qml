@@ -683,7 +683,7 @@ MuseScore {
           if (res) 
             resultText.append("%1 → %2".arg(fileExcerpt.source).arg(outFormats.extensions[j]))
           else
-            resultText.append("Error: %1 → %2 not exported".arg(fileExcerpt.source).arg(outFormats.extensions[j]))
+            resultText.append(qsTr("Error: %1 → %2 not exported").arg(fileExcerpt.source).arg(outFormats.extensions[j]))
           }
         else // file already up to date
           resultText.append(qsTr("%1 is up to date").arg(fileExcerpt.source))
@@ -749,7 +749,7 @@ MuseScore {
             if (res)
               resultText.append("%1 → %2".arg(fileFullPath).arg(outFormats.extensions[j]))
             else
-              resultText.append("Error: %1 → %2 not exported".arg(fileFullPath).arg(outFormats.extensions[j]))
+              resultText.append(qsTr("Error: %1 → %2 not exported").arg(fileFullPath).arg(outFormats.extensions[j]))
             } 
           else
             resultText.append(qsTr("%1 is up to date").arg(fileFullPath))
