@@ -236,6 +236,15 @@ MuseScore {
             property var extensions: new Array
             Column {
               spacing: 1
+                CheckBox {
+                id: outBB
+                text: "Blackbinder"
+                onClicked: {
+                  if (checked && inMusicXml.checked)
+                    inMusicXml.checked = false
+                  }
+                tooltip: qsTranslate("Ms::MuseScore", "Uncompressed MusicXML File (outdated)")
+                }
               CheckBox {
                 id: outMscz
                 text: "*.mscz"
@@ -439,6 +448,7 @@ MuseScore {
     property alias inGpx:   inGpx.checked
     property alias inPtb:   inPtb.checked
     // out options
+    property alias outBB:  outBB.checked
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
     property alias outXml:  outXml.checked
@@ -508,10 +518,10 @@ MuseScore {
       inCapx.checked = inBww.checked = inMgu.checked = inSgu.checked =
       inOve.checked = inScw.checked = inGtp.checked = inGp3.checked =
       inGp4.checked = inGp5.checked = inGpx.checked = inPtb.checked = false
-    outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
-      outMid.checked = outPdf.checked = outPs.checked = outPng.checked =
-      outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
-      outOgg.checked = outMp3.checked = false
+    outMsczBB = outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked =
+      outMxl.checked = outMid.checked = outPdf.checked = outPs.checked =
+      outPng.checked = outSvg.checked = outLy.checked = outWav.checked =
+      outFlac.checked = outOgg.checked = outMp3.checked = false
     traverseSubdirs.checked = false
     exportExcerpts.checked = false
     // 'uncheck' everything, then 'check' the next few
@@ -545,6 +555,7 @@ MuseScore {
     if (!inFormats.extensions.length)
       console.log("No input format selected")
 
+    if (outBB.checked)  outFormats.extensions.push("musicxml")
     if (outMscz.checked) outFormats.extensions.push("mscz")
     if (outMscx.checked) outFormats.extensions.push("mscx")
     if (outXml.checked)  outFormats.extensions.push("xml")
