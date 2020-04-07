@@ -215,6 +215,13 @@ MuseScore {
             tooltip: qsTranslate("Ms::MuseScore", "Guitar Pro")
             }
           CheckBox {
+            id: inGp
+            enabled: (mscoreMajorVersion >= 4 || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 5)) ? true : false // MuseScore 3.5
+            visible: enabled // hide if not enabled
+            text: "*.gp"
+            tooltip: qsTranslate("Ms::MuseScore", "Guitar Pro")
+            }
+          CheckBox {
             id: inPtb
             enabled: (mscoreMajorVersion >= 3) ? true : false // MuseScore 3
             visible: enabled // hide if not enabled
@@ -541,6 +548,7 @@ MuseScore {
     if (inGp4.checked)  inFormats.extensions.push("gp4")
     if (inGp5.checked)  inFormats.extensions.push("gp5")
     if (inGpx.checked)  inFormats.extensions.push("gpx")
+    if (inGp.checked)   inFormats.extensions.push("gp")
     if (inPtb.checked)  inFormats.extensions.push("ptb")
     if (!inFormats.extensions.length)
       console.log("No input format selected")
