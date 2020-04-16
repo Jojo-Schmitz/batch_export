@@ -10,7 +10,7 @@ import FileIO 3.0
 
 MuseScore {
   menuPath: "Plugins." + qsTr("Batch Convert")
-  version: "3.0"
+  version: "3.5"
   requiresScore: false
   description: qsTr("This plugin converts mutiple files from various formats"
     + " into various formats")
@@ -133,26 +133,36 @@ MuseScore {
             tooltip: qsTranslate("Ms::MuseScore", "MIDI Files")
             }
           CheckBox {
-            id: inPdf
-            text: "*.pdf"
-            enabled: false // needs OMR, MuseScore > 2.0?
-            visible: enabled // hide if not enabled
-            //exclusiveGroup: pdf
-            onClicked: {
-              if (checked && outPdf.checked)
-                outPdf.checked = false
-              }
-            tooltip: qsTranslate("Ms::MuseScore", "PDF Files (experimental OMR)")
-            }
-          CheckBox {
             id: inMidi
             text: "*.midi"
+            //exclusiveGroup: midi
+            onClicked: {
+              if (checked && outMidi.checked)
+                outMidi.checked = false
+              }
             tooltip: qsTranslate("Ms::MuseScore", "MIDI Files")
             }
           CheckBox {
             id: inKar
             text: "*.kar"
             tooltip: qsTranslate("Ms::MuseScore", "MIDI Files")
+            }
+          CheckBox {
+            id: inMd
+            text: "*.md"
+            tooltip: qsTranslate("Ms::MuseScore", "MuseData Files")
+            }
+          CheckBox {
+            id: inPdf
+            text: "*.pdf"
+            enabled: false // needs OMR, MuseScore > 2.0 or > 3.5?
+            visible: enabled // hide if not enabled
+            //exclusiveGroup: pdf
+            onClicked: {
+              if (checked && outPdf.checked)
+                outPdf.checked = false
+              }
+            tooltip: qsTranslate("Ms::MuseScore", "Optical Music Recognition")
             }
           CheckBox {
             id: inCap
@@ -163,11 +173,6 @@ MuseScore {
             id: inCapx
             text: "*.capx"
             tooltip: qsTranslate("Ms::MuseScore", "Capella Files")
-            }
-          CheckBox {
-            id: inBww
-            text: "*.bww"
-            tooltip: qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
             }
           CheckBox {
             id: inMgu
@@ -188,6 +193,11 @@ MuseScore {
             id: inScw
             text: "*.scw"
             tooltip: qsTranslate("Ms::MuseScore", "Overture / Score Writer Files (experimental)")
+            }
+          CheckBox {
+            id: inBww
+            text: "*.bww"
+            tooltip: qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
             }
           CheckBox {
             id: inGtp
@@ -227,6 +237,20 @@ MuseScore {
             visible: enabled // hide if not enabled
             text: "*.ptb"
             tooltip: qsTranslate("Ms::MuseScore", "Power Tab Editor Files (experimental)")
+            }
+          CheckBox {
+            id: inMsczComma
+            enabled: (mscoreMajorVersion >= 4 || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 5)) ? true : false // MuseScore 3.5
+            visible: enabled // hide if not enabled
+            text: "*.mscz,"
+            tooltip: qsTranslate("Ms::MuseScore", "MuseScore Backup Files")
+            }
+          CheckBox {
+            id: inMscxComma
+            enabled: (mscoreMajorVersion >= 4 || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 5)) ? true : false // MuseScore 3.5
+            visible: enabled // hide if not enabled
+            text: "*.mscx,"
+            tooltip: qsTranslate("Ms::MuseScore", "MuseScore Backup Files")
             }
           } // Column
         } // inFormats
@@ -306,6 +330,18 @@ MuseScore {
                 onClicked: {
                   if (checked && inMid.checked)
                     inMid.checked = false
+                  }
+                tooltip: qsTranslate("Ms::MuseScore", "Standard MIDI File")
+                }
+              CheckBox {
+                id: outMidi
+                enabled: (mscoreMajorVersion >= 4 || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 5)) ? true : false // MuseScore 3.5
+                visible: enabled // hide if not enabled
+                text: "*.midi"
+                //exclusiveGroup: midi
+                onClicked: {
+                  if (checked && inMidi.checked)
+                    inMidi.checked = false
                   }
                 tooltip: qsTranslate("Ms::MuseScore", "Standard MIDI File")
                 }
@@ -429,22 +465,26 @@ MuseScore {
     property alias inMusicXml:   inMusicXml.checked
     property alias inMxl:   inMxl.checked
     property alias inMid:   inMid.checked
-    property alias inPdf:   inPdf.checked
     property alias inMidi:  inMidi.checked
     property alias inKar:   inKar.checked
+    property alias inMd:    inMd.checked
+    property alias inPdf:   inPdf.checked
     property alias inCap:   inCap.checked
     property alias inCapx:  inCapx.checked
-    property alias inBww:   inBww.checked
     property alias inMgu:   inMgu.checked
     property alias inSgu:   inSgu.checked
     property alias inOve:   inOve.checked
     property alias inScw:   inScw.checked
+    property alias inBww:   inBww.checked
     property alias inGtp:   inGtp.checked
     property alias inGp3:   inGp3.checked
     property alias inGp4:   inGp4.checked
     property alias inGp5:   inGp5.checked
     property alias inGpx:   inGpx.checked
+    property alias inGp:    inGp.checked
     property alias inPtb:   inPtb.checked
+    property alias inMsczComma:  inMsczComma.checked
+    property alias inMscxComma:  inMscxComma.checked
     // out options
     property alias outMscz: outMscz.checked
     property alias outMscx: outMscx.checked
@@ -452,6 +492,7 @@ MuseScore {
     property alias outMusicXml:  outMusicXml.checked
     property alias outMxl:  outMxl.checked
     property alias outMid:  outMid.checked
+    property alias outMidi: outMidi.checked
     property alias outPdf:  outPdf.checked
     property alias outPs:   outPs.checked
     property alias outPng:  outPng.checked
@@ -511,12 +552,12 @@ MuseScore {
 
   function resetDefaults() {
     inMscx.checked = inXml.checked = inMusicXml.checked = inMxl.checked = inMid.checked =
-      inPdf.checked = inMidi.checked = inKar.checked = inCap.checked =
-      inCapx.checked = inBww.checked = inMgu.checked = inSgu.checked =
-      inOve.checked = inScw.checked = inGtp.checked = inGp3.checked =
-      inGp4.checked = inGp5.checked = inGpx.checked = inPtb.checked = false
+      inMidi.checked = inKar.checked = inMd.checked = inPdf.checked = inCap.checked =
+      inCapx.checked = inMgu.checked = inSgu.checked = inOve.checked = inScw.checked =
+      inBww.checked = inGp4.checked = inGp5.checked = inGpx.checked = inGp.checked =
+      inPtb.checked = inMsczComma.checked = inMscxComma.checked = false
     outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
-      outMid.checked = outPdf.checked = outPs.checked = outPng.checked =
+      outMid.checked = outMidi.checked = outPdf.checked = outPs.checked = outPng.checked =
       outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
       outOgg.checked = outMp3.checked = false
     traverseSubdirs.checked = false
@@ -533,16 +574,17 @@ MuseScore {
     if (inMusicXml.checked)  inFormats.extensions.push("musicxml")
     if (inMxl.checked)  inFormats.extensions.push("mxl")
     if (inMid.checked)  inFormats.extensions.push("mid")
-    if (inPdf.checked)  inFormats.extensions.push("pdf")
     if (inMidi.checked) inFormats.extensions.push("midi")
     if (inKar.checked)  inFormats.extensions.push("kar")
+    if (inMd.checked)   inFormats.extensions.push("md")
+    if (inPdf.checked)  inFormats.extensions.push("pdf")
     if (inCap.checked)  inFormats.extensions.push("cap")
     if (inCapx.checked) inFormats.extensions.push("capx")
-    if (inBww.checked)  inFormats.extensions.push("bww")
     if (inMgu.checked)  inFormats.extensions.push("mgu")
     if (inSgu.checked)  inFormats.extensions.push("sgu")
     if (inOve.checked)  inFormats.extensions.push("ove")
     if (inScw.checked)  inFormats.extensions.push("scw")
+    if (inBww.checked)  inFormats.extensions.push("bww")
     if (inGtp.checked)  inFormats.extensions.push("gtp")
     if (inGp3.checked)  inFormats.extensions.push("gp3")
     if (inGp4.checked)  inFormats.extensions.push("gp4")
@@ -550,6 +592,8 @@ MuseScore {
     if (inGpx.checked)  inFormats.extensions.push("gpx")
     if (inGp.checked)   inFormats.extensions.push("gp")
     if (inPtb.checked)  inFormats.extensions.push("ptb")
+    if (inMsczComma.checked) inFormats.extensions.push("mscz,")
+    if (inMscxComma.checked) inFormats.extensions.push("mscx,")
     if (!inFormats.extensions.length)
       console.log("No input format selected")
 
@@ -559,6 +603,7 @@ MuseScore {
     if (outMusicXml.checked)  outFormats.extensions.push("musicxml")
     if (outMxl.checked)  outFormats.extensions.push("mxl")
     if (outMid.checked)  outFormats.extensions.push("mid")
+    if (outMidi.checked) outFormats.extensions.push("midi")
     if (outPdf.checked)  outFormats.extensions.push("pdf")
     if (outPs.checked)   outFormats.extensions.push("ps")
     if (outPng.checked)  outFormats.extensions.push("png")
