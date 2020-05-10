@@ -246,7 +246,7 @@ différent</translation>
         <location filename="../batch_convert.qml" line="686"/>
         <location filename="../batch_convert.qml" line="752"/>
         <source>Error: %1 → %2 not exported</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur : %1 → %2 n&apos;est pas exporté</translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="689"/>
