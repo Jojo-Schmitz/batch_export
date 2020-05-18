@@ -195,6 +195,13 @@ MuseScore {
             tooltip: qsTranslate("Ms::MuseScore", "Overture / Score Writer Files (experimental)")
             }
           CheckBox {
+            id: inBmw
+            enabled: (mscoreMajorVersion >= 4 || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 5)) ? true : false // MuseScore 3.5
+            visible: enabled // hide if not enabled
+            text: "*.bmw"
+            tooltip: qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
+            }
+          CheckBox {
             id: inBww
             text: "*.bww"
             tooltip: qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
@@ -475,6 +482,7 @@ MuseScore {
     property alias inSgu:   inSgu.checked
     property alias inOve:   inOve.checked
     property alias inScw:   inScw.checked
+    property alias inBmw:   inBmw.checked
     property alias inBww:   inBww.checked
     property alias inGtp:   inGtp.checked
     property alias inGp3:   inGp3.checked
@@ -554,8 +562,8 @@ MuseScore {
     inMscx.checked = inXml.checked = inMusicXml.checked = inMxl.checked = inMid.checked =
       inMidi.checked = inKar.checked = inMd.checked = inPdf.checked = inCap.checked =
       inCapx.checked = inMgu.checked = inSgu.checked = inOve.checked = inScw.checked =
-      inBww.checked = inGp4.checked = inGp5.checked = inGpx.checked = inGp.checked =
-      inPtb.checked = inMsczComma.checked = inMscxComma.checked = false
+      inBmw.checked = inBww.checked = inGp4.checked = inGp5.checked = inGpx.checked =
+      inGp.checked = inPtb.checked = inMsczComma.checked = inMscxComma.checked = false
     outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
       outMid.checked = outMidi.checked = outPdf.checked = outPs.checked = outPng.checked =
       outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
@@ -584,6 +592,7 @@ MuseScore {
     if (inSgu.checked)  inFormats.extensions.push("sgu")
     if (inOve.checked)  inFormats.extensions.push("ove")
     if (inScw.checked)  inFormats.extensions.push("scw")
+    if (inBmw.checked)  inFormats.extensions.push("bmw")
     if (inBww.checked)  inFormats.extensions.push("bww")
     if (inGtp.checked)  inFormats.extensions.push("gtp")
     if (inGp3.checked)  inFormats.extensions.push("gp3")
