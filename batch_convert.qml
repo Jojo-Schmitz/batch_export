@@ -13,7 +13,7 @@ MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
     version: "3.5"
     requiresScore: false
-    description: qsTr("This plugin converts mutiple files from various formats"
+    description: qsTr("This plugin converts multiple files from various formats"
                       + " into various formats")
     pluginType: "dialog"
 
