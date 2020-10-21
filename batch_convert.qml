@@ -10,7 +10,7 @@ import MuseScore 3.0
 import FileIO 3.0
 
 MuseScore {
-    menuPath: "Plugins." + qsTr("Batch Convert")
+    menuPath: "Plugins." + qsTr("Batch Convert") // this doesn't work, why?
     version: "3.5"
     requiresScore: false
     description: qsTr("This plugin converts multiple files from various formats"
@@ -414,6 +414,30 @@ MuseScore {
                             text: "*.mp3"
                             tooltip: qsTranslate("Ms::MuseScore", "MP3 Audio")
                         }
+                        CheckBox {
+                            id: outMpos
+                            text: "*.mpos"
+                            enabled: (mscoreMajorVersion >= 2) ? true : false // MuseScore >= 2.0
+                            visible: enabled // hide if not enabled
+                            tooltip: qsTr("Positions of measures (XML)")
+                        }
+                        CheckBox {
+                            id: outSpos
+                            text: "*.spos"
+                            enabled: (mscoreMajorVersion >= 2) ? true : false // MuseScore >= 2.0
+                            visible: enabled // hide if not enabled
+                            tooltip: qsTr("Positions of segments (XML)")
+                        }
+                        CheckBox {
+                            id: outMlog
+                            text: "*.mlog"
+                            tooltip: qsTr("Internal file sanity check log (JSON)")
+                        }
+                        CheckBox {
+                            id: outMetaJson
+                            text: "*.metajson"
+                            tooltip: qsTr("Metadata JSON")
+                        }
                     } //Column
                 } //outFormats
             } // RowLayout
@@ -476,7 +500,7 @@ MuseScore {
         property alias inMscx:  inMscx.checked
         property alias inMsc:   inMsc.checked
         property alias inXml:   inXml.checked
-        property alias inMusicXml:   inMusicXml.checked
+        property alias inMusicXml: inMusicXml.checked
         property alias inMxl:   inMxl.checked
         property alias inMid:   inMid.checked
         property alias inMidi:  inMidi.checked
@@ -498,13 +522,13 @@ MuseScore {
         property alias inGpx:   inGpx.checked
         property alias inGp:    inGp.checked
         property alias inPtb:   inPtb.checked
-        property alias inMsczComma:  inMsczComma.checked
-        property alias inMscxComma:  inMscxComma.checked
+        property alias inMsczComma: inMsczComma.checked
+        property alias inMscxComma: inMscxComma.checked
         // out options
         property alias outMscz: outMscz.checked
         property alias outMscx: outMscx.checked
         property alias outXml:  outXml.checked
-        property alias outMusicXml:  outMusicXml.checked
+        property alias outMusicXml: outMusicXml.checked
         property alias outMxl:  outMxl.checked
         property alias outMid:  outMid.checked
         property alias outMidi: outMidi.checked
@@ -517,6 +541,10 @@ MuseScore {
         property alias outFlac: outFlac.checked
         property alias outOgg:  outOgg.checked
         property alias outMp3:  outMp3.checked
+        property alias outMpos: outMpos.checked
+        property alias outSpos: outSpos.checked
+        property alias outMlog: outMlog.checked
+        property alias outMetaJson: outMetaJson.checked
         // other options
         property alias exportE: exportExcerpts.checked
         property alias travers: traverseSubdirs.checked
@@ -587,7 +615,8 @@ MuseScore {
         outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
                 outMid.checked = outMidi.checked = outPdf.checked = outPs.checked = outPng.checked =
                 outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
-                outOgg.checked = outMp3.checked = false
+                outOgg.checked = outMp3.checked = outMpos.checked = outSPos.checked =
+                outMLog.checked = outMetaJson.checked = false
         traverseSubdirs.checked = false
         exportExcerpts.checked = false
         // 'uncheck' everything, then 'check' the next few
@@ -599,7 +628,7 @@ MuseScore {
         if (inMscz.checked) inFormats.extensions.push("mscz")
         if (inMscx.checked) inFormats.extensions.push("mscx")
         if (inXml.checked)  inFormats.extensions.push("xml")
-        if (inMusicXml.checked)  inFormats.extensions.push("musicxml")
+        if (inMusicXml.checked) inFormats.extensions.push("musicxml")
         if (inMxl.checked)  inFormats.extensions.push("mxl")
         if (inMid.checked)  inFormats.extensions.push("mid")
         if (inMidi.checked) inFormats.extensions.push("midi")
@@ -629,7 +658,7 @@ MuseScore {
         if (outMscz.checked) outFormats.extensions.push("mscz")
         if (outMscx.checked) outFormats.extensions.push("mscx")
         if (outXml.checked)  outFormats.extensions.push("xml")
-        if (outMusicXml.checked)  outFormats.extensions.push("musicxml")
+        if (outMusicXml.checked) outFormats.extensions.push("musicxml")
         if (outMxl.checked)  outFormats.extensions.push("mxl")
         if (outMid.checked)  outFormats.extensions.push("mid")
         if (outMidi.checked) outFormats.extensions.push("midi")
@@ -642,6 +671,10 @@ MuseScore {
         if (outFlac.checked) outFormats.extensions.push("flac")
         if (outOgg.checked)  outFormats.extensions.push("ogg")
         if (outMp3.checked)  outFormats.extensions.push("mp3")
+        if (outMpos.checked) outFormats.extensions.push("mpos")
+        if (outSpos.checked) outFormats.extensions.push("spos")
+        if (outMlog.checked) outFormats.extensions.push("mlog")
+        if (outMetaJson.checked) outFormats.extensions.push("metajson")
         if (!outFormats.extensions.length)
             console.log("No output format selected")
 

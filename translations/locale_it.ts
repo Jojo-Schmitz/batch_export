@@ -159,17 +159,17 @@
 <context>
     <name>QPlatformTheme</name>
     <message>
-        <location filename="../batch_convert.qml" line="440"/>
+        <location filename="../batch_convert.qml" line="464"/>
         <source>Restore Defaults</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="451"/>
+        <location filename="../batch_convert.qml" line="475"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="460"/>
+        <location filename="../batch_convert.qml" line="484"/>
         <source>Cancel</source>
         <translation type="unfinished">Annulla</translation>
     </message>
@@ -177,8 +177,8 @@
 <context>
     <name>QWizzard</name>
     <message>
-        <location filename="../batch_convert.qml" line="798"/>
-        <location filename="../batch_convert.qml" line="947"/>
+        <location filename="../batch_convert.qml" line="831"/>
+        <location filename="../batch_convert.qml" line="980"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
@@ -186,7 +186,7 @@
 <context>
     <name>action</name>
     <message>
-        <location filename="../batch_convert.qml" line="422"/>
+        <location filename="../batch_convert.qml" line="446"/>
         <source>Export parts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -219,29 +219,49 @@
         <translation>Formati di output</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="665"/>
+        <location filename="../batch_convert.qml" line="422"/>
+        <source>Positions of measures (XML)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="429"/>
+        <source>Positions of segments (XML)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="434"/>
+        <source>Internal file sanity check log (JSON)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="439"/>
+        <source>Metadata JSON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="698"/>
         <source>Running...</source>
         <translation>In esecuzione...</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="769"/>
-        <location filename="../batch_convert.qml" line="835"/>
+        <location filename="../batch_convert.qml" line="802"/>
+        <location filename="../batch_convert.qml" line="868"/>
         <source>Error: %1 → %2 not exported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="772"/>
-        <location filename="../batch_convert.qml" line="838"/>
+        <location filename="../batch_convert.qml" line="805"/>
+        <location filename="../batch_convert.qml" line="871"/>
         <source>%1 is up to date</source>
         <translation>%1 è aggiornato</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="860"/>
+        <location filename="../batch_convert.qml" line="893"/>
         <source>ERROR reading file %1</source>
         <translation>ERRORE lettura file %1</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="428"/>
+        <location filename="../batch_convert.qml" line="452"/>
         <source>Process
 Subdirectories</source>
         <translation>Processi
@@ -253,28 +273,28 @@ sottodirectory</translation>
         <translation>Questo plugin converte più file da vari formati in vari formati</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="436"/>
+        <location filename="../batch_convert.qml" line="460"/>
         <source>Different Export
 Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="531"/>
+        <location filename="../batch_convert.qml" line="559"/>
         <source>Select Sources Startfolder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="532"/>
+        <location filename="../batch_convert.qml" line="560"/>
         <source>Select Sources Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="554"/>
+        <location filename="../batch_convert.qml" line="582"/>
         <source>Select Target Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="945"/>
+        <location filename="../batch_convert.qml" line="978"/>
         <source>No files found</source>
         <translation>Nessun file trovato</translation>
     </message>
