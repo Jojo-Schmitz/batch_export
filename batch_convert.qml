@@ -23,8 +23,7 @@ MuseScore {
         title: qsTr("Unsupported MuseScore Version")
         text: qsTr("This plugin needs MuseScore 3")
         onAccepted: {
-            window.visible = false
-            Qt.quit()
+            batchConvert.parent.Window.window.close();
         }
     }
 
@@ -37,16 +36,17 @@ MuseScore {
     onRun: {
         // check MuseScore version
         if (mscoreMajorVersion < 3) { // we should really never get here, but fail at the imports above already
-            window.visible = false
+            batchConvert.visible = false
             versionError.open()
         }
         else
-            window.visible = true // needed for unknown reasons
+            batchConvert.visible = true // needed for unknown reasons
     }
 
     //Window {
-    id: window
+    id: batchConvert
 
+    // `width` and `height` allegedly are not valid property names, works regardless and seems needed?!
     width: mainRow.childrenRect.width
     height: mainRow.childrenRect.height
 
@@ -483,7 +483,7 @@ MuseScore {
                         id: cancel
                         text: /*qsTr("Cancel")*/ qsTranslate("QPlatformTheme", "Cancel")
                         onClicked: {
-                            Qt.quit()
+                            batchConvert.parent.Window.window.close();
                         }
                     } // Cancel
                 } // Row
@@ -569,7 +569,7 @@ MuseScore {
         }
         onRejected: {
             console.log("No source folder selected")
-            Qt.quit()
+            batchConvert.parent.Window.window.close();
         }
 
         Component.onDestruction: {
@@ -599,7 +599,7 @@ MuseScore {
 
         onRejected: {
             console.log("No target folder selected")
-            Qt.quit()
+            batchConvert.parent.Window.window.close();
         }
         Component.onDestruction: {
             settings.epath = targetFolderDialog.folder
@@ -714,7 +714,7 @@ MuseScore {
 
         onRejected: {
             abortRequested = true
-            Qt.quit()
+            batchConvert.parent.Window.window.close();
         }
     }
 
