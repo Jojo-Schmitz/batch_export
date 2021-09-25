@@ -1,11 +1,14 @@
 This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the instructions in [the 1.x Handbook](http://musescore.org/node/10129), the [2.x Handbook](http://musescore.org/node/36051) or the [3.x Handbook](http://musescore.org/node/278601), then:
 
 1. Select "Batch Convert" (formerly "Batch Export") from the Plugins menu
-2. Select the in- and output format(s), or just use the default (\*.mscz to \*.pdf)
-3. Decide whether or nor you want to also work on subdirectories of the one you'll select in the next step and check/uncheck the corresponding box
-4. Browse to the folder containing the files you wish to export
-5. Select "Choose"
-6. Confirm the dialog box that shows which files have been converted
+
+    ![Screenshot](https://github.com/Jojo-Schmitz/batch_export/blob/master/batch-convert.png "Screenshot")
+
+3. Select the in- and output format(s), or just use the default (\*.mscz to \*.pdf)
+4. Decide whether or nor you want to also work on subdirectories of the one you'll select in the next step and check/uncheck the corresponding box
+5. Browse to the folder containing the files you wish to export
+6. Select "Choose"
+7. Confirm the dialog box that shows which files have been converted
 
 A couple of notes to be aware of:
 
