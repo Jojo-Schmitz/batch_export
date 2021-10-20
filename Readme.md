@@ -23,6 +23,6 @@ A couple of notes to be aware of:
 
 These issues are fixed with the above mentioned versions, and without re-installing the plugin.
 
-This plugin now comes with translations of the dialogs into German, French (thanks to lasconic), Spanish (thanks to jorgk), and Italian (thanks to Shoichi), for all other language settings in MuseScore, it remains English. More translations are welcome, just contact us for including them.
+This plugin now comes with translations of the dialogs into German, French (thanks to lasconic), Spanish (thanks to jorgk), Italian (thanks to Shoichi) and Simplified Chinese (thanks to David Copperfield), for all other language settings in MuseScore, it remains English. More translations are welcome, just contact us for including them.
 
 The idea for this plugin stems from a [question in the forum](https://musescore.org/node/12452). See also [this discussion about the 2.0 version](https://musescore.org/node/55616)
