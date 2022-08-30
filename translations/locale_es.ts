@@ -257,6 +257,16 @@ Path</source>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="559"/>
+        <source>Filter files with</source>
+        <translation>Filter files with</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="559"/>
+        <source>Use Regular Expression</source>
+        <translation>Use regular expression</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="559"/>
         <source>Select Sources Startfolder</source>
         <translation type="unfinished"></translation>
     </message>

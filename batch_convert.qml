@@ -42,18 +42,15 @@ MuseScore {
         }
         else
             batchConvert.visible = true // needed for unknown reasons
-		
-		//console.log("Current import: "+settings.iPath); //LVR
-		//console.log("Current export: "+settings.ePath); //LVR
-		
-		if(settings.ePath===undefined) settings.ePath=settings.iPath;
+
+        if(settings.ePath===undefined) settings.ePath=settings.iPath;
     }
 
     //Window {
     id: batchConvert
 
     // `width` and `height` allegedly are not valid property names, works regardless and seems needed?!
-    width: mainRow.childrenRect.width + 20
+    width: mainRow.childrenRect.width + 40
     height: mainRow.childrenRect.height + 20
 
     // Mutally exclusive in/out formats, doesn't work properly
@@ -279,14 +276,15 @@ MuseScore {
         } // inFormats
         ColumnLayout {
             Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+
             RowLayout {
                 Label {
                     text: " ===> "
-					Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                 }
                 GroupBox {
                     id: outFormats
-					Layout.margins: 20
+                    Layout.margins: 20
                     title: " " + qsTr("Output Formats") + " "
                     property var extensions: new Array
                     Column {
@@ -461,24 +459,25 @@ MuseScore {
                 id: traverseSubdirs
                 text: qsTr("Process\nSubdirectories")
             } // traverseSubdirs
-			Row {
-				spacing: 5
-				CheckBox {
-					id: filterContent
-					text: qsTr("Filter files with")
-					}
-				TextField {
-					id: contentFilterString
-					text: ""
-					enabled: filterContent.checked
-					placeholderText: "E.g. *Concerto*"
-				}
-				CheckBox {
-					id: filterWithRegExp
-					text: qsTr("Use Regular Expression")
-					enabled: filterContent.checked
-					checked: true
-				}
+            Row {
+                spacing: 5
+                CheckBox {
+                    id: filterContent
+                    text: qsTr("Filter files with")
+                    }
+                TextField {
+                    id: contentFilterString
+                    text: ""
+                    enabled: filterContent.checked
+                    placeholderText: "E.g. *Concerto*"
+                    width: 200
+                }
+                CheckBox {
+                    id: filterWithRegExp
+                    text: qsTr("Use Regular Expression")
+                    enabled: filterContent.checked
+                    checked: true
+                }
             } // filter content options
             CheckBox {
                 id: differentExportPath
@@ -504,7 +503,7 @@ MuseScore {
                         text: /*qsTr("Ok")*/ qsTranslate("QPlatformTheme", "OK")
                         //isDefault: true // needs more work
                         onClicked: {
-                            if (collectInOutFormats()) 
+                            if (collectInOutFormats())
                                 sourceFolderDialog.open()
                         } // onClicked
                     } // ok
@@ -579,11 +578,11 @@ MuseScore {
         property alias travers: traverseSubdirs.checked
         property alias diffEPath: differentExportPath.checked  // different export path
         property alias iPath: mscorePathsSettings.myScores // import path
-        property alias ePath: mscorePathsSettings.myExports // export path // LVR: store it differently
+        property alias ePath: mscorePathsSettings.myExports // export path
         property alias filter: filterContent.checked
         property alias filterString: contentFilterString.text
         property alias filterIsRegExp: filterWithRegExp.checked
-		
+
     }
 
     FileDialog {
@@ -592,13 +591,11 @@ MuseScore {
                    qsTr("Select Sources Startfolder"):
                    qsTr("Select Sources Folder")
         selectFolder: true
-        // folder: "file:///" + settings.iPath // transform to URL
-        folder: settings.iPath // LVR iPath already contains "file:///"
+        folder: settings.iPath
 
         onAccepted: {
             settings.iPath = sourceFolderDialog.folder.toString();
-			console.log("After import: "+settings.iPath); //LVR
-			
+
             if (differentExportPath.checked && !traverseSubdirs.checked)
                 targetFolderDialog.open(); // work we be called from within the target folder dialog
             else
@@ -610,17 +607,17 @@ MuseScore {
         }
 
         Component.onDestruction: {
-            settings.iPath = sourceFolderDialog.folder
+            settings.iPath = sourceFolderDialog.folder.toString();
         }
     } // sourceFolderDialog
-    
+
     FileDialog {
         id: targetFolderDialog
         title: qsTr("Select Target Folder")
         selectFolder: true
 
         // folder: "file:///" + settings.ePath // transform to URL
-        folder: settings.ePath // LVR ePath already contains "file:///"
+        folder: settings.ePath
 
         property string folderPath: ""
         onAccepted: {
@@ -632,8 +629,7 @@ MuseScore {
                 folderPath = folder.toString().substring(folder.toString().charAt(9) === ':' ? 8 : 7)
             else
                 folderPath = folder
-            settings.ePath = targetFolderDialog.folder.toString(); // LVR
-			//console.log("After export: "+settings.ePath); //LVR
+            settings.ePath = targetFolderDialog.folder.toString();
             work();
         }
 
@@ -642,7 +638,7 @@ MuseScore {
             batchConvert.parent.Window.window.close();
         }
         Component.onDestruction: {
-            settings.ePath = targetFolderDialog.folder
+            settings.ePath = targetFolderDialog.folder.toString();
         }
     } // targetFolderDialog
 
@@ -659,17 +655,17 @@ MuseScore {
                 outMlog.checked = outMetaJson.checked = false
         traverseSubdirs.checked = false
         exportExcerpts.checked = false
-		filterWithRegExp.checked=true;
-		filterContent.checked=true;
-		contentFilterString.text="";
+        filterWithRegExp.checked=true;
+        filterContent.checked=true;
+        contentFilterString.text="";
         // 'uncheck' everything, then 'check' the next few
         inMscz.checked = outPdf.checked = true
         differentExportPath.checked = false
     } // resetDefaults
 
     function collectInOutFormats() {
-		inFormats.extensions.length=0; // LVR: Avoid duplicates of formats when the converter is launched a second time
-		outFormats.extensions.length=0; // LVR: Avoid duplicates of formats when the converter is launched a second time
+        inFormats.extensions.length=0;
+        outFormats.extensions.length=0;
         if (inMscz.checked) inFormats.extensions.push("mscz")
         if (inMscx.checked) inFormats.extensions.push("mscx")
         if (inXml.checked)  inFormats.extensions.push("xml")
@@ -804,7 +800,7 @@ MuseScore {
     FileIO {
         id: fileExcerpt
     }
-    
+
     FileIO {
         id: fileScore // We need two because they they are used from 2 different processes,
         // which could cause threading problems
@@ -856,7 +852,7 @@ MuseScore {
             else {
                 // close base score
                 closeScore(curBaseScore)
-                processTimer.running = true
+                processTimer.restart();
             }
         }
     }
@@ -876,10 +872,10 @@ MuseScore {
                     currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizzard", "Done") + "."
                 else
                     console.log("abort!")
-                return;
+                return
             }
-			
-			console.log("--Remaing items to convert: "+fileList.length+"--");
+
+            console.log("--Remaing items to convert: "+fileList.length+"--");
 
             var curFileInfo = fileList.shift()
             var filePath = curFileInfo[0]
@@ -940,9 +936,8 @@ MuseScore {
                 resultText.append(qsTr("ERROR reading file %1").arg(fileName))
 
             // next file
-            if (!abortRequested) 
-				// processTimer.running=true;
-                processTimer.restart(); //LVR			
+            if (!abortRequested)
+                processTimer.restart();
         }
     }
 
@@ -977,10 +972,16 @@ MuseScore {
             // and then use a timer to do the work
             // otherwise, the dialog window will not update
 
-			var regexp;
-			if (filterContent.checked) {
-				regexp=filterWithRegExp.checked?new RegExp(contentFilterString.text): RegExp('^' + contentFilterString.text.replace(/\*/g, '.*') + '$');
-				}
+            var regexp;
+            if (filterContent.checked) {
+                try {
+                    regexp=filterWithRegExp.checked?new RegExp(contentFilterString.text): RegExp('^' + contentFilterString.text.replace(/\*/g, '.*') + '$');
+                } catch(err) {
+                    resultText.append(err.message);
+                    workDialog.standardButtons = StandardButton.Ok
+                    return;
+                }
+            }
 
             for (var i = 0; i < files.count; i++) {
 
@@ -1011,20 +1012,20 @@ MuseScore {
                     // console.log("fileExt", fileExt)
                     // console.log("fileName", fileName)
                     // console.log("filePath", filePath)
-					
-					var match=true;
-					if (regexp) {
-						// console.log("--Filter files--");
-						// console.log(filterWithRegExp.checked?"--RegExp--":"--Regular--");
-						// console.log("--with \""+contentFilterString.text+"\"--");
-						match=regexp.test(fileName);
-						// console.log("Match RegExp: ", match)
-					} else {
-						// console.log("--Don't filter files--");
-					}
-					
-					if (match) 
-						fileList.push([filePath, fileName, fileExt])
+
+                    var match=true;
+                    if (regexp) {
+                        // console.log("--Filter files--");
+                        // console.log(filterWithRegExp.checked?"--RegExp--":"--Regular--");
+                        // console.log("--with \""+contentFilterString.text+"\"--");
+                        match=regexp.test(fileName);
+                        // console.log("Match RegExp: ", match)
+                    } else {
+                        // console.log("--Don't filter files--");
+                    }
+
+                    if (match)
+                        fileList.push([filePath, fileName, fileExt])
                 }
             }
 
@@ -1035,8 +1036,7 @@ MuseScore {
                 collectFiles.running = true
             } else if (fileList.length > 0) {
                 // if we found files, start timer do process them
-                // processTimer.running = true
-				processTimer.restart(); //LVR
+                processTimer.restart();
             }
             else {
                 // we didn't find any files
