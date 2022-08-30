@@ -259,6 +259,16 @@ différent</translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="559"/>
+        <source>Filter files with</source>
+        <translation>Filtrer les fichiers</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="559"/>
+        <source>Use Regular Expression</source>
+        <translation>Regular Expression</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="559"/>
         <source>Select Sources Startfolder</source>
         <translation>Sélectionner le dossier source de départ</translation>
     </message>

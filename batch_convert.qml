@@ -11,7 +11,7 @@ import FileIO 3.0
 
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert") // this doesn't work, why?
-    version: "3.5"
+    version: "3.6"
     requiresScore: false
     description: qsTr("This plugin converts multiple files from various formats"
                       + " into various formats")
@@ -31,6 +31,7 @@ MuseScore {
         id: mscorePathsSettings
         category: "application/paths"
         property var myScores
+        property var myExports
     }
 
     onRun: {
@@ -41,14 +42,19 @@ MuseScore {
         }
         else
             batchConvert.visible = true // needed for unknown reasons
+		
+		//console.log("Current import: "+settings.iPath); //LVR
+		//console.log("Current export: "+settings.ePath); //LVR
+		
+		if(settings.ePath===undefined) settings.ePath=settings.iPath;
     }
 
     //Window {
     id: batchConvert
 
     // `width` and `height` allegedly are not valid property names, works regardless and seems needed?!
-    width: mainRow.childrenRect.width
-    height: mainRow.childrenRect.height
+    width: mainRow.childrenRect.width + 20
+    height: mainRow.childrenRect.height + 20
 
     // Mutally exclusive in/out formats, doesn't work properly
     ExclusiveGroup { id: mscz }
@@ -60,9 +66,12 @@ MuseScore {
 
     RowLayout {
         id: mainRow
+        spacing: 2
+
         GroupBox {
             id: inFormats
             title: " " + qsTr("Input Formats") + " "
+            Layout.margins: 20
             Layout.alignment: Qt.AlignTop | Qt.AlignLeft
             //flat: true // no effect?!
             //checkable: true // no effect?!
@@ -269,14 +278,15 @@ MuseScore {
             } // Column
         } // inFormats
         ColumnLayout {
-            Layout.alignment: Qt.AlignTop | Qt.AlignRight
+            Layout.alignment: Qt.AlignTop | Qt.AlignLeft
             RowLayout {
                 Label {
                     text: " ===> "
-                    Layout.fillWidth: true // left align (?!)
+					Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                 }
                 GroupBox {
                     id: outFormats
+					Layout.margins: 20
                     title: " " + qsTr("Output Formats") + " "
                     property var extensions: new Array
                     Column {
@@ -451,6 +461,25 @@ MuseScore {
                 id: traverseSubdirs
                 text: qsTr("Process\nSubdirectories")
             } // traverseSubdirs
+			Row {
+				spacing: 5
+				CheckBox {
+					id: filterContent
+					text: qsTr("Filter files with")
+					}
+				TextField {
+					id: contentFilterString
+					text: ""
+					enabled: filterContent.checked
+					placeholderText: "E.g. *Concerto*"
+				}
+				CheckBox {
+					id: filterWithRegExp
+					text: qsTr("Use Regular Expression")
+					enabled: filterContent.checked
+					checked: true
+				}
+            } // filter content options
             CheckBox {
                 id: differentExportPath
                 // Only allow different export path if not traversing subdirs.
@@ -475,7 +504,7 @@ MuseScore {
                         text: /*qsTr("Ok")*/ qsTranslate("QPlatformTheme", "OK")
                         //isDefault: true // needs more work
                         onClicked: {
-                            if (collectInOutFormats())
+                            if (collectInOutFormats()) 
                                 sourceFolderDialog.open()
                         } // onClicked
                     } // ok
@@ -550,7 +579,11 @@ MuseScore {
         property alias travers: traverseSubdirs.checked
         property alias diffEPath: differentExportPath.checked  // different export path
         property alias iPath: mscorePathsSettings.myScores // import path
-        property alias ePath: mscorePathsSettings.myScores // export path
+        property alias ePath: mscorePathsSettings.myExports // export path // LVR: store it differently
+        property alias filter: filterContent.checked
+        property alias filterString: contentFilterString.text
+        property alias filterIsRegExp: filterWithRegExp.checked
+		
     }
 
     FileDialog {
@@ -559,9 +592,13 @@ MuseScore {
                    qsTr("Select Sources Startfolder"):
                    qsTr("Select Sources Folder")
         selectFolder: true
-        folder: "file:///" + settings.ipath // transform to URL
+        // folder: "file:///" + settings.iPath // transform to URL
+        folder: settings.iPath // LVR iPath already contains "file:///"
 
         onAccepted: {
+            settings.iPath = sourceFolderDialog.folder.toString();
+			console.log("After import: "+settings.iPath); //LVR
+			
             if (differentExportPath.checked && !traverseSubdirs.checked)
                 targetFolderDialog.open(); // work we be called from within the target folder dialog
             else
@@ -573,7 +610,7 @@ MuseScore {
         }
 
         Component.onDestruction: {
-            settings.ipath = sourceFolderDialog.folder
+            settings.iPath = sourceFolderDialog.folder
         }
     } // sourceFolderDialog
     
@@ -582,7 +619,8 @@ MuseScore {
         title: qsTr("Select Target Folder")
         selectFolder: true
 
-        folder: "file:///" + settings.epath // transform to URL
+        // folder: "file:///" + settings.ePath // transform to URL
+        folder: settings.ePath // LVR ePath already contains "file:///"
 
         property string folderPath: ""
         onAccepted: {
@@ -594,7 +632,9 @@ MuseScore {
                 folderPath = folder.toString().substring(folder.toString().charAt(9) === ':' ? 8 : 7)
             else
                 folderPath = folder
-            work()
+            settings.ePath = targetFolderDialog.folder.toString(); // LVR
+			//console.log("After export: "+settings.ePath); //LVR
+            work();
         }
 
         onRejected: {
@@ -602,7 +642,7 @@ MuseScore {
             batchConvert.parent.Window.window.close();
         }
         Component.onDestruction: {
-            settings.epath = targetFolderDialog.folder
+            settings.ePath = targetFolderDialog.folder
         }
     } // targetFolderDialog
 
@@ -615,16 +655,21 @@ MuseScore {
         outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
                 outMid.checked = outMidi.checked = outPdf.checked = outPs.checked = outPng.checked =
                 outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
-                outOgg.checked = outMp3.checked = outMpos.checked = outSPos.checked =
-                outMLog.checked = outMetaJson.checked = false
+                outOgg.checked = outMp3.checked = outMpos.checked = outSpos.checked =
+                outMlog.checked = outMetaJson.checked = false
         traverseSubdirs.checked = false
         exportExcerpts.checked = false
+		filterWithRegExp.checked=true;
+		filterContent.checked=true;
+		contentFilterString.text="";
         // 'uncheck' everything, then 'check' the next few
         inMscz.checked = outPdf.checked = true
         differentExportPath.checked = false
     } // resetDefaults
 
     function collectInOutFormats() {
+		inFormats.extensions.length=0; // LVR: Avoid duplicates of formats when the converter is launched a second time
+		outFormats.extensions.length=0; // LVR: Avoid duplicates of formats when the converter is launched a second time
         if (inMscz.checked) inFormats.extensions.push("mscz")
         if (inMscx.checked) inFormats.extensions.push("mscx")
         if (inXml.checked)  inFormats.extensions.push("xml")
@@ -653,7 +698,7 @@ MuseScore {
         if (inMsczComma.checked) inFormats.extensions.push("mscz,")
         if (inMscxComma.checked) inFormats.extensions.push("mscx,")
         if (!inFormats.extensions.length)
-            console.log("No input format selected")
+            console.warn("No input format selected")
 
         if (outMscz.checked) outFormats.extensions.push("mscz")
         if (outMscx.checked) outFormats.extensions.push("mscx")
@@ -676,7 +721,7 @@ MuseScore {
         if (outMlog.checked) outFormats.extensions.push("mlog")
         if (outMetaJson.checked) outFormats.extensions.push("metajson")
         if (!outFormats.extensions.length)
-            console.log("No output format selected")
+            console.warn("No output format selected")
 
         return (inFormats.extensions.length && outFormats.extensions.length)
     } // collectInOutFormats
@@ -709,7 +754,7 @@ MuseScore {
         }
 
         onAccepted: {
-            Qt.quit()
+            //Qt.quit()
         }
 
         onRejected: {
@@ -831,8 +876,10 @@ MuseScore {
                     currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizzard", "Done") + "."
                 else
                     console.log("abort!")
-                return
+                return;
             }
+			
+			console.log("--Remaing items to convert: "+fileList.length+"--");
 
             var curFileInfo = fileList.shift()
             var filePath = curFileInfo[0]
@@ -893,8 +940,9 @@ MuseScore {
                 resultText.append(qsTr("ERROR reading file %1").arg(fileName))
 
             // next file
-            if (!abortRequested)
-                processTimer.running = true
+            if (!abortRequested) 
+				// processTimer.running=true;
+                processTimer.restart(); //LVR			
         }
     }
 
@@ -929,6 +977,11 @@ MuseScore {
             // and then use a timer to do the work
             // otherwise, the dialog window will not update
 
+			var regexp;
+			if (filterContent.checked) {
+				regexp=filterWithRegExp.checked?new RegExp(contentFilterString.text): RegExp('^' + contentFilterString.text.replace(/\*/g, '.*') + '$');
+				}
+
             for (var i = 0; i < files.count; i++) {
 
                 // if we have a directory, we're supposed to
@@ -958,8 +1011,20 @@ MuseScore {
                     // console.log("fileExt", fileExt)
                     // console.log("fileName", fileName)
                     // console.log("filePath", filePath)
-
-                    fileList.push([filePath, fileName, fileExt])
+					
+					var match=true;
+					if (regexp) {
+						// console.log("--Filter files--");
+						// console.log(filterWithRegExp.checked?"--RegExp--":"--Regular--");
+						// console.log("--with \""+contentFilterString.text+"\"--");
+						match=regexp.test(fileName);
+						// console.log("Match RegExp: ", match)
+					} else {
+						// console.log("--Don't filter files--");
+					}
+					
+					if (match) 
+						fileList.push([filePath, fileName, fileExt])
                 }
             }
 
@@ -970,7 +1035,8 @@ MuseScore {
                 collectFiles.running = true
             } else if (fileList.length > 0) {
                 // if we found files, start timer do process them
-                processTimer.running = true
+                // processTimer.running = true
+				processTimer.restart(); //LVR
             }
             else {
                 // we didn't find any files
