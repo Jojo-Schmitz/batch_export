@@ -264,8 +264,13 @@ für Export</translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="559"/>
-        <source>Use Regular Expression</source>
+        <source>Use regular expression</source>
         <translation>Use regular expression</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="559"/>
+        <source>"E.g. *Concerto*"</source>
+        <translation>"Z.B. *Concerto*"</translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="559"/>

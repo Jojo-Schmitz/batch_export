@@ -42,8 +42,8 @@ MuseScore {
         }
         else
             batchConvert.visible = true // needed for unknown reasons
-
-        if(settings.ePath===undefined) settings.ePath=settings.iPath;
+        if (settings.ePath===undefined)
+            settings.ePath=settings.iPath;
     }
 
     //Window {
@@ -275,7 +275,7 @@ MuseScore {
             } // Column
         } // inFormats
         ColumnLayout {
-            Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+            Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
             RowLayout {
                 Label {
@@ -459,24 +459,31 @@ MuseScore {
                 id: traverseSubdirs
                 text: qsTr("Process\nSubdirectories")
             } // traverseSubdirs
-            Row {
-                spacing: 5
+            GridLayout {
+                columnSpacing: 5
+                rowSpacing: 0
                 CheckBox {
                     id: filterContent
-                    text: qsTr("Filter files with")
+                    text: qsTr("Filter files with")+":"
+                    Layout.row: 1
+                    Layout.column: 1
                     }
                 TextField {
                     id: contentFilterString
                     text: ""
                     enabled: filterContent.checked
-                    placeholderText: "E.g. *Concerto*"
-                    width: 200
+                    placeholderText: qsTr("E.g. *Concerto*")
+                    Layout.preferredWidth: 200
+                    Layout.row: 1
+                    Layout.column: 2
                 }
                 CheckBox {
                     id: filterWithRegExp
-                    text: qsTr("Use Regular Expression")
+                    text: qsTr("Use regular expression")
                     enabled: filterContent.checked
                     checked: true
+                    Layout.row: 2
+                    Layout.column: 2
                 }
             } // filter content options
             CheckBox {
@@ -615,8 +622,6 @@ MuseScore {
         id: targetFolderDialog
         title: qsTr("Select Target Folder")
         selectFolder: true
-
-        // folder: "file:///" + settings.ePath // transform to URL
         folder: settings.ePath
 
         property string folderPath: ""
@@ -749,9 +754,6 @@ MuseScore {
             }
         }
 
-        onAccepted: {
-            //Qt.quit()
-        }
 
         onRejected: {
             abortRequested = true

@@ -264,8 +264,13 @@ différent</translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="559"/>
-        <source>Use Regular Expression</source>
-        <translation>Regular Expression</translation>
+        <source>Use regular expression</source>
+        <translation>Use regular expression</translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="559"/>
+        <source>"E.g. *Concerto*"</source>
+        <translation>"Ex: *Concerto*"</translation>
     </message>
     <message>
         <location filename="../batch_convert.qml" line="559"/>
