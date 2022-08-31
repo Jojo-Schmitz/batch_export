@@ -312,8 +312,11 @@ MuseScore {
                         CheckBox {
                             id: outXml
                             text: "*.xml"
-                            enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion <= 1) ? true : false // MuseScore <= 2.1
-                            //could also export to musicxml and then rename that to xml in versions after 2.1
+                            enabled: (mscoreMajorVersion == 2 && mscoreMinorVersion <= 1)
+                                     || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 5)
+                                     || (mscoreMajorVersion > 3) ?
+                                             true : false // MuseScore <= 2.1 or >= 3.5
+                            //could also export to musicxml and then rename that to xml in versions after 2.1 / before 3.5
                             visible: enabled // hide if not enabled
                             //exclusiveGroup: xml
                             onClicked: {
