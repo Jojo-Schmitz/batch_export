@@ -10,8 +10,9 @@ import MuseScore 3.0
 import FileIO 3.0
 import "batch_convert"
 
-//TODO : translations
-//TODO : Result dialog box
+/**
+    //TODO : translations
+*/
 
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert") // this doesn't work, why?
@@ -46,11 +47,6 @@ MuseScore {
         category: "application/paths"
         property var myScores
     }
-    property var exportToPath
-    property bool convert: false // Do the conversion, or preview only
-    
-    SystemPalette { id: sysActivePalette; colorGroup: SystemPalette.Active }
-    SystemPalette { id: sysDisabledPalette; colorGroup: SystemPalette.Disabled }
 
     onRun: {
         // check MuseScore version
@@ -66,13 +62,12 @@ MuseScore {
             settings.ePath=settings.iPath;
     }
 
-    //Window {
     id: batchConvert
 
     // `width` and `height` allegedly are not valid property names, works regardless and seems needed?!
     width: mainRow.childrenRect.width + 40
     height: mainRow.childrenRect.height + 20
-
+    
     // Mutally exclusive in/out formats, doesn't work properly
     ButtonGroup  { id: mscz }
     ButtonGroup  { id: mscx }
@@ -87,7 +82,7 @@ MuseScore {
         id: mainRow
         columnSpacing: 2
         columns: 3
-        
+
         GroupBox {
             id: inFormats
             title: " " + qsTr("Input Formats") + " "
@@ -602,14 +597,14 @@ MuseScore {
                 property var valid: !traverseSubdirs.checked && differentExportPath.checked
                 text: qsTr("Export to")+":"
                 ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Different Export Path")
+                    ToolTip.text: qsTr("Use a different export path")
                 } // differentExportPath
             RowLayout {
                 TextField {
                     Layout.preferredWidth: 400
                     id: exportTo
                     text: ""
-                    color: (differentExportPath.checked && differentExportPath.enabled)?sysActivePalette.text:sysActivePalette.mid//sysDisabledPalette.buttonText
+                    color: differentExportPath.valid?sysActivePalette.text:sysActivePalette.mid//sysDisabledPalette.buttonText
                     enabled: false
                 }
                 Button {
@@ -620,6 +615,21 @@ MuseScore {
                     }
                 }
             }
+            SmallCheckBox {
+                id: useExportStructure
+                // Only allow different export path if not traversing subdirs.
+                enabled: !traverseSubdirs.checked
+                property var valid: !traverseSubdirs.checked && useExportStructure.checked
+                text: qsTr("Export structure")+":"
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Stucture the export folder depending on the file properties")
+                } // differentExportPath
+            TextField {
+                Layout.preferredWidth: 400
+                id: exportStructure
+                text: ""
+                enabled: useExportStructure.valid
+                }
             Button {
                 Layout.columnSpan: 2
                 id: reset
@@ -629,7 +639,7 @@ MuseScore {
                 } // onClicked
             } // reset
         } // options Column
-        
+
         Row {
             Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Layout.columnSpan: 3
@@ -638,6 +648,7 @@ MuseScore {
             Button {
                 id: preview
                 text: qsTr("Preview")
+                highlighted: true
                 //isDefault: true // needs more work
                 enabled:  (!differentExportPath.valid || exportTo.text!=="") && (importFrom.text!=="")
                 onClicked: {
@@ -647,7 +658,8 @@ MuseScore {
             } // ok
             Button {
                 id: ok
-                text: /*qsTr("Ok")*/ qsTranslate("QPlatformTheme", "OK")
+                enabled:  (!differentExportPath.valid || exportTo.text!=="") && (importFrom.text!=="")
+                text: qsTr("Convert!")
                 onClicked: {
                     convert=true;
                     work();
@@ -729,9 +741,11 @@ MuseScore {
         property alias filter: filterContent.checked
         property alias filterString: contentFilterString.text
         property alias filterIsRegExp: filterWithRegExp.checked
+        property alias exportStructure: exportStructure.text
+        property alias useExportStructure: useExportStructure.checked
 
     }
-    
+
     FileDialog {
         id: sourceFolderDialog
         title: traverseSubdirs.checked ?
@@ -739,7 +753,7 @@ MuseScore {
                    qsTr("Select Sources Folder")
         selectFolder: true
         folder: Qt.resolvedUrl(importFrom.text);
-       
+
 
         onAccepted: {
             importFrom.text = sourceFolderDialog.folder.toString();
@@ -764,7 +778,7 @@ MuseScore {
             console.log("No target folder selected")
         }
     } // targetFolderDialog
-    
+
     function urlToPath(urlString) {
         var s;
         if (urlString.startsWith("file:///")) {
@@ -774,7 +788,7 @@ MuseScore {
             s = urlString
         }
         return decodeURIComponent(s);
-} 
+    }
 
     function resetDefaults() {
         inMscx.checked = inXml.checked = inMusicXml.checked = inMxl.checked = inMid.checked =
@@ -790,12 +804,15 @@ MuseScore {
                 outMlog.checked = outMetaJson.checked = outBrf.checked = false
         traverseSubdirs.checked = false
         exportExcerpts.checked = false
-        filterWithRegExp.checked=true;
+        filterWithRegExp.checked=false;
         filterContent.checked=true;
         contentFilterString.text="";
+        differentExportPath.checked = false
+        useExportStructure.checked=false;
+        exportStructure.text="";
+
         // 'uncheck' everything, then 'check' the next few
         inMscz.checked = outPdf.checked = true
-        differentExportPath.checked = false
     } // resetDefaults
 
     function collectInOutFormats() {
@@ -870,7 +887,7 @@ MuseScore {
         width: 900
         height: 700
         standardButtons: StandardButton.Abort
-        
+
 
         ColumnLayout {
 
@@ -893,6 +910,7 @@ MuseScore {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.maximumHeight: 700
+                Layout.maximumWidth: 900
                 clip: true
                 TextArea {
                     id: resultText
@@ -910,7 +928,7 @@ MuseScore {
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             }
-            
+
         }
 
         onRejected: {
@@ -933,10 +951,10 @@ MuseScore {
     // createDefaultFileName
     // remove some special characters in a score title
     // when creating a file name
-    function createDefaultFileName(fn) {
+    function createDefaultFileName(fn, allowWhitespace) {
+        if (allowWhitespace===undefined) allowWhitespace=false;
         fn = fn.trim()
-        fn = fn.replace(/ /g,"_")
-        fn = fn.replace(/ /g,"_")
+        if (!allowWhitespace) fn = fn.replace(/ /g,"_")
         fn = fn.replace(/[\\\/:\*\?\"<>|]/g,"_")
         return fn
     }
@@ -950,6 +968,20 @@ MuseScore {
 
     // variable to remember current parent score for parts
     property var curBaseScore
+
+    // cleaned import path of export
+    property var importFromPath
+    // cleaned path of export
+    property var exportToPath
+    // regxep to filter the files to convert
+    property var regexp
+    // conversion mode : effectively do the conversion, or preview only
+    property bool convert: false
+
+    SystemPalette { id: sysActivePalette; colorGroup: SystemPalette.Active }
+    SystemPalette { id: sysDisabledPalette; colorGroup: SystemPalette.Disabled }
+
+
 
     // FolderListModel can be used to search the file system
     FolderListModel {
@@ -979,14 +1011,12 @@ MuseScore {
             var filePath = curScoreInfo[1]
             var fileName = curScoreInfo[2]
             var srcModifiedTime = curScoreInfo[3]
+            var targetPath=curScoreInfo[4];
 
             // create full file path for part
             var targetBase;
-            if (differentExportPath.checked && !traverseSubdirs.checked)
-                targetBase = exportToPath + "/" + fileName
-                        + "-" + createDefaultFileName(partTitle) + "."
-            else
-                targetBase = filePath + fileName + "-" + createDefaultFileName(partTitle) + "."
+
+            targetBase = targetPath + fileName + "-" + createDefaultFileName(partTitle) + "."
 
             // write for all target formats
             for (var j = 0; j < outFormats.extensions.length; j++) {
@@ -994,16 +1024,20 @@ MuseScore {
                 // modifiedTime() will return 0 for non-existing files
                 // if src is newer than existing write this file
                 fileExcerpt.source = targetBase + outFormats.extensions[j]
+                var logTargetName = (fileExcerpt.source.startsWith(exportToPath))?fileExcerpt.source.substring(exportToPath.length):fileExcerpt.source;
                 if (srcModifiedTime > fileExcerpt.modifiedTime()) {
                     var res = convert?writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j]):true;
                     if (res)
-                        resultText.append("  %1 → %2: %3".arg(partTitle).arg(outFormats.extensions[j]).arg(fileExcerpt.source))
+                        resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Exported")))
                     else
-                        resultText.append("  "+qsTr("Error: %1 → %2 not exported").arg(partTitle).arg(outFormats.extensions[j]))
+                        resultText.append("  "+qsTr("Error")+": %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Not exported")))
                 }
                 else // file already up to date
-                    resultText.append("  "+qsTr("%1 is up to date").arg(fileExcerpt.source))
+                        resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Up to date")))
             }
+
+
+            view.ScrollBar.horizontal.position = 0
 
             // check if more files
             if (!abortRequested && excerptsList.length > 0)
@@ -1051,12 +1085,42 @@ MuseScore {
                 // get modification time of source file
                 fileScore.source = fileFullPath
                 var srcModifiedTime = fileScore.modifiedTime()
+
+                // DEBUG META INFO
+                console.log("--title: "+thisScore.title);
+                console.log("--lyricist: "+thisScore.lyricist);
+                console.log("--composer: "+thisScore.composer);
+                console.log("--arranger: "+thisScore.metaTag("arranger"));
+                console.log("--workNumber: "+thisScore.metaTag("workNumber"));
+                console.log("--mouvementNumber: "+thisScore.metaTag("mouvementNumber"));
+                console.log("--mouvementTitle: "+thisScore.metaTag("mouvementTitle"));
+                console.log("--creation year: "+Qt.formatDate(new Date(thisScore.metaTag("creationDate")),"yyyy"));
+
+
                 // write for all target formats
                 for (var j = 0; j < outFormats.extensions.length; j++) {
-                    if (differentExportPath.checked && !traverseSubdirs.checked)
-                        fileScore.source = exportToPath + "/" + fileName + "." + outFormats.extensions[j]
-                    else
-                        fileScore.source = filePath + fileName + "." + outFormats.extensions[j]
+                    var targetBase=(differentExportPath.valid)?exportToPath:filePath;
+                    var targetPath=targetBase;
+
+
+                    if (useExportStructure.valid) {
+                        var sub=exportStructure.text;
+                        sub=buildExportPath(sub,/%title%/i,thisScore.title);
+                        sub=buildExportPath(sub,/%lyricist%/i,thisScore.lyricist);
+                        sub=buildExportPath(sub,/%composer%/i,thisScore.composer);
+                        sub=buildExportPath(sub,/%arranger%/i,thisScore.metaTag("arranger"));
+                        sub=buildExportPath(sub,/%worknumber%/i,thisScore.metaTag("workNumber"));
+                        sub=buildExportPath(sub,/%mouvementnumber%/i,thisScore.metaTag("mouvementNumber"));
+                        sub=buildExportPath(sub,/%mouvementtitle%/i,thisScore.metaTag("mouvementTitle"));
+                        sub=buildExportPath(sub,/%year%/i, Qt.formatDate(new Date(thisScore.metaTag("creationDate")),"yyyy"));
+
+                        targetPath += sub + "/" ;
+                    }
+
+
+                    fileScore.source = targetPath + fileName + "." + outFormats.extensions[j];
+                    var logSourceName = (fileFullPath.toUpperCase().startsWith(importFromPath))?fileFullPath.substring(importFromPath.length):fileFullPath;
+                    var logTargetName = (fileScore.source.startsWith(exportToPath))?fileScore.source.substring(exportToPath.length):fileScore.source;
 
                     // get modification time of destination file (if it exists)
                     // modifiedTime() will return 0 for non-existing files
@@ -1065,12 +1129,12 @@ MuseScore {
                         var res = convert?writeScore(thisScore, fileScore.source, outFormats.extensions[j]):true
 
                         if (res)
-                            resultText.append("%1 → %2: %3".arg(fileFullPath).arg(outFormats.extensions[j]).arg(fileScore.source))
+                            resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Exported")))
                         else
-                            resultText.append(qsTr("Error: %1 → %2 not exported").arg(fileFullPath).arg(outFormats.extensions[j]))
+                            resultText.append(qsTr("Error")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
                     }
                     else
-                        resultText.append(qsTr("%1 is up to date").arg(fileFullPath))
+                        resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Up to date")))
                 }
                 // check if we are supposed to export parts
                 if (exportExcerpts.checked) {
@@ -1080,7 +1144,7 @@ MuseScore {
                     var excerpts = thisScore.excerpts
                     for (var ex = 0; ex < excerpts.length; ex++) {
                         if (excerpts[ex].partScore !== thisScore) // only list when not base score
-                            excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime])
+                            excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath])
                     }
                     // if we have files start timer
                     if (excerpts.length > 0) {
@@ -1094,10 +1158,18 @@ MuseScore {
             else
                 resultText.append(qsTr("ERROR reading file %1").arg(fileName))
 
+            view.ScrollBar.horizontal.position = 0
+
             // next file
             if (!abortRequested)
                 processTimer.restart();
         }
+    }
+
+    function buildExportPath(dest,tag,value) {
+        if (!value || value.trim()==="") value="Unspecified";
+        value=createDefaultFileName(value,true); // allow whitespaces
+        return dest.replace(tag,value);
     }
 
     // FolderListModel returns what Qt calles the
@@ -1130,17 +1202,6 @@ MuseScore {
             // we must create a list of files to process
             // and then use a timer to do the work
             // otherwise, the dialog window will not update
-
-            var regexp;
-            if (filterContent.checked) {
-                try {
-                    regexp=filterWithRegExp.checked?new RegExp(contentFilterString.text): RegExp('^' + contentFilterString.text.replace(/\*/g, '.*') + '$');
-                } catch(err) {
-                    resultText.append(err.message);
-                    workDialog.standardButtons = StandardButton.Ok
-                    return;
-                }
-            }
 
             for (var i = 0; i < files.count; i++) {
 
@@ -1208,30 +1269,88 @@ MuseScore {
     }
 
     function work() {
-        
-        if (!collectInOutFormats())
-            return;
+
 
         if (resultText.text!=="") resultText.append("---------------------------------");
         workDialog.visible = true
 
+        // Verifications
+        var validation=true;
+        // 1) in and out formats selection
+        if (!collectInOutFormats()) {
+            resultText.append(qsTr("Incomplete in and out format selection "));
+            validation=false;
+        }
+
+        // 2) import and export folders
         if(!importFrom.text) {
             resultText.append(qsTr("Missing import folder"));
-            return;
+            validation=false;
         }
-        if (differentExportPath.checked && !traverseSubdirs.checked && !exportTo.text) {
+        if (differentExportPath.valid && !exportTo.text) {
             resultText.append(qsTr("Missing export folder"));
+            validation=false;
+        }
+
+        // 3) Filter regexp
+        if (filterContent.checked) {
+            try {
+                regexp=filterWithRegExp.checked?new RegExp(contentFilterString.text): RegExp('^' + contentFilterString.text.replace(/\*/g, '.*') + '$');
+            } catch(err) {
+                resultText.append(err.message);
+                validation=false;
+            }
+        } else {
+            regexp=undefined;
+        }
+
+        // 4) export structuture
+        if (useExportStructure.valid) {
+
+            exportStructure.text=exportStructure.text.replace(/\/\s*$/,""); // delete trailing "/"
+            exportStructure.text=exportStructure.text.trim(); // delete starting and trailing spaces
+
+            var check1 = /\/\//;
+            var check2 = /^((%COMPOSER%|%TITLE%|%YEAR%|%WORKNUMBER%|%LYRICIST%|%ARRANGER%|%MOUVEMENTNUMBER%|%MOUVEMENTTITLE%)([^:\\/%]*\/?[^:\\/%]*)*)+$/i
+
+            var valid;
+            if (exportStructure.text.match(check1)) { // checking for "//" : not authorized
+                valid = false
+            } else if (!exportStructure.text.match(check2)) {  // checking keywords and structure
+                valid = false
+            } else {
+                valid = true
+            }
+
+            if(!valid) {
+                resultText.append(qsTr("Invalid export structure"));
+                validation=false;
+            }
+        }
+
+
+        if (!validation) {
+            workDialog.standardButtons = StandardButton.Ok
             return;
         }
+
+        // Preparation
 
         // remove the file:/// at the beginning of the return value of targetFolderDialog.folder
         // However, what needs to be done depends on the platform.
         // See this stackoverflow post for more details:
         // https://stackoverflow.com/questions/24927850/get-the-path-from-a-qml-url
-        exportToPath = urlToPath(exportTo.text);                    
+        exportToPath = urlToPath(exportTo.text);
+        if (!exportToPath.endsWith('/')) exportToPath+='/';
+        exportToPath=exportToPath.toUpperCase();
+
+        importFromPath = urlToPath(importFrom.text);
+        if (!importFromPath.endsWith('/')) importFromPath+='/';
+        importFromPath=importFromPath.toUpperCase();
 
         console.log(exportToPath);
-        
+        console.log(importFromPath);
+
         console.log((traverseSubdirs.checked? "Sources Startfolder: ":"Sources Folder: ")
                     + importFrom.text)
 
