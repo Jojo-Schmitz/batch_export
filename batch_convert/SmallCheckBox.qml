@@ -1,14 +1,18 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 
+/**
+* 1.1: set default leftPadding to 0 and stop adding 2 at the left of the indicator
+*/
 CheckBox {
     id: schk
     property alias boxWidth: box.implicitWidth
+    leftPadding : 0
     indicator: Rectangle {
         id: box
         implicitWidth: 18
         implicitHeight: implicitWidth
-        x: schk.leftPadding + 2
+        x: schk.leftPadding
         y: parent.height / 2 - height / 2
         border.color: "grey"
 
