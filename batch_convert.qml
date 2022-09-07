@@ -88,8 +88,8 @@ MuseScore {
             title: " " + qsTr("Input Formats") + " "
             Layout.margins: 10
             Layout.alignment: Qt.AlignTop | Qt.AlignLeft
-            Layout.column: 1
-            Layout.row: 1
+            Layout.column: 0
+            Layout.row: 0
             Layout.rowSpan: 2
             //flat: true // no effect?!
             //checkable: true // no effect?!
@@ -332,16 +332,16 @@ MuseScore {
         } // inFormats
 
         Label {
-            Layout.column: 2
-            Layout.row: 1
+            Layout.column: 1
+            Layout.row: 0
             Layout.fillHeight: false
             text: " ===> "
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
         }
         GroupBox {
             id: outFormats
-            Layout.column: 3
-            Layout.row: 1
+            Layout.column: 2
+            Layout.row: 0
             Layout.alignment: Qt.AlignTop | Qt.AlignLeft
             Layout.fillHeight: false
             Layout.margins: 10
@@ -530,8 +530,8 @@ MuseScore {
         } //outFormats
 
         GridLayout {
-            Layout.row: 2
-            Layout.column: 2
+            Layout.row: 1
+            Layout.column: 1
             Layout.columnSpan: 2
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -643,8 +643,8 @@ MuseScore {
         Row {
             Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Layout.columnSpan: 3
-            Layout.column: 1
-            Layout.row: 3
+            Layout.column: 0
+            Layout.row: 2
             Button {
                 id: preview
                 text: qsTr("Preview")
@@ -997,6 +997,10 @@ MuseScore {
         // which could cause threading problems
     }
 
+    QProcess {
+        id: proc
+    }
+
     Timer {
         id: excerptTimer
         interval: 1
@@ -1013,29 +1017,43 @@ MuseScore {
             var srcModifiedTime = curScoreInfo[3]
             var targetPath=curScoreInfo[4];
 
-            // create full file path for part
-            var targetBase;
+            // - create full file path for part
+            // var targetBase = buildExportPath(targetPath,/%part%/i,partTitle)
+            var targetBase = buildExportPath(targetPath,/%part%/i,"parts");
 
-            targetBase = targetPath + fileName + "-" + createDefaultFileName(partTitle) + "."
-
-            // write for all target formats
-            for (var j = 0; j < outFormats.extensions.length; j++) {
-                // get modification time of destination file (if it exists)
-                // modifiedTime() will return 0 for non-existing files
-                // if src is newer than existing write this file
-                fileExcerpt.source = targetBase + outFormats.extensions[j]
-                var logTargetName = (fileExcerpt.source.startsWith(exportToPath))?fileExcerpt.source.substring(exportToPath.length):fileExcerpt.source;
-                if (srcModifiedTime > fileExcerpt.modifiedTime()) {
-                    var res = convert?writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j]):true;
-                    if (res)
-                        resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Exported")))
-                    else
-                        resultText.append("  "+qsTr("Error")+": %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Not exported")))
+            // - checking if the target folder exists
+            fileExcerpt.source = targetBase;
+            
+            if (convert) {
+                if (!fileExcerpt.exists() ) {
+                    var res=mkdir(fileExcerpt.source);
                 }
-                else // file already up to date
-                        resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Up to date")))
             }
 
+            if (convert && !fileExcerpt.exists() ) {
+                    resultText.append("  "+qsTr("Folder not available")+": %1 → %2 - %3".arg(partTitle).arg(targetBase).arg(qsTr("Not exported")))
+            } else {
+                // - write for all target formats
+                targetBase = targetBase + fileName + "-" + createDefaultFileName(partTitle) + "."
+
+                for (var j = 0; j < outFormats.extensions.length; j++) {
+                    // get modification time of destination file (if it exists)
+                    // modifiedTime() will return 0 for non-existing files
+                    // if src is newer than existing write this file
+                    fileExcerpt.source = targetBase + outFormats.extensions[j]
+                    var logTargetName = (fileExcerpt.source.startsWith(exportToPath))?fileExcerpt.source.substring(exportToPath.length):fileExcerpt.source;
+                    if (srcModifiedTime > fileExcerpt.modifiedTime()) {
+                        var res = convert?writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j]):true;
+                        if (res)
+                            resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(convert?qsTr("Exported"):""))
+                        else
+                            resultText.append("  "+qsTr("Error")+": %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Not exported")))
+                    }
+                    else // file already up to date
+                            resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Up to date")))
+                }
+            
+            }
 
             view.ScrollBar.horizontal.position = 0
 
@@ -1084,6 +1102,9 @@ MuseScore {
             if (thisScore) {
                 // get modification time of source file
                 fileScore.source = fileFullPath
+                var logSourceName = (fileFullPath.toUpperCase().startsWith(importFromPath))?fileFullPath.substring(importFromPath.length):fileFullPath;
+
+
                 var srcModifiedTime = fileScore.modifiedTime()
 
                 // DEBUG META INFO
@@ -1097,45 +1118,57 @@ MuseScore {
                 console.log("--creation year: "+Qt.formatDate(new Date(thisScore.metaTag("creationDate")),"yyyy"));
 
 
-                // write for all target formats
-                for (var j = 0; j < outFormats.extensions.length; j++) {
-                    var targetBase=(differentExportPath.valid)?exportToPath:filePath;
-                    var targetPath=targetBase;
+                // - create full file path for part
+                var targetPath=(differentExportPath.valid)?exportToPath:filePath;
 
+                if (useExportStructure.valid) {
+                    var sub=exportStructure.text;
+                    sub=buildExportPath(sub,/%title%/i,thisScore.title);
+                    sub=buildExportPath(sub,/%lyricist%/i,thisScore.lyricist);
+                    sub=buildExportPath(sub,/%composer%/i,thisScore.composer);
+                    sub=buildExportPath(sub,/%arranger%/i,thisScore.metaTag("arranger"));
+                    sub=buildExportPath(sub,/%worknumber%/i,thisScore.metaTag("workNumber"));
+                    sub=buildExportPath(sub,/%mouvementnumber%/i,thisScore.metaTag("mouvementNumber"));
+                    sub=buildExportPath(sub,/%mouvementtitle%/i,thisScore.metaTag("mouvementTitle"));
+                    sub=buildExportPath(sub,/%year%/i, Qt.formatDate(new Date(thisScore.metaTag("creationDate")),"yyyy"));
 
-                    if (useExportStructure.valid) {
-                        var sub=exportStructure.text;
-                        sub=buildExportPath(sub,/%title%/i,thisScore.title);
-                        sub=buildExportPath(sub,/%lyricist%/i,thisScore.lyricist);
-                        sub=buildExportPath(sub,/%composer%/i,thisScore.composer);
-                        sub=buildExportPath(sub,/%arranger%/i,thisScore.metaTag("arranger"));
-                        sub=buildExportPath(sub,/%worknumber%/i,thisScore.metaTag("workNumber"));
-                        sub=buildExportPath(sub,/%mouvementnumber%/i,thisScore.metaTag("mouvementNumber"));
-                        sub=buildExportPath(sub,/%mouvementtitle%/i,thisScore.metaTag("mouvementTitle"));
-                        sub=buildExportPath(sub,/%year%/i, Qt.formatDate(new Date(thisScore.metaTag("creationDate")),"yyyy"));
-
-                        targetPath += sub + "/" ;
-                    }
-
-
-                    fileScore.source = targetPath + fileName + "." + outFormats.extensions[j];
-                    var logSourceName = (fileFullPath.toUpperCase().startsWith(importFromPath))?fileFullPath.substring(importFromPath.length):fileFullPath;
-                    var logTargetName = (fileScore.source.startsWith(exportToPath))?fileScore.source.substring(exportToPath.length):fileScore.source;
-
-                    // get modification time of destination file (if it exists)
-                    // modifiedTime() will return 0 for non-existing files
-                    // if src is newer than existing write this file
-                    if (srcModifiedTime > fileScore.modifiedTime()) {
-                        var res = convert?writeScore(thisScore, fileScore.source, outFormats.extensions[j]):true
-
-                        if (res)
-                            resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Exported")))
-                        else
-                            resultText.append(qsTr("Error")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
-                    }
-                    else
-                        resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Up to date")))
+                    targetPath += sub + "/" ;
                 }
+
+                var targetBase=buildExportPath(targetPath,/%part%/i,"scores")
+
+                // - checking if the target folder exists
+                fileScore.source =  targetBase;
+                if (convert) {
+                    if (!fileScore.exists() ) {
+                        var res=mkdir(fileScore.source);
+                    }
+                }
+
+                if (convert && !fileScore.exists() ) {
+                        resultText.append(qsTr("Folder not available")+": %1 → %2 - %3".arg(logSourceName).arg(targetBase).arg(qsTr("Not exported")))
+                } else {
+                    // - write for all target formats
+                    for (var j = 0; j < outFormats.extensions.length; j++) {
+                        fileScore.source =  targetBase + fileName + "." + outFormats.extensions[j];
+                        var logTargetName = (fileScore.source.startsWith(exportToPath))?fileScore.source.substring(exportToPath.length):fileScore.source;
+
+                        // get modification time of destination file (if it exists)
+                        // modifiedTime() will return 0 for non-existing files
+                        // if src is newer than existing write this file
+                        if (srcModifiedTime > fileScore.modifiedTime()) {
+                            var res = convert?writeScore(thisScore, fileScore.source, outFormats.extensions[j]):true
+
+                            if (res)
+                                resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(convert?qsTr("Exported"):""))
+                            else
+                                resultText.append(qsTr("Error")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
+                        }
+                        else
+                            resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Up to date")))
+                    }
+                }
+                
                 // check if we are supposed to export parts
                 if (exportExcerpts.checked) {
                     // reset list
@@ -1167,11 +1200,34 @@ MuseScore {
     }
 
     function buildExportPath(dest,tag,value) {
-        if (!value || value.trim()==="") value="Unspecified";
+        if (!value || value.trim()==="") value="xxxxxxx";
+        else 
         value=createDefaultFileName(value,true); // allow whitespaces
         return dest.replace(tag,value);
     }
-
+    
+    // TODO
+    function mkdir(path) {
+        switch (Qt.platform.os) {
+        case "windows":
+            var cmd = "cmd /c mkdir \"" + path + "\"";
+            console.log("-- MKDIR CMD: " + cmd);
+            proc.start(cmd);
+            var val = proc.waitForFinished(3000);
+            if (val) {
+                console.log("-- MKDIR CMD : OK (" + proc.readAllStandardOutput() + ")");
+                return true;
+            } else {
+                console.log("-- MKDIR CMD : ERR (" /*+ proc.readAllStandardError()*/ + ")");
+                return false;
+            }
+            break;
+        default:
+            console.log("-- MKDIR CMD : Unsported platform (" + Qt.platform.os + ")");
+            return false;
+        }
+        return false;
+    }
     // FolderListModel returns what Qt calles the
     // completeSuffix for "fileSuffix" which means everything
     // that follows the first '.' in a file name. (e.g. 'tar.gz')
@@ -1308,10 +1364,11 @@ MuseScore {
         if (useExportStructure.valid) {
 
             exportStructure.text=exportStructure.text.replace(/\/\s*$/,""); // delete trailing "/"
+            exportStructure.text=exportStructure.text.replace(/\\/,"/"); // remove "\" by "/"
             exportStructure.text=exportStructure.text.trim(); // delete starting and trailing spaces
 
             var check1 = /\/\//;
-            var check2 = /^((%COMPOSER%|%TITLE%|%YEAR%|%WORKNUMBER%|%LYRICIST%|%ARRANGER%|%MOUVEMENTNUMBER%|%MOUVEMENTTITLE%)([^:\\/%]*\/?[^:\\/%]*)*)+$/i
+            var check2 = /^((%COMPOSER%|%TITLE%|%YEAR%|%WORKNUMBER%|%LYRICIST%|%ARRANGER%|%MOUVEMENTNUMBER%|%MOUVEMENTTITLE%|%PART%)([^:\\/%]*\/?[^:\\/%]*)*)+$/i
 
             var valid;
             if (exportStructure.text.match(check1)) { // checking for "//" : not authorized
