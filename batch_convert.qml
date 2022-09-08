@@ -65,8 +65,8 @@ MuseScore {
     id: batchConvert
 
     // `width` and `height` allegedly are not valid property names, works regardless and seems needed?!
-    width: mainRow.childrenRect.width + 40
-    height: mainRow.childrenRect.height + 20
+    width: mainRow.childrenRect.width + mainRow.anchors.margins*2
+    height: mainRow.childrenRect.height + mainRow.anchors.margins*2
     
     // Mutally exclusive in/out formats, doesn't work properly
     ButtonGroup  { id: mscz }
@@ -82,6 +82,7 @@ MuseScore {
         id: mainRow
         columnSpacing: 2
         columns: 3
+        anchors.margins: 10
 
         GroupBox {
             id: inFormats
@@ -535,7 +536,7 @@ MuseScore {
             Layout.columnSpan: 2
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.alignment: Qt.AlignTop | Qt.AlignRight
+            Layout.alignment: Qt.AlignTop | Qt.AlignLeft
             rowSpacing: 1
             columnSpacing: 1
             columns: 2
@@ -623,57 +624,98 @@ MuseScore {
                 text: qsTr("Export structure")+":"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Stucture the export folder depending on the file properties")
-                } // differentExportPath
+                } // useExportStructure
             TextField {
                 Layout.preferredWidth: 400
                 id: exportStructure
                 text: ""
                 enabled: useExportStructure.valid
                 }
-            Button {
-                Layout.columnSpan: 2
-                id: reset
-                text: /*qsTr("Reset to Defaults")*/ qsTranslate("QPlatformTheme", "Restore Defaults")
-                onClicked: {
-                    resetDefaults()
-                } // onClicked
-            } // reset
+            SmallCheckBox {
+                id: includeMissingProperty
+                // Only allow different export path if not traversing subdirs.
+                enabled: useExportStructure.valid
+                property var valid: useExportStructure.valid && includeMissingProperty.checked
+                text: qsTr("With missing properties")+":"
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Include files with missing properties, and replace them by a keyword such as \"unspecified\".")
+                } // includeMissingProperty
+            TextField {
+                Layout.preferredWidth: 200
+                id: missingPropertyDefault
+                text: qsTr("unspecified")
+                placeholderText: qsTr("E.g. \"unspecified\"")
+                enabled: includeMissingProperty.valid
+                }
         } // options Column
 
-        Row {
-            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+        Item {
+            //color: "#FFAACC"
+            Layout.alignment: Qt.AlignBottom | Qt.AlignLeft
             Layout.columnSpan: 3
             Layout.column: 0
             Layout.row: 2
-            Button {
-                id: preview
-                text: qsTr("Preview")
-                highlighted: true
-                //isDefault: true // needs more work
-                enabled:  (!differentExportPath.valid || exportTo.text!=="") && (importFrom.text!=="")
-                onClicked: {
-                    convert=false;
-                    work();
-                } // onClicked
-            } // ok
-            Button {
-                id: ok
-                enabled:  (!differentExportPath.valid || exportTo.text!=="") && (importFrom.text!=="")
-                text: qsTr("Convert!")
-                onClicked: {
-                    convert=true;
-                    work();
+            Layout.fillWidth: true
+            Layout.rightMargin: 10
+            Layout.leftMargin: 10
+            Layout.topMargin: 5
+            Layout.preferredHeight: btnrow.implicitHeight
+            RowLayout {
+                id:btnrow
+                spacing: 5
+                anchors.fill: parent
+                Button {
+                    id: reset
+                    text: qsTranslate("QPlatformTheme", "Restore Defaults")
+                    onClicked: {
+                        resetDefaults()
+                    } // onClicked
+                } // reset
 
-                } // onClicked
-            } // ok
-            Button {
-                id: cancel
-                text: /*qsTr("Cancel")*/ qsTranslate("QPlatformTheme", "Close")
-                onClicked: {
-                    batchConvert.parent.Window.window.close();
+                Button {
+                    id: openlog
+                    text: qsTr("View log")
+                    onClicked: {
+                        workDialog.open()
+                    } // onClicked
+                } // openLog
+
+                Item { // spacer 
+                    id: spacer
+                    implicitHeight: 10
+                    Layout.fillWidth: true
                 }
-            } // Cancel
-        } // Row
+                    
+                Button {
+                    id: preview
+                    text: qsTr("Preview")
+                    highlighted: true
+                    //isDefault: true // needs more work
+                    enabled:  (!differentExportPath.valid || exportTo.text!=="") && (importFrom.text!=="") && (!includeMissingProperty.valid || missingPropertyDefault.text.trim()!="")
+                    onClicked: {
+                        convert=false;
+                        work();
+                    } // onClicked
+                } // ok
+                Button {
+                    id: ok
+                    enabled:  (!differentExportPath.valid || exportTo.text!=="") && (importFrom.text!=="") && (!includeMissingProperty.valid || missingPropertyDefault.text.trim()!="")
+                    text: qsTr("Convert!")
+                    onClicked: {
+                        convert=true;
+                        work();
+
+                    } // onClicked
+                } // ok
+                Button {
+                    id: cancel
+                    text: /*qsTr("Cancel")*/ qsTranslate("QPlatformTheme", "Close")
+                    onClicked: {
+                        batchConvert.parent.Window.window.close();
+                    }
+                } // Cancel
+            } // RowLayout
+        } // Item
     } // GridLayout
     //} // Window
     // remember settings
@@ -743,6 +785,8 @@ MuseScore {
         property alias filterIsRegExp: filterWithRegExp.checked
         property alias exportStructure: exportStructure.text
         property alias useExportStructure: useExportStructure.checked
+        property alias includeMissingProperty: includeMissingProperty.checked
+        property alias missingPropertyDefault: missingPropertyDefault.text
 
     }
 
@@ -810,6 +854,8 @@ MuseScore {
         differentExportPath.checked = false
         useExportStructure.checked=false;
         exportStructure.text="";
+        includeMissingProperty.checked=false;
+        missingPropertyDefault.text=qsTr("unspecified");
 
         // 'uncheck' everything, then 'check' the next few
         inMscz.checked = outPdf.checked = true
@@ -886,7 +932,7 @@ MuseScore {
         visible: false
         width: 900
         height: 700
-        standardButtons: StandardButton.Abort
+        standardButtons: StandardButton.Ok
 
 
         ColumnLayout {
@@ -902,7 +948,7 @@ MuseScore {
                 id: currentStatus
                 Layout.preferredWidth: 600
                 Layout.alignment: Qt.AlignTop | Qt.AlignLeft
-                text: qsTr("Running...")
+                text: qsTr("Pending...")
             }
 
             ScrollView {
@@ -998,7 +1044,11 @@ MuseScore {
     }
 
     QProcess {
-        id: proc
+        id: procExcerpt
+    }
+
+    QProcess {
+        id: procScore
     }
 
     Timer {
@@ -1020,19 +1070,32 @@ MuseScore {
             // - create full file path for part
             // var targetBase = buildExportPath(targetPath,/%part%/i,partTitle)
             var targetBase = buildExportPath(targetPath,/%part%/i,"parts");
+            var logTargetName = (targetBase.startsWith(exportToPath))?targetBase.substring(exportToPath.length):targetBase;
+            
+            var doExport = true;
+            
+            // - checking if the path is complete
+            // if it contains still %, it means that they were some missing properties that we haven't replaced by an "unspecified" text
+            if (targetBase.includes("%")) {
+                resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Skipped")))
+                doExport=false;
+            }
 
             // - checking if the target folder exists
             fileExcerpt.source = targetBase;
             
-            if (convert) {
+            if (doExport && convert) {
                 if (!fileExcerpt.exists() ) {
-                    var res=mkdir(fileExcerpt.source);
+                    var res=mkdir(procExcerpt, fileExcerpt.source);
                 }
             }
 
-            if (convert && !fileExcerpt.exists() ) {
-                    resultText.append("  "+qsTr("Folder not available")+": %1 → %2 - %3".arg(partTitle).arg(targetBase).arg(qsTr("Not exported")))
-            } else {
+            if (doExport && convert && !fileExcerpt.exists() ) {
+                    resultText.append("  "+qsTr("Folder not available")+": %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Not exported")));
+                    doExport=false;
+            } 
+
+            if (doExport) {
                 // - write for all target formats
                 targetBase = targetBase + fileName + "-" + createDefaultFileName(partTitle) + "."
 
@@ -1041,7 +1104,7 @@ MuseScore {
                     // modifiedTime() will return 0 for non-existing files
                     // if src is newer than existing write this file
                     fileExcerpt.source = targetBase + outFormats.extensions[j]
-                    var logTargetName = (fileExcerpt.source.startsWith(exportToPath))?fileExcerpt.source.substring(exportToPath.length):fileExcerpt.source;
+                    logTargetName = (fileExcerpt.source.startsWith(exportToPath))?fileExcerpt.source.substring(exportToPath.length):fileExcerpt.source;
                     if (srcModifiedTime > fileExcerpt.modifiedTime()) {
                         var res = convert?writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j]):true;
                         if (res)
@@ -1080,7 +1143,7 @@ MuseScore {
                 // no more files to process
                 workDialog.standardButtons = StandardButton.Ok
                 if (!abortRequested)
-                    currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizzard", "Done") + "."
+                    currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizard", "Done") + "."
                 else
                     console.log("abort!")
                 return
@@ -1136,22 +1199,35 @@ MuseScore {
                 }
 
                 var targetBase=buildExportPath(targetPath,/%part%/i,"scores")
+                var logTargetName = (targetBase.startsWith(exportToPath))?targetBase.substring(exportToPath.length):targetBase;
+
+                var doExport = true;
+                
+                // - checking if the path is complete
+                // if it contains still %, it means that they were some missing properties that we haven't replaced by an "unspecified" text
+                if (targetBase.includes("%")) {
+                    resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Skipped")))
+                    doExport=false;
+                }
 
                 // - checking if the target folder exists
                 fileScore.source =  targetBase;
-                if (convert) {
+                if (doExport && convert) {
                     if (!fileScore.exists() ) {
-                        var res=mkdir(fileScore.source);
+                        var res=mkdir(procScore, fileScore.source);
                     }
                 }
 
-                if (convert && !fileScore.exists() ) {
-                        resultText.append(qsTr("Folder not available")+": %1 → %2 - %3".arg(logSourceName).arg(targetBase).arg(qsTr("Not exported")))
-                } else {
+                if (doExport && convert && !fileScore.exists() ) {
+                        resultText.append(qsTr("Folder not available")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
+                        doExport=false;
+                } 
+
+                if (doExport) {
                     // - write for all target formats
                     for (var j = 0; j < outFormats.extensions.length; j++) {
                         fileScore.source =  targetBase + fileName + "." + outFormats.extensions[j];
-                        var logTargetName = (fileScore.source.startsWith(exportToPath))?fileScore.source.substring(exportToPath.length):fileScore.source;
+                        logTargetName = (fileScore.source.startsWith(exportToPath))?fileScore.source.substring(exportToPath.length):fileScore.source;
 
                         // get modification time of destination file (if it exists)
                         // modifiedTime() will return 0 for non-existing files
@@ -1167,23 +1243,23 @@ MuseScore {
                         else
                             resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Up to date")))
                     }
-                }
                 
-                // check if we are supposed to export parts
-                if (exportExcerpts.checked) {
-                    // reset list
-                    excerptsList = []
-                    // do we have excertps?
-                    var excerpts = thisScore.excerpts
-                    for (var ex = 0; ex < excerpts.length; ex++) {
-                        if (excerpts[ex].partScore !== thisScore) // only list when not base score
-                            excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath])
-                    }
-                    // if we have files start timer
-                    if (excerpts.length > 0) {
-                        curBaseScore = thisScore // to be able to close this later
-                        excerptTimer.running = true
-                        return
+                    // check if we are supposed to export parts
+                    if (exportExcerpts.checked) {
+                        // reset list
+                        excerptsList = []
+                        // do we have excertps?
+                        var excerpts = thisScore.excerpts
+                        for (var ex = 0; ex < excerpts.length; ex++) {
+                            if (excerpts[ex].partScore !== thisScore) // only list when not base score
+                                excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath])
+                        }
+                        // if we have files start timer
+                        if (excerpts.length > 0) {
+                            curBaseScore = thisScore // to be able to close this later
+                            excerptTimer.running = true
+                            return
+                        }
                     }
                 }
                 closeScore(thisScore)
@@ -1200,33 +1276,84 @@ MuseScore {
     }
 
     function buildExportPath(dest,tag,value) {
-        if (!value || value.trim()==="") value="xxxxxxx";
-        else 
+        if (!value || value.trim()==="") {
+            if (includeMissingProperty.checked) {
+                value=missingPropertyDefault.text;
+            } else {
+                return dest; // return as such
+            }
+        }
+        else {
         value=createDefaultFileName(value,true); // allow whitespaces
+        }
         return dest.replace(tag,value);
     }
     
-    // TODO
-    function mkdir(path) {
+    function mkdir(qproc, path) {
+        var cmd;
+        
+        // Platform-based command
         switch (Qt.platform.os) {
         case "windows":
-            var cmd = "cmd /c mkdir \"" + path + "\"";
-            console.log("-- MKDIR CMD: " + cmd);
-            proc.start(cmd);
-            var val = proc.waitForFinished(3000);
-            if (val) {
-                console.log("-- MKDIR CMD : OK (" + proc.readAllStandardOutput() + ")");
-                return true;
-            } else {
-                console.log("-- MKDIR CMD : ERR (" /*+ proc.readAllStandardError()*/ + ")");
-                return false;
-            }
+            cmd = "cmd /c mkdir \"" + path + "\"";
             break;
         default:
-            console.log("-- MKDIR CMD : Unsported platform (" + Qt.platform.os + ")");
-            return false;
+            cmd = "/bin/sh -c mkdir -p \"" + path + "\"";
+            // console.log("-- MKDIR CMD : Unsported platform (" + Qt.platform.os + ")");
+            // return false;
         }
-        return false;
+        
+        // Execution
+        var res = false;
+        console.log("-- MKDIR CMD: " + cmd);
+        qproc.start(cmd);
+        // var res = qproc.waitForStarted(3000);
+        // if (res) {
+        res = qproc.waitForFinished(3000);
+        if (res) {
+            console.log("-- MKDIR CMD : OK");
+        } else {
+            console.log("-- MKDIR CMD : ERR");
+        }
+        // } else {
+        // console.log("-- MKDIR CMD : NOT STARTED");
+        // }
+
+        // DEBUG
+        try {
+            console.log("-- MKDIR STDOUT : " + qproc.readAllStandardOutput());
+        } catch (err) {
+            console.log("--" + err.message);
+        }
+        /*try {
+        console.log("-- MKDIR STDERR :  " + qproc.readAllStandardError());
+        } catch (err) {
+        console.log("--" + err.message);
+        }
+        try {
+        console.log("-- MKDIR STATE :  " + qproc.state());
+        } catch (err) {
+        console.log("--" + err.message);
+        }
+        try {
+        console.log("-- MKDIR ERROR :  " + qproc.error());
+        } catch (err) {
+        console.log("--" + err.message);
+        }
+        try {
+        console.log("-- MKDIR EXIT CODE :  " + qproc.exitCode());
+        } catch (err) {
+        console.log("--" + err.message);
+        }
+        try {
+        console.log("-- MKDIR EXIT STATUS :  " + qproc.exitStatus());
+        } catch (err) {
+        console.log("--" + err.message);
+        }*/
+        // DEBUG
+
+        // !! "true" doesn't mean it all went right. E.g. calling "cmd /c foobar" will return true even if the foobar" command does not exist !!
+        return (res ? true : false);
     }
     // FolderListModel returns what Qt calles the
     // completeSuffix for "fileSuffix" which means everything
@@ -1319,15 +1446,17 @@ MuseScore {
                 // report this
                 resultText.append(qsTr("No files found"))
                 workDialog.standardButtons = StandardButton.Ok
-                currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizzard", "Done") + "."
+                currentStatus.text = /*qsTr("Done.")*/ qsTranslate("QWizard", "Done") + "."
             }
         }
     }
 
     function work() {
 
-
+        workDialog.standardButtons = StandardButton.Abort
+        currentStatus.text = qsTr("Running...");
         if (resultText.text!=="") resultText.append("---------------------------------");
+
         workDialog.visible = true
 
         // Verifications
@@ -1385,6 +1514,10 @@ MuseScore {
             }
         }
 
+        // 5) missing property default
+        if (includeMissingProperty.valid) {
+            missingPropertyDefault.text=createDefaultFileName(missingPropertyDefault.text,true); // accept whitespaces
+        }
 
         if (!validation) {
             workDialog.standardButtons = StandardButton.Ok
