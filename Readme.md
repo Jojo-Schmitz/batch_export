@@ -1,11 +1,51 @@
-![Thumbnail](https://github.com/Jojo-Schmitz/batch_export/blob/master/batch_convert_thumbnail.png "Thumbnail")
 
-This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the instructions in the handbook for MuseScore [1.x](http://musescore.org/node/10129), [2.x](http://musescore.org/node/36051), [3.x](http://musescore.org/node/278601) or [4.x](https://musescore.org/en/node/329722), then:
+This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the instructions in [the 1.x Handbook](http://musescore.org/node/10129), the [2.x Handbook](http://musescore.org/node/36051) or the [3.x Handbook](http://musescore.org/node/278601), then:
 
+    ![Screenshot](https://github.com/lgvr123/batch_export/blob/New_UI/batch-convert.png "Screenshot")
+
+## What's new in 3.6 ?
+  This version is an yet unofficial extension of [Batch Convert](https://musescore.org/fr/project/batch-convert) plugin.
+
+It provides the following new features:
+* Filter the files to convert, whether by a Regular Expression or traditional wildcard filtering. E.g. Use "Quartet*" to only convert the files starting by "quartet";
+* New workflow for selecting the import and export folders : select them only if you need to change them and no longer at every conversion;
+* Export the files in a folder structure based of the file properties. E.g. export all John Coltrane score in a "John Coltrane" subfolder. More on this further on.
+* A Preview button to simulate how the conversion will be executed before executing. Handy when building the filtering options and the folder structure.
+
+### More on the _Export structure_ feature
+You have define how to build the folder structure.
+Accepted characters and keywords are:
+* "/" as folder separator
+* Any character except ":", "\", "%"
+* Any of the following keywords:
+	* "%TITLE%" : as defined in the score properties
+	* "%LYRICIST%" : as defined in the score properties 
+	* "%COMPOSER%" : as defined in the score properties
+	* "%ARRANGER%" :  as defined in the score properties 
+	* "%WORKNUMBER%" :  as defined in the score properties 
+	* "%MOUVEMENTNUMBER%" :  as defined in the score properties 
+	* "%MOUVEMENTTITLE%" :  as defined in the score properties 
+	* "%YEAR%" :  year part of the creation date
+	* "%PART%" :  "scores" or "parts" depending that a score is exported or one of its subparts
+
+What if a file does not provide a value for a properties used in the export structure ?
+* You can either **skip** the file by **unselecting** "With missing properties"
+* You can **include** the file and replace it a default string, by **selecting** "With missing properties" and providing a replacement string such as "unspecified"
+
+Example :
+In order to export all the scores in a folder named from they composer (e.g. export all John Coltrane score in a "John Coltrane" subfolder), use the "%COMPOSER%" folder structure.
+
+### Limitations and issues
+* This plugin is in the BETA state. It is tested but may still contains bugs.
+* This new version relies on platform specific code for creating the folders of the folder structure. This has been only tested on **Windows**.
+* Known issue: the plugin fails at creating a folder when a required file properties is missing. So the plugin is able to create a "export/john coltrane/" folder but not a "export/unspecified/" folder.
+
+## Important
+NO WARRANTY THE PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND...
+
+------------------------------------
+## (Previous documentation)
 1. Select "Batch Convert" (formerly "Batch Export") from the Plugins menu
-
-    ![Screenshot](https://github.com/Jojo-Schmitz/batch_export/blob/master/batch-convert.png "Screenshot")
-
 3. Select the in- and output format(s), or just use the default (\*.mscz to \*.pdf)
 4. Decide whether or nor you want to also work on subdirectories of the one you'll select in the next step and check/uncheck the corresponding box
 5. Browse to the folder containing the files you wish to export
@@ -14,12 +54,12 @@ This Plugin for MuseScore will go through a specified folder and in its default 
 
 A couple of notes to be aware of:
 
-- You may need to have a score already open in order for the Plugins menu to be active. Fixed in MuseScore 2.0+ (and resurfaced in 4.0)
+- You may need to have a score already open in order for the Plugins menu to be active. Fixed in MuseScore 2.0+
 - In MuseScore 2.0.1+ make sure you don't have a score open, that you want the plugin to process, because it won't be able to load it then.
 - The scores for which files were exported may be left open in tabs. If so, you'd need to close them manually. Fixed with MuseScore 1.2+
 - These open tabs will be labeled "untitled". Fixed in MuseScore 2.0+ and not an issue anymore with MuseScore 1.2+, see above
 - The 2.x version of this plugin needs at least 2.0.1
-- The 3.x version of this plugin needs at least 3.0.2 (it shows the UI in 4.x, but doesn't convert anything yet)
+- The 3.x version of this plugin needs at least 3.0.2
 - If you're on macOS and the file dialog for step 4 above does not show up, try using the Mac version of the plugin which is in the branch 'mac' (for 3.0, actually that version seems to run fine in Windows too) or mac-2.x (for 2.x).
 - All files processed by the plugin for MuseScore 2.0+ will be listed in the 'Recent File' menu.
 
