@@ -1497,7 +1497,9 @@ MuseScore {
             exportStructure.text=exportStructure.text.trim(); // delete starting and trailing spaces
 
             var check1 = /\/\//;
-            var check2 = /^((%COMPOSER%|%TITLE%|%YEAR%|%WORKNUMBER%|%LYRICIST%|%ARRANGER%|%MOUVEMENTNUMBER%|%MOUVEMENTTITLE%|%PART%)([^:\\/%]*\/?[^:\\/%]*)*)+$/i
+            var check2 = /^((%COMPOSER%|%TITLE%|%YEAR%|%WORKNUMBER%|%LYRICIST%|%ARRANGER%|%MOUVEMENTNUMBER%|%MOUVEMENTTITLE%|%PART%)([^:\\/%*?"<>|]*\/?[^:\\/%*?"<>|]*)*)+$/i
+
+
 
             var valid;
             if (exportStructure.text.match(check1)) { // checking for "//" : not authorized
