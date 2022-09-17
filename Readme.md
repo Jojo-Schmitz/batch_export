@@ -24,8 +24,8 @@ Accepted characters and keywords are:
 	* "%COMPOSER%" : as defined in the score properties
 	* "%ARRANGER%" :  as defined in the score properties 
 	* "%WORKNUMBER%" :  as defined in the score properties 
-	* "%MOUVEMENTNUMBER%" :  as defined in the score properties 
-	* "%MOUVEMENTTITLE%" :  as defined in the score properties 
+	* "%MOVEMENTNUMBER%" :  as defined in the score properties 
+	* "%MOVEMENTTITLE%" :  as defined in the score properties 
 	* "%YEAR%" :  year part of the creation date
 	* "%PART%" :  "scores" or "parts" depending that a score is exported or one of its subparts
 
