@@ -28,6 +28,7 @@ Accepted characters and keywords are:
 	* "%MOVEMENTTITLE%" :  as defined in the score properties 
 	* "%YEAR%" :  year part of the creation date
 	* "%PART%" :  "scores" or "parts" depending that a score is exported or one of its subparts
+	* "%FORMAT%" : the format of exported file. E.g. "pdf"
 
 What if a file does not provide a value for a properties used in the export structure ?
 * You can either **skip** the file by **unselecting** "With missing properties"

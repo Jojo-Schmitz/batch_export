@@ -631,7 +631,7 @@ MuseScore {
                 text: ""
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Allowed keywords")+":\n"+
-                    "%TITLE%\n%LYRICIST%\n%COMPOSER%\n%ARRANGER%\n%WORKNUMBER%\n%MOVEMENTNUMBER%\n%MOVEMENTTITLE%\n%YEAR%\n%PART%\n"
+                    "%FORMAT%\n%TITLE%\n%LYRICIST%\n%COMPOSER%\n%ARRANGER%\n%WORKNUMBER%\n%MOVEMENTNUMBER%\n%MOVEMENTTITLE%\n%YEAR%\n%PART%\n"
                     + "%1: %*?\"<>:|".arg(qsTr("Any character except"))+"\n"
                     + "%1: /".arg(qsTr("Folder separator"))
                     ;
@@ -1073,44 +1073,49 @@ MuseScore {
             var fileName = curScoreInfo[2]
             var srcModifiedTime = curScoreInfo[3]
             var targetPath=curScoreInfo[4];
+            
+            var missing =  (includeMissingProperty.checked)?missingPropertyDefault.text:undefined;
 
             // - create full file path for part
-            // var targetBase = buildExportPath(targetPath,/%part%/i,partTitle)
-            var targetBase = buildExportPath(targetPath,/%part%/i,"parts");
+            var targetBase = buildExportPath(targetPath,/%part%/i,"parts",missing);
             var logTargetName = (targetBase.startsWith(exportToPath))?targetBase.substring(exportToPath.length):targetBase;
             
             var doExport = true;
             
             // - checking if the path is complete
             // if it contains still %, it means that they were some missing properties that we haven't replaced by an "unspecified" text
-            if (targetBase.includes("%")) {
+            if (targetBase.replace(/%format%/gi,"").includes("%")) {
                 resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Skipped")))
                 doExport=false;
             }
 
-            // - checking if the target folder exists
-            fileExcerpt.source = targetBase;
             
-            if (doExport && convert) {
-                if (!fileExcerpt.exists() ) {
-                    var res=mkdir(procExcerpt, fileExcerpt.source);
-                }
-            }
-
-            if (doExport && convert && !fileExcerpt.exists() ) {
-                    resultText.append("  "+qsTr("Folder not available")+": %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Not exported")));
-                    doExport=false;
-            } 
-
             if (doExport) {
                 // - write for all target formats
                 targetBase = targetBase + fileName + "-" + createDefaultFileName(partTitle) + "."
 
                 for (var j = 0; j < outFormats.extensions.length; j++) {
+
+                    var format=outFormats.extensions[j];
+                    var tb=buildExportPath(targetBase,/%format%/i, format);
+                    var dest=tb + fileName + "." + format;
+
+                    // - checking if the target folder exists
+                    fileExcerpt.source = tb;
+
+                    if (convert && !fileExcerpt.exists() ) {
+                        var res=mkdir(procExcerpt, fileExcerpt.source);
+                    }
+
+                    if (convert && !fileExcerpt.exists() ) {
+                        resultText.append("  "+qsTr("Folder not available")+": %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Not exported")));
+                        continue;
+                    } 
+
                     // get modification time of destination file (if it exists)
                     // modifiedTime() will return 0 for non-existing files
                     // if src is newer than existing write this file
-                    fileExcerpt.source = targetBase + outFormats.extensions[j]
+                    fileExcerpt.source = dest
                     logTargetName = (fileExcerpt.source.startsWith(exportToPath))?fileExcerpt.source.substring(exportToPath.length):fileExcerpt.source;
                     if (srcModifiedTime > fileExcerpt.modifiedTime()) {
                         var res = convert?writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j]):true;
@@ -1132,7 +1137,7 @@ MuseScore {
                 excerptTimer.running = true
             else {
                 // close base score
-                closeScore(curBaseScore)
+                if (!isCurScore) closeScore(curBaseScore)
                 processTimer.restart();
             }
         }
@@ -1166,9 +1171,18 @@ MuseScore {
             var fileFullPath = filePath + fileName + "." + fileExt
 
             // read file
+            var isCurScore = false;
             var thisScore = readScore(fileFullPath, true)
-
+            
             // make sure we have a valid score
+            if (!thisScore) {
+                if (curScore.path.toLowerCase()==fileFullPath.toLowerCase()) {
+                    thisScore=curScore;
+                    isCurScore=true;
+                }
+                console.log("Failed to read "+fileFullPath+". Checking if curScore is this file: "+curScore.path);
+                console.log("And it "+((!thisScore)?"is not":"is"));
+            }
             if (thisScore) {
                 // get modification time of source file
                 fileScore.source = fileFullPath
@@ -1190,54 +1204,58 @@ MuseScore {
 
                 // - create full file path for part
                 var targetPath=(differentExportPath.valid)?exportToPath:filePath;
+                var missing =  (includeMissingProperty.checked)?missingPropertyDefault.text:undefined;
 
                 if (useExportStructure.valid) {
                     var sub=exportStructure.text;
-                    sub=buildExportPath(sub,/%title%/i,thisScore.title);
-                    sub=buildExportPath(sub,/%lyricist%/i,thisScore.lyricist);
-                    sub=buildExportPath(sub,/%composer%/i,thisScore.composer);
-                    sub=buildExportPath(sub,/%arranger%/i,thisScore.metaTag("arranger"));
-                    sub=buildExportPath(sub,/%worknumber%/i,thisScore.metaTag("workNumber"));
-                    sub=buildExportPath(sub,/%movementnumber%/i,thisScore.metaTag("movementNumber"));
-                    sub=buildExportPath(sub,/%movementtitle%/i,thisScore.metaTag("movementTitle"));
-                    sub=buildExportPath(sub,/%year%/i, Qt.formatDate(new Date(thisScore.metaTag("creationDate")),"yyyy"));
+                    sub=buildExportPath(sub,/%title%/i,thisScore.title,missing);
+                    sub=buildExportPath(sub,/%lyricist%/i,thisScore.lyricist,missing);
+                    sub=buildExportPath(sub,/%composer%/i,thisScore.composer,missing);
+                    sub=buildExportPath(sub,/%arranger%/i,thisScore.metaTag("arranger"),missing);
+                    sub=buildExportPath(sub,/%worknumber%/i,thisScore.metaTag("workNumber"),missing);
+                    sub=buildExportPath(sub,/%movementnumber%/i,thisScore.metaTag("movementNumber"),missing);
+                    sub=buildExportPath(sub,/%movementtitle%/i,thisScore.metaTag("movementTitle"),missing);
+                    sub=buildExportPath(sub,/%year%/i, Qt.formatDate(new Date(thisScore.metaTag("creationDate")),"yyyy"),missing);
 
                     targetPath += sub + "/" ;
                 }
 
-                var targetBase=buildExportPath(targetPath,/%part%/i,"scores")
+                var targetBase=buildExportPath(targetPath,/%part%/i,"scores",missing)
                 var logTargetName = (targetBase.startsWith(exportToPath))?targetBase.substring(exportToPath.length):targetBase;
 
                 var doExport = true;
                 
                 // - checking if the path is complete
                 // if it contains still %, it means that they were some missing properties that we haven't replaced by an "unspecified" text
-                if (targetBase.includes("%")) {
+                if (targetBase.replace(/%format%/gi,"").includes("%")) {
                     resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Skipped")))
                     doExport=false;
                 }
 
-                // - checking if the target folder exists
-                fileScore.source =  targetBase;
-                if (doExport && convert) {
-                    if (!fileScore.exists() ) {
-                        var res=mkdir(procScore, fileScore.source);
-                    }
-                }
-
-                if (doExport && convert && !fileScore.exists() ) {
-                        resultText.append(qsTr("Folder not available")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
-                        doExport=false;
-                } 
-
                 if (doExport) {
                     // - write for all target formats
                     for (var j = 0; j < outFormats.extensions.length; j++) {
-                        fileScore.source =  targetBase + fileName + "." + outFormats.extensions[j];
+
+                        var format=outFormats.extensions[j];
+                        var tb=buildExportPath(targetBase,/%format%/i, format);
+                        var dest=tb + fileName + "." + format;
+
+                        // - checking if the target folder exists
+                        fileScore.source =  tb;
+                        if (convert && !fileScore.exists() ) {
+                            var res=mkdir(procScore, fileScore.source);
+                        }
+
+                        if (convert && !fileScore.exists() ) {
+                            resultText.append(qsTr("Folder not available")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
+                            continue;
+                        } 
+
+                        fileScore.source =  dest;
                         logTargetName = (fileScore.source.startsWith(exportToPath))?fileScore.source.substring(exportToPath.length):fileScore.source;
 
                         // get modification time of destination file (if it exists)
-                        // modifiedTime() will return 0 for non-existing files
+                        // modifiedTime() will return ta0 for non-existing files
                         // if src is newer than existing write this file
                         if (srcModifiedTime > fileScore.modifiedTime()) {
                             var res = convert?writeScore(thisScore, fileScore.source, outFormats.extensions[j]):true
@@ -1269,7 +1287,7 @@ MuseScore {
                         }
                     }
                 }
-                closeScore(thisScore)
+                if (!isCurScore) closeScore(thisScore)
             }
             else
                 resultText.append(qsTr("ERROR reading file %1").arg(fileName))
@@ -1282,10 +1300,10 @@ MuseScore {
         }
     }
 
-    function buildExportPath(dest,tag,value) {
+    function buildExportPath(dest,tag,value, missing) {
         if (!value || value.trim()==="") {
-            if (includeMissingProperty.checked) {
-                value=missingPropertyDefault.text;
+            if (missing) {
+                value=missing;
             } else {
                 return dest; // return as such
             }
@@ -1504,7 +1522,7 @@ MuseScore {
             exportStructure.text=exportStructure.text.trim(); // delete starting and trailing spaces
 
             var check1 = /\/\//;
-            var check2 = /^((%COMPOSER%|%TITLE%|%YEAR%|%WORKNUMBER%|%LYRICIST%|%ARRANGER%|%MOVEMENTNUMBER%|%MOVEMENTTITLE%|%PART%)([^:\\/%*?"<>|]*\/?[^:\\/%*?"<>|]*)*)+$/i
+            var check2 = /^((%FORMAT%|%COMPOSER%|%TITLE%|%YEAR%|%WORKNUMBER%|%LYRICIST%|%ARRANGER%|%MOVEMENTNUMBER%|%MOVEMENTTITLE%|%PART%)([^:\\/%*?"<>|]*\/?[^:\\/%*?"<>|]*)*)+$/i
 
 
 
