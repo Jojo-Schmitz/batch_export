@@ -1176,12 +1176,17 @@ MuseScore {
             
             // make sure we have a valid score
             if (!thisScore) {
-                if (curScore.path.toLowerCase()==fileFullPath.toLowerCase()) {
-                    thisScore=curScore;
-                    isCurScore=true;
+                var opened=scores;
+                for(var i=0;i<opened.length;i++) {
+                    var score=opened[i];
+                    console.log("Failed to read "+fileFullPath+". Checking if curScore is this file: "+score.path);
+                    if (score.path.toLowerCase()===fileFullPath.toLowerCase()) {
+                        thisScore=score;
+                        isCurScore=true;
+                        break;
+                    }
+                    console.log("And it "+((!thisScore)?"is not":"is"));
                 }
-                console.log("Failed to read "+fileFullPath+". Checking if curScore is this file: "+curScore.path);
-                console.log("And it "+((!thisScore)?"is not":"is"));
             }
             if (thisScore) {
                 // get modification time of source file
