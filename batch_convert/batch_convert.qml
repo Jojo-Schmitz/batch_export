@@ -13,6 +13,9 @@ import FileIO 3.0
 /*  2.0.1: Initial version with new UI
 /*  2.1.0: Use Composer if Arranger, Lyricist, Copywriter are missing
 /*  2.1.0: Error when dealing with parts of an already opened score.
+/*  2.1.0: The score name was added twice to the excported file when exporting parts.
+/*  2.1.0: Parts of which name starts with a "." will not be exported.
+/*  2.1.0: Unnecessary folders were created when exporting parts.
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
@@ -1079,13 +1082,12 @@ MuseScore {
 
             if (doExport) {
                 // - write for all target formats
-                targetBase = targetBase + fileName + "-" + createDefaultFileName(partTitle) + "."
-
+                var partFileName= fileName + "-" + createDefaultFileName(partTitle) + ".";
                 for (var j = 0; j < outFormats.extensions.length; j++) {
 
                     var format=outFormats.extensions[j];
                     var tb=buildExportPath(targetBase,/%format%/i, format);
-                    var dest=tb + fileName + "." + format;
+                    var dest=tb + partFileName + format;
 
                     // - checking if the target folder exists
                     fileExcerpt.source = tb;
@@ -1271,7 +1273,7 @@ MuseScore {
                         // do we have excertps?
                         var excerpts = thisScore.excerpts
                         for (var ex = 0; ex < excerpts.length; ex++) {
-                            if (excerpts[ex].partScore !== thisScore) // only list when not base score
+                            if ((excerpts[ex].partScore !== thisScore) && (excerpts[ex].title.charAt(0) !== ".")) // only list when not base score and not starting with a "."
                                 excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath, isCurScore])
                         }
                         // if we have files start timer
