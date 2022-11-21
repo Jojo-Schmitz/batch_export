@@ -9,9 +9,14 @@ import QtQml 2.8
 import MuseScore 3.0
 import FileIO 3.0
 
+/**********************
+/*  2.0.1: Initial version with new UI
+/*  2.1.0: Use Composer if Arranger, Lyricist, Copywriter are missing
+/*  2.1.0: Error when dealing with parts of an already opened score.
+/**********************************************/
 MuseScore {
-    menuPath: "Plugins." + qsTr("Batch Convert") // this doesn't work, why?
-    version: "3.6"
+    menuPath: "Plugins." + qsTr("Batch Convert")
+    version: "2.1.0"
     requiresScore: false
     description: qsTr("This plugin converts multiple files from various formats"
                       + " into various formats")
@@ -1045,6 +1050,8 @@ MuseScore {
         // this function processes one linked part and
         // gives control back to Qt to update the dialog
         onTriggered: {
+
+            
             var curScoreInfo = excerptsList.shift()
             var thisScore = curScoreInfo[0].partScore
             var partTitle = curScoreInfo[0].title
@@ -1052,6 +1059,7 @@ MuseScore {
             var fileName = curScoreInfo[2]
             var srcModifiedTime = curScoreInfo[3]
             var targetPath=curScoreInfo[4];
+            var isCurScore=curScoreInfo[5];
 
             var missing =  (includeMissingProperty.checked)?missingPropertyDefault.text:undefined;
 
@@ -1154,16 +1162,17 @@ MuseScore {
 
             // make sure we have a valid score
             if (!thisScore) {
+                console.log("Failed to read "+fileFullPath+". Checking if it is already open.");
                 var opened=scores;
                 for(var i=0;i<opened.length;i++) {
                     var score=opened[i];
-                    console.log("Failed to read "+fileFullPath+". Checking if curScore is this file: "+score.path);
+                    console.log("--> Checking if curScore is this file: "+score.path);
                     if (score.path.toLowerCase()===fileFullPath.toLowerCase()) {
                         thisScore=score;
                         isCurScore=true;
                         break;
                     }
-                    console.log("And it "+((!thisScore)?"is not":"is"));
+                    console.log("==> And it "+((!thisScore)?"is not":"is"));
                 }
             }
             if (thisScore) {
@@ -1192,9 +1201,13 @@ MuseScore {
                 if (useExportStructure.valid) {
                     var sub=exportStructure.text;
                     sub=buildExportPath(sub,/%title%/i,thisScore.title,missing);
-                    sub=buildExportPath(sub,/%lyricist%/i,thisScore.lyricist,missing);
+                    sub=buildExportPath(sub,/%lyricist%/i,thisScore.lyricist);
+                    if(sub.match(/%lyricist%/i))
+                        sub=buildExportPath(sub,/%lyricist%/i,thisScore.composer,missing); // if no lyticst use composer 
                     sub=buildExportPath(sub,/%composer%/i,thisScore.composer,missing);
-                    sub=buildExportPath(sub,/%arranger%/i,thisScore.metaTag("arranger"),missing);
+                    sub=buildExportPath(sub,/%arranger%/i,thisScore.metaTag("arranger"));
+                    if(sub.match(/%arranger%/i))
+                        sub=buildExportPath(sub,/%arranger%/i,thisScore.composer,missing); // if no arranger use composer 
                     sub=buildExportPath(sub,/%worknumber%/i,thisScore.metaTag("workNumber"),missing);
                     sub=buildExportPath(sub,/%movementnumber%/i,thisScore.metaTag("movementNumber"),missing);
                     sub=buildExportPath(sub,/%movementtitle%/i,thisScore.metaTag("movementTitle"),missing);
@@ -1259,7 +1272,7 @@ MuseScore {
                         var excerpts = thisScore.excerpts
                         for (var ex = 0; ex < excerpts.length; ex++) {
                             if (excerpts[ex].partScore !== thisScore) // only list when not base score
-                                excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath])
+                                excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath, isCurScore])
                         }
                         // if we have files start timer
                         if (excerpts.length > 0) {
