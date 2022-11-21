@@ -1,4 +1,4 @@
 support export-ignore
 demo export-ignore
-README.md export-ignore
+Readme.md export-ignore
 .git* export-ignore
