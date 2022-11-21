@@ -1298,6 +1298,7 @@ MuseScore {
 
     function mkdir(qproc, path) {
         var cmd;
+        var res = false;
 
         // Platform-based command
         switch (Qt.platform.os) {
@@ -1305,18 +1306,15 @@ MuseScore {
             cmd = "cmd /c mkdir \"" + path + "\"";
             break;
         default:
-            cmd = "/bin/sh -c mkdir -p \"" + path + "\"";
-            // console.log("-- MKDIR CMD : Unsported platform (" + Qt.platform.os + ")");
-            // return false;
+		cmd = "/bin/sh -c \"mkdir -p '"+path+"'\"";
         }
 
         // Execution
-        var res = false;
-        console.log("-- MKDIR CMD: " + cmd);
-        qproc.start(cmd);
         // var res = qproc.waitForStarted(3000);
         // if (res) {
-        res = qproc.waitForFinished(3000);
+	console.log("-- MKDIR CMD: " + cmd);
+	qproc.start(cmd);
+        res = qproc.waitForFinished(5000);
         if (res) {
             console.log("-- MKDIR CMD : OK");
         } else {
@@ -1541,11 +1539,11 @@ MuseScore {
         // https://stackoverflow.com/questions/24927850/get-the-path-from-a-qml-url
         exportToPath = urlToPath(exportTo.text);
         if (!exportToPath.endsWith('/')) exportToPath+='/';
-        exportToPath=exportToPath.toUpperCase();
+        //exportToPath=exportToPath.toUpperCase(); //21/11/22 Linux testing
 
         importFromPath = urlToPath(importFrom.text);
         if (!importFromPath.endsWith('/')) importFromPath+='/';
-        importFromPath=importFromPath.toUpperCase();
+        //importFromPath=importFromPath.toUpperCase(); //21/11/22 Linux testing
 
         console.log(exportToPath);
         console.log(importFromPath);
