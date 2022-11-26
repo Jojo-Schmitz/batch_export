@@ -1,6 +1,6 @@
 
 This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the instructions in [the 1.x Handbook](http://musescore.org/node/10129), the [2.x Handbook](http://musescore.org/node/36051) or the [3.x Handbook](http://musescore.org/node/278601), then:
-<p align="center"><img src="/elementanalyser/batch_convert_thumbnail.png" Alt="logo" width="300" /></p>
+<p align="center"><img src="/batch_convert/batch_convert_thumbnail.png" Alt="logo" width="300" /></p>
 
 
 <img src="/demo/batch-convert.png" alt="Screenshot" width="500"/>
