@@ -18,6 +18,7 @@ import FileIO 3.0
 /*  2.1.0: Unnecessary folders were created when exporting parts. 
 /*  2.1.0: Port to MuseScore 4.0 
 /*  2.1.0: Export current score 
+/*  2.1.0: Creation of folders in Windows with name without spaces was not working 
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
@@ -1438,9 +1439,8 @@ MuseScore {
         // Platform-based command
         switch (Qt.platform.os) {
         case "windows":
-            // var sp=(path.indexOf(" ")>=0)?"\"" + path + "\"":path; // quotes arround a path not containing a " " are not created.
-            // cmd = "cmd /c mkdir "+sp ;
-            cmd = "cmd /s /c mkdir \"" + path + "\"";
+            var wpath=path.replace(/\//g,"\\");
+            cmd = "cmd /c mkdir \"" + wpath + "\"";
             break;
         default:
             cmd = "/bin/sh -c \"mkdir -p '"+path+"'\"";
