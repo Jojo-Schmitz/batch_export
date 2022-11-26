@@ -1,6 +1,6 @@
 ![Thumbnail](https://github.com/Jojo-Schmitz/batch_export/blob/master/batch_convert_thumbnail.png "Thumbnail")
 
-This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the instructions in [the 1.x Handbook](http://musescore.org/node/10129), the [2.x Handbook](http://musescore.org/node/36051) or the [3.x Handbook](http://musescore.org/node/278601), then:
+This Plugin for MuseScore will go through a specified folder and in its default settings exports PDF versions of all ".mscz" files for which no up-to-date version already exists. To use the plugin, you must first install it according to the instructions in the handbook for MuseScore [1.x](http://musescore.org/node/10129), [2.x](http://musescore.org/node/36051), [3.x](http://musescore.org/node/278601) or [4.x](https://musescore.org/en/node/329722), then:
 
 1. Select "Batch Convert" (formerly "Batch Export") from the Plugins menu
 
@@ -14,12 +14,12 @@ This Plugin for MuseScore will go through a specified folder and in its default 
 
 A couple of notes to be aware of:
 
-- You may need to have a score already open in order for the Plugins menu to be active. Fixed in MuseScore 2.0+
+- You may need to have a score already open in order for the Plugins menu to be active. Fixed in MuseScore 2.0+ (and resurfaced in 4.0)
 - In MuseScore 2.0.1+ make sure you don't have a score open, that you want the plugin to process, because it won't be able to load it then.
 - The scores for which files were exported may be left open in tabs. If so, you'd need to close them manually. Fixed with MuseScore 1.2+
 - These open tabs will be labeled "untitled". Fixed in MuseScore 2.0+ and not an issue anymore with MuseScore 1.2+, see above
 - The 2.x version of this plugin needs at least 2.0.1
-- The 3.x version of this plugin needs at least 3.0.2
+- The 3.x version of this plugin needs at least 3.0.2 (it shows the UI in 4.x, but doesn't convert anything yet)
 - If you're on macOS and the file dialog for step 4 above does not show up, try using the Mac version of the plugin which is in the branch 'mac' (for 3.0, actually that version seems to run fine in Windows too) or mac-2.x (for 2.x).
 - All files processed by the plugin for MuseScore 2.0+ will be listed in the 'Recent File' menu.
 
