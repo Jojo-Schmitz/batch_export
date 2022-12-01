@@ -28,16 +28,11 @@ MuseScore {
     description: qsTr("This plugin converts multiple files from various formats"
                       + " into various formats")
     pluginType: "dialog"
-    // optional for MuseScore 4, not working in 3 though, causing it to not load at all there
-    // no big deal, as that category doesn't exists (yet) in MuseScore anyway
-    //categoryCode: "batch-processing"
-    // optional for MuseScore 4, not working in 3 though, causing it to not load at all there
-    // a bit of a pity: only the default icon in the plugin manager, but not (yet) worth a separate 4.x version
-    // thumbnailName: "batch_convert_thumbnail.png"
     
     Component.onCompleted : {
         if (mscoreMajorVersion >= 4) {
             batchConvert.thumbnailName = "batch_convert_thumbnail.png";
+            batchConvert.categoryCode: "batch-processing";
         }
     }
 
