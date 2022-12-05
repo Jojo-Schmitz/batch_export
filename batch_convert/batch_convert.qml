@@ -11,18 +11,18 @@ import FileIO 3.0
 
 /**********************
 /*  2.0.1: Initial version with new UI
-/*  2.1.0: Use Composer if Arranger, Lyricist, Copywriter are missing
-/*  2.1.0: Error when dealing with parts of an already opened score.
-/*  2.1.0: The score name was added twice to the excported file when exporting parts.
-/*  2.1.0: Parts of which name starts with a "." will not be exported.
-/*  2.1.0: Unnecessary folders were created when exporting parts. 
-/*  2.1.0: Port to MuseScore 4.0 
-/*  2.1.0: Export current score 
-/*  2.1.0: Creation of folders in Windows with name without spaces was not working 
+/*  4.1.0: Use Composer if Arranger, Lyricist, Copywriter are missing
+/*  4.1.0: Error when dealing with parts of an already opened score.
+/*  4.1.0: The score name was added twice to the excported file when exporting parts.
+/*  4.1.0: Parts of which name starts with a "." will not be exported.
+/*  4.1.0: Unnecessary folders were created when exporting parts. 
+/*  4.1.0: Port to MuseScore 4.0 
+/*  4.1.0: Export current score 
+/*  4.1.0: Creation of folders in Windows with name without spaces was not working 
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "2.1.0"
+    version: "4.1.0"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     requiresScore: false
     description: qsTr("This plugin converts multiple files from various formats"
@@ -32,7 +32,7 @@ MuseScore {
     Component.onCompleted : {
         if (mscoreMajorVersion >= 4) {
             batchConvert.thumbnailName = "batch_convert_thumbnail.png";
-            batchConvert.categoryCode: "batch-processing";
+            batchConvert.categoryCode = "batch-processing";
         }
     }
 
