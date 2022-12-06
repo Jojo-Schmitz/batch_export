@@ -13,17 +13,17 @@ MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert") // this doesn't work, why?
     version: "4"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
+    // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
     description: qsTr("This plugin converts multiple files from various formats"
                       + " into various formats")
     pluginType: "dialog"
-    // optional for MuseScore 4, not working in 3 though, causing it to not load at all there
-    // no big deal, as that category doesn't exists (yet) in MuseScore anyway
-    //categoryCode: "batch-processing"
 
     Component.onCompleted : {
         if (mscoreMajorVersion >= 4) {
+            batchConvert.title = qsTr("Batch Convert") ;
             batchConvert.thumbnailName = "batch_convert_thumbnail.png";
+            batchConvert.categoryCode = "batch-processing";
         }
     }
 
