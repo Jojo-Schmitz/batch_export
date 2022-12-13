@@ -1,4 +1,4 @@
-import QtQuick 2.9
+ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2 // FileDialogs
@@ -633,7 +633,8 @@ MuseScore {
             
             Label {
                 text: qsTr("Import from") + ":"
-                color: rdbImport.checked ? sysActivePalette.text : sysActivePalette.mid //sysDisabledPalette.buttonText
+                color: sysActivePalette.text 
+                opacity: rdbImport.checked ? 1 : 0.3
             }
             RowLayout {
                 TextField {
@@ -642,7 +643,7 @@ MuseScore {
                     text: ""
                     enabled: false
                     //color: sysActivePalette.text
-                    color: rdbImport.checked ? sysActivePalette.text : sysActivePalette.mid //sysDisabledPalette.buttonText
+                    color: rdbImport.checked ? sysDisabledPalette.shadow : sysDisabledPalette.mid //sysDisabledPalette.buttonText
                 }
                 Button {
                     enabled: rdbImport.checked
@@ -693,7 +694,7 @@ MuseScore {
                     Layout.preferredWidth: 400
                     id: exportTo
                     text: ""
-                    color: differentExportPath.valid ? sysActivePalette.text : sysActivePalette.mid //sysDisabledPalette.buttonText
+                    color: differentExportPath.valid ? sysDisabledPalette.shadow : sysDisabledPalette.mid //sysDisabledPalette.buttonText
                     enabled: false
                 }
                 Button {
