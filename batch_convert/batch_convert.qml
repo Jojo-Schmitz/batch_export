@@ -103,25 +103,19 @@ MuseScore {
             ButtonGroup {
                 id: importWhat
             }
-            RadioButton {
+            NiceRadioButton {
                 id: rdbCurrent
-                Layout.columnSpan: 2
                 text: qsTr("Export current score")
                 checked: true
                 ButtonGroup.group: importWhat
             }
-            RadioButton {
+            NiceRadioButton {
                 id: rdbOpened
-                Layout.columnSpan: 2
                 text: qsTr("Export opened scores")
                 ButtonGroup.group: importWhat
             }
 
-            /*Label {
-                text: qsTr("Import from") + ":"
-                color: rdbImport.checked ? sysActivePalette.text : sysActivePalette.mid //sysDisabledPalette.buttonText
-            }*/
-            RadioButton {
+            NiceRadioButton {
                 id: rdbImport
                 text: qsTr("Import")
                 ButtonGroup.group: importWhat
