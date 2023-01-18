@@ -4,164 +4,164 @@
 <context>
     <name>Ms::MuseScore</name>
     <message>
-        <location filename="../batch_convert.qml" line="159"/>
-        <location filename="../batch_convert.qml" line="171"/>
-        <location filename="../batch_convert.qml" line="178"/>
+        <location filename="../batch_convert.qml" line="155"/>
+        <location filename="../batch_convert.qml" line="167"/>
+        <location filename="../batch_convert.qml" line="174"/>
         <source>MuseScore Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="190"/>
-        <location filename="../batch_convert.qml" line="203"/>
-        <location filename="../batch_convert.qml" line="215"/>
+        <location filename="../batch_convert.qml" line="186"/>
+        <location filename="../batch_convert.qml" line="199"/>
+        <location filename="../batch_convert.qml" line="211"/>
         <source>MusicXML Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="227"/>
-        <location filename="../batch_convert.qml" line="239"/>
-        <location filename="../batch_convert.qml" line="246"/>
+        <location filename="../batch_convert.qml" line="223"/>
+        <location filename="../batch_convert.qml" line="235"/>
+        <location filename="../batch_convert.qml" line="242"/>
         <source>MIDI Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="272"/>
-        <location filename="../batch_convert.qml" line="279"/>
+        <location filename="../batch_convert.qml" line="268"/>
+        <location filename="../batch_convert.qml" line="275"/>
         <source>Capella Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="315"/>
-        <location filename="../batch_convert.qml" line="322"/>
+        <location filename="../batch_convert.qml" line="311"/>
+        <location filename="../batch_convert.qml" line="318"/>
         <source>Bagpipe Music Writer Files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="286"/>
-        <location filename="../batch_convert.qml" line="293"/>
+        <location filename="../batch_convert.qml" line="282"/>
+        <location filename="../batch_convert.qml" line="289"/>
         <source>BB Files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="253"/>
+        <location filename="../batch_convert.qml" line="249"/>
         <source>MuseData Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="265"/>
+        <location filename="../batch_convert.qml" line="261"/>
         <source>Optical Music Recognition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="300"/>
-        <location filename="../batch_convert.qml" line="307"/>
+        <location filename="../batch_convert.qml" line="296"/>
+        <location filename="../batch_convert.qml" line="303"/>
         <source>Overture / Score Writer Files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="321"/>
+        <location filename="../batch_convert.qml" line="317"/>
         <source>Bagpipe Music Writer files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="329"/>
-        <location filename="../batch_convert.qml" line="336"/>
-        <location filename="../batch_convert.qml" line="343"/>
-        <location filename="../batch_convert.qml" line="350"/>
-        <location filename="../batch_convert.qml" line="357"/>
-        <location filename="../batch_convert.qml" line="365"/>
+        <location filename="../batch_convert.qml" line="325"/>
+        <location filename="../batch_convert.qml" line="332"/>
+        <location filename="../batch_convert.qml" line="339"/>
+        <location filename="../batch_convert.qml" line="346"/>
+        <location filename="../batch_convert.qml" line="353"/>
+        <location filename="../batch_convert.qml" line="361"/>
         <source>Guitar Pro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="373"/>
+        <location filename="../batch_convert.qml" line="369"/>
         <source>Power Tab Editor Files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="381"/>
-        <location filename="../batch_convert.qml" line="388"/>
+        <location filename="../batch_convert.qml" line="377"/>
+        <location filename="../batch_convert.qml" line="384"/>
         <source>MuseScore Backup Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="430"/>
+        <location filename="../batch_convert.qml" line="426"/>
         <source>MuseScore 3 File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="442"/>
+        <location filename="../batch_convert.qml" line="438"/>
         <source>Uncompressed MuseScore 3 File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="460"/>
+        <location filename="../batch_convert.qml" line="456"/>
         <source>Uncompressed MusicXML File (outdated)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="475"/>
+        <location filename="../batch_convert.qml" line="471"/>
         <source>Uncompressed MusicXML File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="488"/>
+        <location filename="../batch_convert.qml" line="484"/>
         <source>Compressed MusicXML File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="500"/>
-        <location filename="../batch_convert.qml" line="513"/>
+        <location filename="../batch_convert.qml" line="496"/>
+        <location filename="../batch_convert.qml" line="509"/>
         <source>Standard MIDI File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="526"/>
+        <location filename="../batch_convert.qml" line="522"/>
         <source>PDF File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="533"/>
+        <location filename="../batch_convert.qml" line="529"/>
         <source>PostStript File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="540"/>
+        <location filename="../batch_convert.qml" line="536"/>
         <source>PNG Bitmap Graphic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="547"/>
+        <location filename="../batch_convert.qml" line="543"/>
         <source>Scalable Vector Graphics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="554"/>
+        <location filename="../batch_convert.qml" line="550"/>
         <source>LilyPond Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="560"/>
+        <location filename="../batch_convert.qml" line="556"/>
         <source>WAV audio files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="561"/>
+        <location filename="../batch_convert.qml" line="557"/>
         <source>Wave Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="568"/>
+        <location filename="../batch_convert.qml" line="564"/>
         <source>FLAC Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="575"/>
+        <location filename="../batch_convert.qml" line="571"/>
         <source>Ogg Vorbis Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="582"/>
+        <location filename="../batch_convert.qml" line="578"/>
         <source>MP3 Audio</source>
         <translation type="unfinished"></translation>
     </message>
@@ -169,12 +169,12 @@
 <context>
     <name>QPlatformTheme</name>
     <message>
-        <location filename="../batch_convert.qml" line="772"/>
+        <location filename="../batch_convert.qml" line="793"/>
         <source>Restore Defaults</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="815"/>
+        <location filename="../batch_convert.qml" line="836"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -182,77 +182,73 @@
 <context>
     <name>batch_convert</name>
     <message>
-        <location filename="../batch_convert.qml" line="23"/>
+        <location filename="../batch_convert.qml" line="25"/>
+        <location filename="../batch_convert.qml" line="36"/>
         <source>Batch Convert</source>
         <translation>Stapel-Konverter</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="27"/>
+        <location filename="../batch_convert.qml" line="30"/>
         <source>This plugin converts multiple files from various formats into various formats</source>
         <translation>Dieses Plug-In konvertiert Dateien von verschiedenen Formaten zu verschiedenen Formaten</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="46"/>
+        <location filename="../batch_convert.qml" line="45"/>
         <source>Unsupported MuseScore Version</source>
         <translation>Nicht unterstützte MuseScore Version</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="136"/>
+        <location filename="../batch_convert.qml" line="132"/>
         <source>Input Formats</source>
         <translation>Eingabeformate</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="414"/>
+        <location filename="../batch_convert.qml" line="410"/>
         <source>Output Formats</source>
         <translation>Ausgabeformate</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="589"/>
+        <location filename="../batch_convert.qml" line="585"/>
         <source>Positions of measures (XML)</source>
         <translation>Positionen der Takte (XML)</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="596"/>
+        <location filename="../batch_convert.qml" line="592"/>
         <source>Positions of segments (XML)</source>
         <translation>Positionen der Segmente (XML)</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="603"/>
+        <location filename="../batch_convert.qml" line="599"/>
         <source>Internal file sanity check log (JSON)</source>
         <translation>Internes Protokoll Datei-Plausibilitätsprüfung (JSON)</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="610"/>
+        <location filename="../batch_convert.qml" line="606"/>
         <source>Metadata JSON</source>
         <translation>Metadaten JSON</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="637"/>
-        <source>Export parts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../batch_convert.qml" line="667"/>
+        <location filename="../batch_convert.qml" line="690"/>
         <source>Process Subdirectories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="685"/>
+        <location filename="../batch_convert.qml" line="708"/>
         <source>Regular expression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="643"/>
+        <location filename="../batch_convert.qml" line="665"/>
         <source>Import from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="47"/>
+        <location filename="../batch_convert.qml" line="46"/>
         <source>This plugin needs MuseScore 3 or later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="111"/>
+        <location filename="../batch_convert.qml" line="112"/>
         <source>Export current score</source>
         <translation type="unfinished"></translation>
     </message>
@@ -262,198 +258,238 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="128"/>
+        <location filename="../batch_convert.qml" line="124"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="657"/>
-        <location filename="../batch_convert.qml" line="708"/>
+        <location filename="../batch_convert.qml" line="643"/>
+        <source>Export</source>
+        <comment>parts</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="648"/>
+        <source>Score</source>
+        <comment>parts</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="654"/>
+        <source>Score and parts</source>
+        <comment>parts</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="660"/>
+        <source>Parts only</source>
+        <comment>parts</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="680"/>
+        <location filename="../batch_convert.qml" line="731"/>
         <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="695"/>
+        <location filename="../batch_convert.qml" line="718"/>
         <source>Export to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="697"/>
+        <location filename="../batch_convert.qml" line="720"/>
         <source>Use a different export path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="720"/>
+        <location filename="../batch_convert.qml" line="743"/>
         <source>Export structure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="722"/>
+        <location filename="../batch_convert.qml" line="745"/>
         <source>Stucture the export folder depending on the file properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="729"/>
+        <location filename="../batch_convert.qml" line="752"/>
         <source>Allowed keywords</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="731"/>
+        <location filename="../batch_convert.qml" line="754"/>
         <source>Any character except</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="732"/>
+        <location filename="../batch_convert.qml" line="755"/>
         <source>Folder separator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="742"/>
+        <location filename="../batch_convert.qml" line="763"/>
         <source>With missing properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="744"/>
+        <location filename="../batch_convert.qml" line="765"/>
         <source>Include the files with missing properties, and replace these properties by a keyword such as &quot;unspecified&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="749"/>
-        <location filename="../batch_convert.qml" line="967"/>
+        <location filename="../batch_convert.qml" line="770"/>
+        <location filename="../batch_convert.qml" line="987"/>
         <source>unspecified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="750"/>
+        <location filename="../batch_convert.qml" line="771"/>
         <source>E.g. &quot;unspecified&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="780"/>
+        <location filename="../batch_convert.qml" line="801"/>
         <source>View log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="794"/>
+        <location filename="../batch_convert.qml" line="815"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="806"/>
+        <location filename="../batch_convert.qml" line="827"/>
         <source>Convert!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1259"/>
-        <location filename="../batch_convert.qml" line="1562"/>
+        <location filename="../batch_convert.qml" line="1245"/>
+        <location filename="../batch_convert.qml" line="1448"/>
+        <source>Will be exported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="1279"/>
+        <location filename="../batch_convert.qml" line="1639"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1579"/>
+        <location filename="../batch_convert.qml" line="1442"/>
+        <source>n/a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="1485"/>
+        <source>ERROR unsaved file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../batch_convert.qml" line="1656"/>
         <source>Incomplete in and out format selection </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1585"/>
+        <location filename="../batch_convert.qml" line="1662"/>
         <source>No current score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1589"/>
+        <location filename="../batch_convert.qml" line="1665"/>
         <source>Missing import folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1594"/>
+        <location filename="../batch_convert.qml" line="1670"/>
         <source>Missing export folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1631"/>
+        <location filename="../batch_convert.qml" line="1707"/>
         <source>Invalid export structure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="672"/>
+        <location filename="../batch_convert.qml" line="695"/>
         <source>Filter files with</source>
         <translation>Dateinamenfillter</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="681"/>
+        <location filename="../batch_convert.qml" line="704"/>
         <source>E.g. *Concerto*</source>
         <translation>Z.B. *Concerto*</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="905"/>
+        <location filename="../batch_convert.qml" line="925"/>
         <source>Select Sources Startfolder</source>
         <translation>Quellverzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="906"/>
+        <location filename="../batch_convert.qml" line="926"/>
         <source>Select Sources Folder</source>
         <translation>Quellverzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="922"/>
+        <location filename="../batch_convert.qml" line="942"/>
         <source>Select Target Folder</source>
         <translation>Zielverzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1060"/>
+        <location filename="../batch_convert.qml" line="1080"/>
         <source>Pending...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1192"/>
-        <location filename="../batch_convert.qml" line="1342"/>
+        <location filename="../batch_convert.qml" line="1212"/>
+        <location filename="../batch_convert.qml" line="1411"/>
         <source>Skipped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1214"/>
-        <location filename="../batch_convert.qml" line="1362"/>
+        <location filename="../batch_convert.qml" line="1234"/>
+        <location filename="../batch_convert.qml" line="1431"/>
         <source>Folder not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1214"/>
-        <location filename="../batch_convert.qml" line="1227"/>
-        <location filename="../batch_convert.qml" line="1362"/>
-        <location filename="../batch_convert.qml" line="1377"/>
+        <location filename="../batch_convert.qml" line="1234"/>
+        <location filename="../batch_convert.qml" line="1247"/>
+        <location filename="../batch_convert.qml" line="1431"/>
+        <location filename="../batch_convert.qml" line="1450"/>
         <source>Not exported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1225"/>
-        <location filename="../batch_convert.qml" line="1375"/>
+        <location filename="../batch_convert.qml" line="1245"/>
+        <location filename="../batch_convert.qml" line="1448"/>
         <source>Exported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1227"/>
-        <location filename="../batch_convert.qml" line="1377"/>
+        <location filename="../batch_convert.qml" line="1247"/>
+        <location filename="../batch_convert.qml" line="1450"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1229"/>
-        <location filename="../batch_convert.qml" line="1380"/>
+        <location filename="../batch_convert.qml" line="1249"/>
+        <location filename="../batch_convert.qml" line="1454"/>
         <source>Up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1570"/>
+        <location filename="../batch_convert.qml" line="1647"/>
         <source>Running...</source>
         <translation>Arbeitet...</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1407"/>
+        <location filename="../batch_convert.qml" line="1482"/>
         <source>ERROR reading file %1</source>
         <translation>FEHLER beim Lesen der Datei %1</translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="1560"/>
+        <location filename="../batch_convert.qml" line="1637"/>
         <source>No files found</source>
         <translation>Keine Dateien gefunden</translation>
     </message>
@@ -461,67 +497,67 @@
 <context>
     <name>project</name>
     <message>
-        <location filename="../batch_convert.qml" line="158"/>
-        <location filename="../batch_convert.qml" line="429"/>
+        <location filename="../batch_convert.qml" line="154"/>
+        <location filename="../batch_convert.qml" line="425"/>
         <source>MuseScore files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="170"/>
-        <location filename="../batch_convert.qml" line="441"/>
+        <location filename="../batch_convert.qml" line="166"/>
+        <location filename="../batch_convert.qml" line="437"/>
         <source>Uncompressed MuseScore folders (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="252"/>
+        <location filename="../batch_convert.qml" line="248"/>
         <source>MuseData files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="271"/>
-        <location filename="../batch_convert.qml" line="278"/>
+        <location filename="../batch_convert.qml" line="267"/>
+        <location filename="../batch_convert.qml" line="274"/>
         <source>Capella files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="285"/>
-        <location filename="../batch_convert.qml" line="292"/>
+        <location filename="../batch_convert.qml" line="281"/>
+        <location filename="../batch_convert.qml" line="288"/>
         <source>BB files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="299"/>
-        <location filename="../batch_convert.qml" line="306"/>
+        <location filename="../batch_convert.qml" line="295"/>
+        <location filename="../batch_convert.qml" line="302"/>
         <source>Overture / Score Writer files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="314"/>
+        <location filename="../batch_convert.qml" line="310"/>
         <source>Bagpipe Music Writer files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="328"/>
-        <location filename="../batch_convert.qml" line="335"/>
-        <location filename="../batch_convert.qml" line="342"/>
-        <location filename="../batch_convert.qml" line="349"/>
-        <location filename="../batch_convert.qml" line="356"/>
-        <location filename="../batch_convert.qml" line="364"/>
+        <location filename="../batch_convert.qml" line="324"/>
+        <location filename="../batch_convert.qml" line="331"/>
+        <location filename="../batch_convert.qml" line="338"/>
+        <location filename="../batch_convert.qml" line="345"/>
+        <location filename="../batch_convert.qml" line="352"/>
+        <location filename="../batch_convert.qml" line="360"/>
         <source>Guitar Pro files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="372"/>
+        <location filename="../batch_convert.qml" line="368"/>
         <source>Power Tab Editor files (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="380"/>
+        <location filename="../batch_convert.qml" line="376"/>
         <source>MuseScore backup files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="395"/>
+        <location filename="../batch_convert.qml" line="391"/>
         <source>MuseScore developer files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -529,60 +565,60 @@
 <context>
     <name>project/export</name>
     <message>
-        <location filename="../batch_convert.qml" line="189"/>
-        <location filename="../batch_convert.qml" line="202"/>
-        <location filename="../batch_convert.qml" line="459"/>
-        <location filename="../batch_convert.qml" line="474"/>
+        <location filename="../batch_convert.qml" line="185"/>
+        <location filename="../batch_convert.qml" line="198"/>
+        <location filename="../batch_convert.qml" line="455"/>
+        <location filename="../batch_convert.qml" line="470"/>
         <source>Uncompressed MusicXML files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="214"/>
-        <location filename="../batch_convert.qml" line="487"/>
+        <location filename="../batch_convert.qml" line="210"/>
+        <location filename="../batch_convert.qml" line="483"/>
         <source>Compressed MusicXML files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="226"/>
-        <location filename="../batch_convert.qml" line="238"/>
-        <location filename="../batch_convert.qml" line="245"/>
-        <location filename="../batch_convert.qml" line="499"/>
-        <location filename="../batch_convert.qml" line="512"/>
+        <location filename="../batch_convert.qml" line="222"/>
+        <location filename="../batch_convert.qml" line="234"/>
+        <location filename="../batch_convert.qml" line="241"/>
+        <location filename="../batch_convert.qml" line="495"/>
+        <location filename="../batch_convert.qml" line="508"/>
         <source>MIDI files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="525"/>
+        <location filename="../batch_convert.qml" line="521"/>
         <source>PDF files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="539"/>
+        <location filename="../batch_convert.qml" line="535"/>
         <source>PNG images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="546"/>
+        <location filename="../batch_convert.qml" line="542"/>
         <source>SVG images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="567"/>
+        <location filename="../batch_convert.qml" line="563"/>
         <source>FLAC audio files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="574"/>
+        <location filename="../batch_convert.qml" line="570"/>
         <source>OGG audio files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="581"/>
+        <location filename="../batch_convert.qml" line="577"/>
         <source>MP3 audio files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../batch_convert.qml" line="617"/>
+        <location filename="../batch_convert.qml" line="613"/>
         <source>Braille files</source>
         <translation type="unfinished"></translation>
     </message>
