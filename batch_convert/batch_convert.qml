@@ -1,4 +1,4 @@
- import QtQuick 2.9
+import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2 // FileDialogs
@@ -19,10 +19,13 @@ import FileIO 3.0
 /*  4.1.0: Port to MuseScore 4.0 
 /*  4.1.0: Export current score 
 /*  4.1.0: Creation of folders in Windows with name without spaces was not working 
+/*  4.2.0: Parts export choice
+/*  4.2.0: Bug when the current score was opened on part (insread of the main score)
+/*  4.2.0: Bug when the current score was new and unsaved
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.1.0"
+    version: "4.2.0"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
@@ -69,6 +72,9 @@ MuseScore {
         
         var lastoption = importWhat.buttons[settings.importWhat];
         if (lastoption) lastoption.checked=true;
+
+        var lastoptionES = exportParts.buttons[settings.exportParts];
+        if (lastoptionES) lastoptionES.checked=true;
     }
 
     id: batchConvert
@@ -148,7 +154,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "MuseScore files")
-                     : qsTranslate("Ms::MuseScore", "MuseScore Files")
+                      : qsTranslate("Ms::MuseScore", "MuseScore Files")
                 }
                 SmallCheckBox {
                     id: inMscx
@@ -160,7 +166,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Uncompressed MuseScore folders (experimental)")
-                     : qsTranslate("Ms::MuseScore", "MuseScore Files")
+                      : qsTranslate("Ms::MuseScore", "MuseScore Files")
                 }
                 SmallCheckBox {
                     id: inMsc
@@ -179,7 +185,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "Uncompressed MusicXML files")
-                     : qsTranslate("Ms::MuseScore", "MusicXML Files")
+                      : qsTranslate("Ms::MuseScore", "MusicXML Files")
                 }
                 SmallCheckBox {
                     id: inMusicXml
@@ -192,7 +198,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "Uncompressed MusicXML files")
-                     : qsTranslate("Ms::MuseScore", "MusicXML Files")
+                      : qsTranslate("Ms::MuseScore", "MusicXML Files")
                 }
                 SmallCheckBox {
                     id: inMxl
@@ -204,7 +210,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "Compressed MusicXML files")
-                     : qsTranslate("Ms::MuseScore", "MusicXML Files")
+                      : qsTranslate("Ms::MuseScore", "MusicXML Files")
                 }
                 SmallCheckBox {
                     id: inMid
@@ -216,7 +222,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "MIDI files")
-                     : qsTranslate("Ms::MuseScore", "MIDI Files")
+                      : qsTranslate("Ms::MuseScore", "MIDI Files")
                 }
                 SmallCheckBox {
                     id: inMidi
@@ -228,7 +234,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "MIDI files")
-                     : qsTranslate("Ms::MuseScore", "MIDI Files")
+                      : qsTranslate("Ms::MuseScore", "MIDI Files")
                 }
                 SmallCheckBox {
                     id: inKar
@@ -242,7 +248,7 @@ MuseScore {
                     text: "*.md"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "MuseData files")
-                     : qsTranslate("Ms::MuseScore", "MuseData Files")
+                      : qsTranslate("Ms::MuseScore", "MuseData Files")
                 }
                 SmallCheckBox {
                     id: inPdf
@@ -261,7 +267,7 @@ MuseScore {
                     text: "*.cap"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Capella files")
-                     : qsTranslate("Ms::MuseScore", "Capella Files")
+                      : qsTranslate("Ms::MuseScore", "Capella Files")
                 }
                 SmallCheckBox {
                     id: inCapx
@@ -275,28 +281,28 @@ MuseScore {
                     text: "*.mgu"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "BB files (experimental)")
-                     : qsTranslate("Ms::MuseScore", "BB Files (experimental)")
+                      : qsTranslate("Ms::MuseScore", "BB Files (experimental)")
                 }
                 SmallCheckBox {
                     id: inSgu
                     text: "*.sgu"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "BB files (experimental)")
-                     : qsTranslate("Ms::MuseScore", "BB Files (experimental)")
+                      : qsTranslate("Ms::MuseScore", "BB Files (experimental)")
                 }
                 SmallCheckBox {
                     id: inOve
                     text: "*.ove"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Overture / Score Writer files (experimental)")
-                     : qsTranslate("Ms::MuseScore", "Overture / Score Writer Files (experimental)")
+                      : qsTranslate("Ms::MuseScore", "Overture / Score Writer Files (experimental)")
                 }
                 SmallCheckBox {
                     id: inScw
                     text: "*.scw"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Overture / Score Writer files (experimental)")
-                     : qsTranslate("Ms::MuseScore", "Overture / Score Writer Files (experimental)")
+                      : qsTranslate("Ms::MuseScore", "Overture / Score Writer Files (experimental)")
                 }
                 SmallCheckBox {
                     id: inBmw
@@ -304,49 +310,49 @@ MuseScore {
                     text: "*.bmw"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Bagpipe Music Writer files (experimental)")
-                     : qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
+                      : qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
                 }
                 SmallCheckBox {
                     id: inBww
                     text: "*.bww"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("Ms::MuseScore", "Bagpipe Music Writer files (experimental)")
-                     : qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
+                      : qsTranslate("Ms::MuseScore", "Bagpipe Music Writer Files (experimental)")
                 }
                 SmallCheckBox {
                     id: inGtp
                     text: "*.gtp"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Guitar Pro files")
-                     : qsTranslate("Ms::MuseScore", "Guitar Pro")
+                      : qsTranslate("Ms::MuseScore", "Guitar Pro")
                 }
                 SmallCheckBox {
                     id: inGp3
                     text: "*.gp3"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Guitar Pro files")
-                     : qsTranslate("Ms::MuseScore", "Guitar Pro")
+                      : qsTranslate("Ms::MuseScore", "Guitar Pro")
                 }
                 SmallCheckBox {
                     id: inGp4
                     text: "*.gp4"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Guitar Pro files")
-                     : qsTranslate("Ms::MuseScore", "Guitar Pro")
+                      : qsTranslate("Ms::MuseScore", "Guitar Pro")
                 }
                 SmallCheckBox {
                     id: inGp5
                     text: "*.gp5"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Guitar Pro files")
-                     : qsTranslate("Ms::MuseScore", "Guitar Pro")
+                      : qsTranslate("Ms::MuseScore", "Guitar Pro")
                 }
                 SmallCheckBox {
                     id: inGpx
                     text: "*.gpx"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Guitar Pro files")
-                     : qsTranslate("Ms::MuseScore", "Guitar Pro")
+                      : qsTranslate("Ms::MuseScore", "Guitar Pro")
                 }
                 SmallCheckBox {
                     id: inGp
@@ -362,7 +368,7 @@ MuseScore {
                     text: "*.ptb"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Power Tab Editor files (experimental)")
-                     : qsTranslate("Ms::MuseScore", "Power Tab Editor Files (experimental)")
+                      : qsTranslate("Ms::MuseScore", "Power Tab Editor Files (experimental)")
                 }
                 SmallCheckBox {
                     id: inMsczComma // or inMsczBackup?
@@ -370,7 +376,7 @@ MuseScore {
                     text: mscoreMajorVersion > 3 ? "*.mscz~" : "*.mscz,"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "MuseScore backup files")
-                     : qsTranslate("Ms::MuseScore", "MuseScore Backup Files")
+                      : qsTranslate("Ms::MuseScore", "MuseScore Backup Files")
                 }
                 SmallCheckBox {
                     id: inMscxComma
@@ -419,7 +425,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "MuseScore files")
-                     : qsTranslate("Ms::MuseScore", "MuseScore 3 File")
+                      : qsTranslate("Ms::MuseScore", "MuseScore 3 File")
                 }
                 SmallCheckBox {
                     id: outMscx
@@ -431,14 +437,14 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project", "Uncompressed MuseScore folders (experimental)")
-                     : qsTranslate("Ms::MuseScore", "Uncompressed MuseScore 3 File")
+                      : qsTranslate("Ms::MuseScore", "Uncompressed MuseScore 3 File")
                 }
                 SmallCheckBox {
                     id: outXml
                     text: "*.xml"
                     visible: (mscoreMajorVersion == 2 && mscoreMinorVersion <= 1)
-                     || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 5)
-                     || (mscoreMajorVersion > 3) ?
+                      || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 5)
+                      || (mscoreMajorVersion > 3) ?
                     true : false // MuseScore <= 2.1 or >= 3.5
                     //could also export to musicxml and then rename that to xml in versions after 2.1 / before 3.5
                     //ButtonGroup.group: xml
@@ -448,8 +454,8 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 || (mscoreMajorVersion == 3 && mscoreMinorVersion > 5)
-                     ? qsTranslate("project/export", "Uncompressed MusicXML files")
-                     : qsTranslate("Ms::MuseScore", "Uncompressed MusicXML File (outdated)")
+                      ? qsTranslate("project/export", "Uncompressed MusicXML files")
+                      : qsTranslate("Ms::MuseScore", "Uncompressed MusicXML File (outdated)")
                 }
                 SmallCheckBox {
                     id: outMusicXml
@@ -463,8 +469,8 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 || (mscoreMajorVersion == 3 && mscoreMinorVersion > 5)
-                     ? qsTranslate("project/export", "Uncompressed MusicXML files")
-                     : qsTranslate("Ms::MuseScore", "Uncompressed MusicXML File")
+                      ? qsTranslate("project/export", "Uncompressed MusicXML files")
+                      : qsTranslate("Ms::MuseScore", "Uncompressed MusicXML File")
                 }
                 SmallCheckBox {
                     id: outMxl
@@ -476,8 +482,8 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 || (mscoreMajorVersion == 3 && mscoreMinorVersion > 5)
-                     ? qsTranslate("project/export", "Compressed MusicXML files")
-                     : qsTranslate("Ms::MuseScore", "Compressed MusicXML File")
+                      ? qsTranslate("project/export", "Compressed MusicXML files")
+                      : qsTranslate("Ms::MuseScore", "Compressed MusicXML File")
                 }
                 SmallCheckBox {
                     id: outMid
@@ -489,7 +495,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "MIDI files")
-                     : qsTranslate("Ms::MuseScore", "Standard MIDI File") // "MIDI"?
+                      : qsTranslate("Ms::MuseScore", "Standard MIDI File") // "MIDI"?
                 }
                 SmallCheckBox {
                     id: outMidi
@@ -502,7 +508,7 @@ MuseScore {
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "MIDI files")
-                     : qsTranslate("Ms::MuseScore", "Standard MIDI File") // "MIDI"?
+                      : qsTranslate("Ms::MuseScore", "Standard MIDI File") // "MIDI"?
                 }
                 SmallCheckBox {
                     id: outPdf
@@ -529,14 +535,14 @@ MuseScore {
                     text: "*.png"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "PNG images")
-                     : qsTranslate("Ms::MuseScore", "PNG Bitmap Graphic")
+                      : qsTranslate("Ms::MuseScore", "PNG Bitmap Graphic")
                 }
                 SmallCheckBox {
                     id: outSvg
                     text: "*.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "SVG images")
-                     : qsTranslate("Ms::MuseScore", "Scalable Vector Graphics")
+                      : qsTranslate("Ms::MuseScore", "Scalable Vector Graphics")
                 }
                 SmallCheckBox {
                     id: outLy
@@ -550,28 +556,28 @@ MuseScore {
                     text: "*.wav"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("Ms::MuseScore", "WAV audio files")
-                     : qsTranslate("Ms::MuseScore", "Wave Audio")
+                      : qsTranslate("Ms::MuseScore", "Wave Audio")
                 }
                 SmallCheckBox {
                     id: outFlac
                     text: "*.flac"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "FLAC audio files")
-                     : qsTranslate("Ms::MuseScore", "FLAC Audio")
+                      : qsTranslate("Ms::MuseScore", "FLAC Audio")
                 }
                 SmallCheckBox {
                     id: outOgg
                     text: "*.ogg"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "OGG audio files")
-                     : qsTranslate("Ms::MuseScore", "Ogg Vorbis Audio")
+                      : qsTranslate("Ms::MuseScore", "Ogg Vorbis Audio")
                 }
                 SmallCheckBox { // needs lame_enc.dll
                     id: outMp3
                     text: "*.mp3"
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "MP3 audio files")
-                     : qsTranslate("Ms::MuseScore", "MP3 Audio")
+                      : qsTranslate("Ms::MuseScore", "MP3 Audio")
                 }
                 SmallCheckBox {
                     id: outMpos
@@ -623,14 +629,40 @@ MuseScore {
             columnSpacing: 1
             columns: 2
             
-            SmallCheckBox {
-                id: exportExcerpts
+            // SmallCheckBox {
+                // id: exportExcerpts
+                // Layout.columnSpan: 2
+                // text: qsTr("Export parts")
+                // enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion > 0 || (mscoreMinorVersion == 0 && mscoreUpdateVersion > 2)) ? true : false // MuseScore > 3.0.2
+                // visible: enabled //  hide if not enabled
+            // } // exportExcerpts
+            RowLayout {
                 Layout.columnSpan: 2
-                text: qsTr("Export parts")
-                enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion > 0 || (mscoreMinorVersion == 0 && mscoreUpdateVersion > 2)) ? true : false // MuseScore > 3.0.2
-                visible: enabled //  hide if not enabled
-            } // exportExcerpts
-            
+                ButtonGroup {
+                    id: exportParts
+                }
+                Label {
+                    text: qsTr("Export","parts") + ":"
+                    color: sysActivePalette.text 
+                }
+                NiceRadioButton {
+                    id: rdbExpScore
+                    text: qsTr("Score","parts")
+                    checked: true
+                    ButtonGroup.group: exportParts
+                }
+                NiceRadioButton {
+                    id: rdbExpScoreParts
+                    text: qsTr("Score and parts","parts")
+                    ButtonGroup.group: exportParts
+                }
+
+                NiceRadioButton {
+                    id: rdbExpPartsOnly
+                    text: qsTr("Parts only","parts")
+                    ButtonGroup.group: exportParts
+                }
+            }
             Label {
                 text: qsTr("Import from") + ":"
                 color: sysActivePalette.text 
@@ -721,10 +753,8 @@ MuseScore {
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Allowed keywords") + ":\n" +
                 "%FORMAT%\n%TITLE%\n%LYRICIST%\n%COMPOSER%\n%ARRANGER%\n%WORKNUMBER%\n%MOVEMENTNUMBER%\n%MOVEMENTTITLE%\n%YEAR%\n%PART%\n"
-                 + "%1: %*?\"<>:|".arg(qsTr("Any character except")) + "\n"
-                    + "%1: /".arg(qsTr("Folder separator"))
-                    ;
-
+                  + "%1: %*?\"<>:|".arg(qsTr("Any character except")) + "\n"
+                  + "%1: /".arg(qsTr("Folder separator"));
                 enabled: useExportStructure.valid
             }
             SmallCheckBox {
@@ -819,7 +849,6 @@ MuseScore {
             } // RowLayout
         } // Item
     } // GridLayout
-    //} // Window
     // remember settings
     Settings {
         id: settings
@@ -876,7 +905,6 @@ MuseScore {
         property alias outMetaJson: outMetaJson.checked
         property alias outBrf: outBrf.checked
         // other options
-        property alias exportE: exportExcerpts.checked
         property alias travers: traverseSubdirs.checked
         property alias diffEPath: differentExportPath.checked  // different export path
         property alias iPath: importFrom.text // import path
@@ -890,13 +918,14 @@ MuseScore {
         property alias missingPropertyDefault: missingPropertyDefault.text
 
         property int importWhat
+        property int exportParts
     }
 
     FileDialog {
         id: sourceFolderDialog
         title: traverseSubdirs.checked ?
-                   qsTr("Select Sources Startfolder"):
-                   qsTr("Select Sources Folder")
+          qsTr("Select Sources Startfolder"):
+          qsTr("Select Sources Folder")
         selectFolder: true
         folder: Qt.resolvedUrl(importFrom.text);
 
@@ -949,7 +978,7 @@ MuseScore {
                 outOgg.checked = outMp3.checked = outMpos.checked = outSpos.checked =
                 outMlog.checked = outMetaJson.checked = outBrf.checked = false
         traverseSubdirs.checked = false
-        exportExcerpts.checked = false
+        rdbExpScore.checked = true;
         filterWithRegExp.checked=false;
         filterContent.checked=true;
         contentFilterString.text="";
@@ -1070,13 +1099,13 @@ MuseScore {
                     cursorVisible: true
                     readOnly: true
                     focus: true
-                    }
+                }
 
                 ScrollBar.horizontal.policy: ScrollBar.AsNeeded
                 ScrollBar.horizontal.position: 0
                 ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-                }
+            }
 
         }
 
@@ -1215,7 +1244,7 @@ MuseScore {
                     if (srcModifiedTime > fileExcerpt.modifiedTime()) {
                         var res = convert ? writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j]) : true;
                         if (res)
-                            resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(convert ? qsTr("Exported") : ""));
+                            resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(convert ? qsTr("Exported") : qsTr("Will be exported")));
                         else
                             resultText.append("  " + qsTr("Error") + ": %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Not exported")))
                     } else // file already up to date
@@ -1258,32 +1287,81 @@ MuseScore {
             console.log("--Remaing items to convert: "+fileList.length+"--");
 
             var curFileInfo = fileList.shift();
-            var filePath = curFileInfo[0];
-            var fileName = curFileInfo[1];
-            var fileExt = curFileInfo[2];
-
-            var fileFullPath = filePath + fileName + "." + fileExt;
-
-            // read file
+            var filePath, fileName, fileExt;
+            var fileFullPath, thisScore;
             var isCurScore = false;
-            var thisScore = readScore(fileFullPath, true);
+            
+            if (Array.isArray(curFileInfo)) {
+                // Coming from the Import action
+                filePath = curFileInfo[0];
+                fileName = curFileInfo[1];
+                fileExt = curFileInfo[2];
+                fileFullPath = filePath + fileName + "." + fileExt;
+                // read file
+                thisScore = readScore(fileFullPath, true);
 
-            // make sure we have a valid score
-            if (!thisScore) {
-                console.log("Failed to read "+fileFullPath+".\nChecking if it is already open.");
-                var opened=scores;
-                for(var i=0;i<opened.length;i++) {
-                    var score=opened[i];
-                    console.log("--> Checking if curScore is this file: "+score.path);
-                    if (score.path.toLowerCase()===fileFullPath.toLowerCase()) {
-                        thisScore=score;
-                        isCurScore=true;
-                        break;
+                // Make sure we have a valid score
+                // Rem: MS fails a reading a score ("readScore" above) if the score is already opened. 
+                // => So we check if a score with the same path is already opened.
+                if (!thisScore) {
+                    console.log("Failed to read "+fileFullPath+".\nChecking if it is already open.");
+                    var opened=scores;
+                    for(var i=0;i<opened.length;i++) {
+                        var score=opened[i];
+                        console.log("--> Checking if curScore is this file: "+score.path);
+                        if (score.path.toLowerCase()===fileFullPath.toLowerCase()) {
+                            thisScore=score;
+                            isCurScore=true;
+                            break;
+                        }
                     }
+                    console.log("==> And it "+((!thisScore)?"is not":"is"));
                 }
-                console.log("==> And it "+((!thisScore)?"is not":"is"));
+
             }
-            if (thisScore) {
+            else {
+                // Coming from the current/opened action
+                thisScore = curFileInfo;
+                var full= thisScore.path;
+                fileName = thisScore.scoreName;
+                
+                isCurScore = true;
+
+                // Make sure we have a valid score
+                // Rem: no fullPath means we are either an unsaved score or an excerpt/part 
+                // => So we browse the opened scores to find the parent to which belongs this part
+                if (!full) {
+                    console.log("Failed to find a score path for " + fileName + ".\nChecking if it is already opened part.");
+                    var opened = scores;
+                    for (var i = 0; i < scores.length; ++i) {
+                        var s = scores[i];
+                        console.log("--> " + s.path + "/" + s.scorName);
+                        if (s.is(thisScore)) {
+                            break; ;
+                        }
+
+                        var excerpts = s.excerpts;
+
+                        for (var ei = 0; ei < excerpts.length; ++ei) {
+                            var es = excerpts[ei].partScore;
+                            console.log("----> " + es.path + "/" + es.scorName);
+                            if (es.is(thisScore)) {
+                                full = s.path;
+                                break;
+                            }
+                        }
+                    }
+                    console.log("==> And it " + ((!full) ? "is not" : "is"));
+                }
+                
+                if (full) {
+                    fileFullPath = urlToPath(full); // c:/path/to/my_score.mscz
+                    fileExt = getFileSuffix(fileFullPath); // mscz
+                    filePath = fileFullPath.substring(0, fileFullPath.length - fileExt.length - fileName.length - 1);
+                }
+            }
+
+            if (thisScore && fileFullPath) {
                 // get modification time of source file
                 fileScore.source = fileFullPath
                 var logSourceName = (fileFullPath.toUpperCase().startsWith(importFromPath))?fileFullPath.substring(importFromPath.length):fileFullPath;
@@ -1358,46 +1436,56 @@ MuseScore {
                         fileScore.source =  dest;
                         logTargetName = (fileScore.source.startsWith(exportToPath))?fileScore.source.substring(exportToPath.length):fileScore.source;
 
-                    // get modification time of destination file (if it exists)
+                        // get modification time of destination file (if it exists)
                         // modifiedTime() will return ta0 for non-existing files
-                    // if src is newer than existing write this file
-                    if (srcModifiedTime > fileScore.modifiedTime()) {
-                            var res = convert?writeScore(thisScore, fileScore.source, outFormats.extensions[j]):true
+                        // if src is newer than existing write this file
+                        if (rdbExpPartsOnly.checked) {
+                            // Export only the parts : log as "not applicable"
+                            resultText.append("%1 - %2".arg(logSourceName).arg(qsTr("n/a")))
+                        } else if (srcModifiedTime > fileScore.modifiedTime()) {
+                            // Export the score, an the current score is more recent than the last export
+                            var res = convert ? writeScore(thisScore, fileScore.source, outFormats.extensions[j]) : true
 
-                        if (res)
-                                resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(convert?qsTr("Exported"):""))
-                        else
+                            if (res)
+                                resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(convert?qsTr("Exported"):qsTr("Will be exported")))
+                            else
                                 resultText.append(qsTr("Error")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
-                    }
-                    else
+                        }
+                        else
+                            // Export the score, an the current score is older/same as the last export
                             resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Up to date")))
-                    }
+                    }  
 
-                // check if we are supposed to export parts
-                if (exportExcerpts.checked) {
-                    // reset list
-                    excerptsList = []
-                    // do we have excertps?
-                    var excerpts = thisScore.excerpts
-                    for (var ex = 0; ex < excerpts.length; ex++) {
-                        var partScore=excerpts[ex].partScore;
-                        var partName=excerpts[ex].title;
-                        if (partScore === thisScore) continue; // only list when not base score
-                        if (partName.charAt(0) === ".") continue; // only list when not starting with a "."
-                        excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath, isCurScore])
+                    // check if we are supposed to export parts
+                    // if (exportExcerpts.checked) {
+                    if (rdbExpPartsOnly.checked || rdbExpScoreParts.checked) {
+                        // reset list
+                        excerptsList = []
+                        // do we have excertps?
+                        var excerpts = thisScore.excerpts
+                        for (var ex = 0; ex < excerpts.length; ex++) {
+                            var partScore=excerpts[ex].partScore;
+                            var partName=excerpts[ex].title;
+                            if (partScore === thisScore) continue; // only list when not base score
+                            if (partName.charAt(0) === ".") continue; // only list when not starting with a "."
+                            excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath, isCurScore])
+                        }
+                        // if we have files start timer
+                        if (excerpts.length > 0) {
+                            curBaseScore = thisScore // to be able to close this later
+                            excerptTimer.running = true
+                            return
+                        }
                     }
-                    // if we have files start timer
-                    if (excerpts.length > 0) {
-                        curBaseScore = thisScore // to be able to close this later
-                        excerptTimer.running = true
-                        return
-                    }
-                }
                 }
                 if (!isCurScore) closeScore(thisScore)
             }
-            else
-                resultText.append(qsTr("ERROR reading file %1").arg(fileName))
+            else if(!thisScore) {
+                resultText.append(qsTr("ERROR reading file %1").arg(fileName));
+            }
+            else {
+                resultText.append(qsTr("ERROR unsaved file %1").arg(fileName));
+            }
 
             view.ScrollBar.horizontal.position = 0
 
@@ -1417,9 +1505,8 @@ MuseScore {
             } else {
                 return dest; // return as such
             }
-        }
-        else {
-        value=createDefaultFileName(value,true); // allow whitespaces
+        } else {
+            value=createDefaultFileName(value,true); // allow whitespaces
         }
         return dest.replace(tag,value);
     }
@@ -1546,8 +1633,7 @@ MuseScore {
             } else if (fileList.length > 0) {
                 // if we found files, start timer do process them
                 processTimer.restart();
-            }
-            else {
+            } else {
                 // we didn't find any files
                 // report this
                 resultText.append(qsTr("No files found"))
@@ -1577,8 +1663,7 @@ MuseScore {
         if (!rdbImport.checked && !curScore) {
             resultText.append(qsTr("No current score"));
             validation = false;
-        }
-        else if (rdbImport.checked && !importFrom.text) {
+        } else if (rdbImport.checked && !importFrom.text) {
             resultText.append(qsTr("Missing import folder"));
             validation = false;
         }
@@ -1680,17 +1765,11 @@ MuseScore {
 
             for(var i=0;i<what.length;i++) {
                 var score = what[i];
-                var p = urlToPath(score.path);      // c:/path/to/my_score.mscz
-
-                var fileExt = getFileSuffix(p);     // mscz
-                var fileName = score.scoreName;     // my_score
-                var filePath = p.substring(0, p.length - fileExt.length - fileName.length - 1);
-                fileList.push([filePath, fileName, fileExt])
-                }
+                fileList.push(score)
+            }
             // if we found files, start timer do process them
             processTimer.restart();
-        }
-        else {
+        } else {
         
             // set folder and filter in FolderListModel
             files.folder = importFrom.text
@@ -1698,8 +1777,7 @@ MuseScore {
             if (traverseSubdirs.checked) {
                 files.showDirs = true
                 files.showFiles = true
-            }
-            else {
+            } else {
                 // only look for files
                 files.showFiles = true
                 files.showDirs = false
@@ -1709,6 +1787,11 @@ MuseScore {
             // therefore we start a timer that will
             // wait for 25 millis and then start working
             collectFiles.running = true
-            }
+        }
     } // work
+    
+    
+    function xyz(obj) {
+        return "" + obj + " (" + (typeof obj) + " - null: " + (obj===null) + ")";
+    }
 } // MuseScore
