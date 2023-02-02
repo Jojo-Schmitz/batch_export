@@ -19,10 +19,13 @@ import FileIO 3.0
 /*  4.1.0: Port to MuseScore 4.0 
 /*  4.1.0: Export current score 
 /*  4.1.0: Creation of folders in Windows with name without spaces was not working 
+/*  4.2.0: Parts export choice
+/*  4.2.0: Bug when the current score was opened on part (insread of the main score)
+/*  4.2.0: Bug when the current score was new and unsaved
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.1.0"
+    version: "4.2.0"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
@@ -69,6 +72,9 @@ MuseScore {
         
         var lastoption = importWhat.buttons[settings.importWhat];
         if (lastoption) lastoption.checked=true;
+
+        var lastoptionES = exportParts.buttons[settings.exportParts];
+        if (lastoptionES) lastoptionES.checked=true;
     }
 
     id: batchConvert
@@ -623,14 +629,40 @@ MuseScore {
             columnSpacing: 1
             columns: 2
             
-            SmallCheckBox {
-                id: exportExcerpts
+            // SmallCheckBox {
+                // id: exportExcerpts
+                // Layout.columnSpan: 2
+                // text: qsTr("Export parts")
+                // enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion > 0 || (mscoreMinorVersion == 0 && mscoreUpdateVersion > 2)) ? true : false // MuseScore > 3.0.2
+                // visible: enabled //  hide if not enabled
+            // } // exportExcerpts
+            RowLayout {
                 Layout.columnSpan: 2
-                text: qsTr("Export parts")
-                enabled: (mscoreMajorVersion == 3 && mscoreMinorVersion > 0 || (mscoreMinorVersion == 0 && mscoreUpdateVersion > 2)) ? true : false // MuseScore > 3.0.2
-                visible: enabled //  hide if not enabled
-            } // exportExcerpts
-            
+                ButtonGroup {
+                    id: exportParts
+                }
+                Label {
+                    text: qsTr("Export","parts") + ":"
+                    color: sysActivePalette.text 
+                }
+                NiceRadioButton {
+                    id: rdbExpScore
+                    text: qsTr("Score","parts")
+                    checked: true
+                    ButtonGroup.group: exportParts
+                }
+                NiceRadioButton {
+                    id: rdbExpScoreParts
+                    text: qsTr("Score and parts","parts")
+                    ButtonGroup.group: exportParts
+                }
+
+                NiceRadioButton {
+                    id: rdbExpPartsOnly
+                    text: qsTr("Parts only","parts")
+                    ButtonGroup.group: exportParts
+                }
+            }
             Label {
                 text: qsTr("Import from") + ":"
                 color: sysActivePalette.text 
@@ -873,7 +905,6 @@ MuseScore {
         property alias outMetaJson: outMetaJson.checked
         property alias outBrf: outBrf.checked
         // other options
-        property alias exportE: exportExcerpts.checked
         property alias travers: traverseSubdirs.checked
         property alias diffEPath: differentExportPath.checked  // different export path
         property alias iPath: importFrom.text // import path
@@ -887,6 +918,7 @@ MuseScore {
         property alias missingPropertyDefault: missingPropertyDefault.text
 
         property int importWhat
+        property int exportParts
     }
 
     FileDialog {
@@ -946,7 +978,7 @@ MuseScore {
                 outOgg.checked = outMp3.checked = outMpos.checked = outSpos.checked =
                 outMlog.checked = outMetaJson.checked = outBrf.checked = false
         traverseSubdirs.checked = false
-        exportExcerpts.checked = false
+        rdbExpScore.checked = true;
         filterWithRegExp.checked=false;
         filterContent.checked=true;
         contentFilterString.text="";
@@ -1212,7 +1244,7 @@ MuseScore {
                     if (srcModifiedTime > fileExcerpt.modifiedTime()) {
                         var res = convert ? writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j]) : true;
                         if (res)
-                            resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(convert ? qsTr("Exported") : ""));
+                            resultText.append("  %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(convert ? qsTr("Exported") : qsTr("Will be exported")));
                         else
                             resultText.append("  " + qsTr("Error") + ": %1 → %2 - %3".arg(partTitle).arg(logTargetName).arg(qsTr("Not exported")))
                     } else // file already up to date
@@ -1255,32 +1287,81 @@ MuseScore {
             console.log("--Remaing items to convert: "+fileList.length+"--");
 
             var curFileInfo = fileList.shift();
-            var filePath = curFileInfo[0];
-            var fileName = curFileInfo[1];
-            var fileExt = curFileInfo[2];
-
-            var fileFullPath = filePath + fileName + "." + fileExt;
-
-            // read file
+            var filePath, fileName, fileExt;
+            var fileFullPath, thisScore;
             var isCurScore = false;
-            var thisScore = readScore(fileFullPath, true);
+            
+            if (Array.isArray(curFileInfo)) {
+                // Coming from the Import action
+                filePath = curFileInfo[0];
+                fileName = curFileInfo[1];
+                fileExt = curFileInfo[2];
+                fileFullPath = filePath + fileName + "." + fileExt;
+                // read file
+                thisScore = readScore(fileFullPath, true);
 
-            // make sure we have a valid score
-            if (!thisScore) {
-                console.log("Failed to read "+fileFullPath+".\nChecking if it is already open.");
-                var opened=scores;
-                for(var i=0;i<opened.length;i++) {
-                    var score=opened[i];
-                    console.log("--> Checking if curScore is this file: "+score.path);
-                    if (score.path.toLowerCase()===fileFullPath.toLowerCase()) {
-                        thisScore=score;
-                        isCurScore=true;
-                        break;
+                // Make sure we have a valid score
+                // Rem: MS fails a reading a score ("readScore" above) if the score is already opened. 
+                // => So we check if a score with the same path is already opened.
+                if (!thisScore) {
+                    console.log("Failed to read "+fileFullPath+".\nChecking if it is already open.");
+                    var opened=scores;
+                    for(var i=0;i<opened.length;i++) {
+                        var score=opened[i];
+                        console.log("--> Checking if curScore is this file: "+score.path);
+                        if (score.path.toLowerCase()===fileFullPath.toLowerCase()) {
+                            thisScore=score;
+                            isCurScore=true;
+                            break;
+                        }
                     }
+                    console.log("==> And it "+((!thisScore)?"is not":"is"));
                 }
-                console.log("==> And it "+((!thisScore)?"is not":"is"));
+
             }
-            if (thisScore) {
+            else {
+                // Coming from the current/opened action
+                thisScore = curFileInfo;
+                var full= thisScore.path;
+                fileName = thisScore.scoreName;
+                
+                isCurScore = true;
+
+                // Make sure we have a valid score
+                // Rem: no fullPath means we are either an unsaved score or an excerpt/part 
+                // => So we browse the opened scores to find the parent to which belongs this part
+                if (!full) {
+                    console.log("Failed to find a score path for " + fileName + ".\nChecking if it is already opened part.");
+                    var opened = scores;
+                    for (var i = 0; i < scores.length; ++i) {
+                        var s = scores[i];
+                        console.log("--> " + s.path + "/" + s.scorName);
+                        if (s.is(thisScore)) {
+                            break; ;
+                        }
+
+                        var excerpts = s.excerpts;
+
+                        for (var ei = 0; ei < excerpts.length; ++ei) {
+                            var es = excerpts[ei].partScore;
+                            console.log("----> " + es.path + "/" + es.scorName);
+                            if (es.is(thisScore)) {
+                                full = s.path;
+                                break;
+                            }
+                        }
+                    }
+                    console.log("==> And it " + ((!full) ? "is not" : "is"));
+                }
+                
+                if (full) {
+                    fileFullPath = urlToPath(full); // c:/path/to/my_score.mscz
+                    fileExt = getFileSuffix(fileFullPath); // mscz
+                    filePath = fileFullPath.substring(0, fileFullPath.length - fileExt.length - fileName.length - 1);
+                }
+            }
+
+            if (thisScore && fileFullPath) {
                 // get modification time of source file
                 fileScore.source = fileFullPath
                 var logSourceName = (fileFullPath.toUpperCase().startsWith(importFromPath))?fileFullPath.substring(importFromPath.length):fileFullPath;
@@ -1358,20 +1439,26 @@ MuseScore {
                         // get modification time of destination file (if it exists)
                         // modifiedTime() will return ta0 for non-existing files
                         // if src is newer than existing write this file
-                        if (srcModifiedTime > fileScore.modifiedTime()) {
+                        if (rdbExpPartsOnly.checked) {
+                            // Export only the parts : log as "not applicable"
+                            resultText.append("%1 - %2".arg(logSourceName).arg(qsTr("n/a")))
+                        } else if (srcModifiedTime > fileScore.modifiedTime()) {
+                            // Export the score, an the current score is more recent than the last export
                             var res = convert ? writeScore(thisScore, fileScore.source, outFormats.extensions[j]) : true
 
                             if (res)
-                                resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(convert?qsTr("Exported"):""))
+                                resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(convert?qsTr("Exported"):qsTr("Will be exported")))
                             else
                                 resultText.append(qsTr("Error")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
                         }
                         else
+                            // Export the score, an the current score is older/same as the last export
                             resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Up to date")))
-                    }
+                    }  
 
                     // check if we are supposed to export parts
-                    if (exportExcerpts.checked) {
+                    // if (exportExcerpts.checked) {
+                    if (rdbExpPartsOnly.checked || rdbExpScoreParts.checked) {
                         // reset list
                         excerptsList = []
                         // do we have excertps?
@@ -1393,8 +1480,12 @@ MuseScore {
                 }
                 if (!isCurScore) closeScore(thisScore)
             }
-            else
-                resultText.append(qsTr("ERROR reading file %1").arg(fileName))
+            else if(!thisScore) {
+                resultText.append(qsTr("ERROR reading file %1").arg(fileName));
+            }
+            else {
+                resultText.append(qsTr("ERROR unsaved file %1").arg(fileName));
+            }
 
             view.ScrollBar.horizontal.position = 0
 
@@ -1674,12 +1765,7 @@ MuseScore {
 
             for(var i=0;i<what.length;i++) {
                 var score = what[i];
-                var p = urlToPath(score.path);      // c:/path/to/my_score.mscz
-
-                var fileExt = getFileSuffix(p);     // mscz
-                var fileName = score.scoreName;     // my_score
-                var filePath = p.substring(0, p.length - fileExt.length - fileName.length - 1);
-                fileList.push([filePath, fileName, fileExt])
+                fileList.push(score)
             }
             // if we found files, start timer do process them
             processTimer.restart();
@@ -1703,4 +1789,9 @@ MuseScore {
             collectFiles.running = true
         }
     } // work
+    
+    
+    function xyz(obj) {
+        return "" + obj + " (" + (typeof obj) + " - null: " + (obj===null) + ")";
+    }
 } // MuseScore
