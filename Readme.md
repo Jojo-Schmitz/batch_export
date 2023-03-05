@@ -6,6 +6,11 @@ This Plugin for MuseScore will go through a specified folder and in its default 
 <p align="center"><img src="/demo/batch-convert.png" alt="Screenshot" width="500"/></p>
 
 
+## What's new in 4.2.1 ?
+  
+* [Improvment] Apply! button in the log preview panel;
+* [Bug] More dark mode tweaks
+
 ## What's new in 4.2 ?
   
 * [Improvment] Choose to export the main score, the score and its parts or (new) only the parts;

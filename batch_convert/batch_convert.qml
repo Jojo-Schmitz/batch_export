@@ -22,10 +22,12 @@ import FileIO 3.0
 /*  4.2.0: Parts export choice
 /*  4.2.0: Bug when the current score was opened on part (insread of the main score)
 /*  4.2.0: Bug when the current score was new and unsaved
+/*  4.2.1: Add a Apply! button in the Preview summary
+/*  4.2.1: More dark mode tweaks
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.2.0"
+    version: "4.2.1"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
@@ -138,6 +140,16 @@ MuseScore {
             Layout.row: 1
             Layout.rowSpan: 1
             property var extensions: new Array
+            
+            // tweak dark mode
+            label: Label {
+                x: inFormats.leftPadding
+                width: inFormats.availableWidth
+                text: inFormats.title
+                elide: Text.ElideRight
+                    color: sysActivePalette.text // tweak dark mode
+            }
+    
             Grid {
                 spacing: 0
                 columns: 2
@@ -411,6 +423,15 @@ MuseScore {
             Layout.margins: 10
             title: " " + qsTr("Output Formats") + " "
             property var extensions: new Array
+
+            label: Label {
+                x: outFormats.leftPadding
+                width: outFormats.availableWidth
+                text: outFormats.title
+                elide: Text.ElideRight
+                color: sysActivePalette.text // tweak dark mode
+            }
+
             Grid {
                 spacing: 0
                 columns: 2
@@ -1063,7 +1084,7 @@ MuseScore {
         visible: false
         width: 900
         height: 700
-        standardButtons: StandardButton.Ok
+        standardButtons: StandardButton.Close
 
 
         ColumnLayout {
@@ -1080,6 +1101,7 @@ MuseScore {
                 Layout.preferredWidth: 600
                 Layout.alignment: Qt.AlignTop | Qt.AlignLeft
                 text: qsTr("Pending...")
+                    color: sysActivePalette.text // tweak dark mode
             }
 
             ScrollView {
@@ -1099,6 +1121,7 @@ MuseScore {
                     cursorVisible: true
                     readOnly: true
                     focus: true
+                    color: sysActivePalette.text // tweak dark mode
                 }
 
                 ScrollBar.horizontal.policy: ScrollBar.AsNeeded
@@ -1109,9 +1132,20 @@ MuseScore {
 
         }
 
-        onRejected: {
+        onDiscard: { // Abort
             abortRequested = true
         }
+
+        onRejected: { // Close
+            standardButtons = StandardButton.Close
+        }
+        
+        onApply: { // Apply
+            console.log("Apply!!")
+            convert = true;
+            work();
+        }
+        
     }
 
     function inInputFormats(suffix) {
@@ -1276,14 +1310,16 @@ MuseScore {
         onTriggered: {
             if (fileList.length === 0 || abortRequested) {
                 // no more files to process
-                workDialog.standardButtons = StandardButton.Ok;
-                if (!abortRequested)
-                currentStatus.text = qsTr("Done") /*qsTranslate("QWizard", "Done")*/ + ".";  // Gramatically incorrect translation of QWizard::Done in french
-                else
+                if (!abortRequested) {
+                    workDialog.standardButtons = (convert) ? StandardButton.Close : StandardButton.Apply | StandardButton.Close;
+                    currentStatus.text = qsTr("Done") /*qsTranslate("QWizard", "Done")*/ + "."; // Gramatically incorrect translation of QWizard::Done in french
+                } else {
+                    workDialog.standardButtons = StandardButton.Close;
                     console.log("abort!");
+                    currentStatus.text = qsTr("Aborted!")
+                }
                 return;
             }
-
             console.log("--Remaing items to convert: "+fileList.length+"--");
 
             var curFileInfo = fileList.shift();
@@ -1493,7 +1529,7 @@ MuseScore {
             if (!abortRequested)
                 processTimer.restart();
             else 
-                workDialog.standardButtons = StandardButton.Ok
+                workDialog.standardButtons = (convert)?StandardButton.Close:StandardButton.Apply|StandardButton.Close;
 
         }
     }
@@ -1637,7 +1673,7 @@ MuseScore {
                 // we didn't find any files
                 // report this
                 resultText.append(qsTr("No files found"))
-                workDialog.standardButtons = StandardButton.Ok
+                workDialog.standardButtons = StandardButton.Close
                 currentStatus.text = qsTr("Done") /*qsTranslate("QWizard", "Done")*/ + ".";  // Gramatically incorrect translation of QWizard::Done in french
             }
         }
@@ -1645,8 +1681,9 @@ MuseScore {
 
     function work() {
 
-        workDialog.standardButtons = StandardButton.Abort
+        workDialog.standardButtons = StandardButton.Discard
         currentStatus.text = qsTr("Running...");
+        abortRequested=false;
         if (resultText.text!=="") resultText.append("---------------------------------");
 
         workDialog.visible = true
@@ -1717,7 +1754,7 @@ MuseScore {
         }
 
         if (!validation) {
-            workDialog.standardButtons = StandardButton.Ok
+            workDialog.standardButtons = StandardButton.Close
             return;
         }
 
