@@ -22,11 +22,12 @@ import FileIO 3.0
 /*  4.2.0: Parts export choice
 /*  4.2.0: Bug when the current score was opened on part (insread of the main score)
 /*  4.2.0: Bug when the current score was new and unsaved
-/*  4.3.0 (unreleased): Add a Apply! button in the Preview summary
+/*  4.2.1: Add a Apply! button in the Preview summary
+/*  4.2.1: More dark mode tweaks
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.3.0"
+    version: "4.2.1"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
@@ -139,6 +140,16 @@ MuseScore {
             Layout.row: 1
             Layout.rowSpan: 1
             property var extensions: new Array
+            
+            // tweak dark mode
+            label: Label {
+                x: inFormats.leftPadding
+                width: inFormats.availableWidth
+                text: inFormats.title
+                elide: Text.ElideRight
+                    color: sysActivePalette.text // tweak dark mode
+            }
+    
             Grid {
                 spacing: 0
                 columns: 2
@@ -412,6 +423,15 @@ MuseScore {
             Layout.margins: 10
             title: " " + qsTr("Output Formats") + " "
             property var extensions: new Array
+
+            label: Label {
+                x: outFormats.leftPadding
+                width: outFormats.availableWidth
+                text: outFormats.title
+                elide: Text.ElideRight
+                color: sysActivePalette.text // tweak dark mode
+            }
+
             Grid {
                 spacing: 0
                 columns: 2
@@ -1081,6 +1101,7 @@ MuseScore {
                 Layout.preferredWidth: 600
                 Layout.alignment: Qt.AlignTop | Qt.AlignLeft
                 text: qsTr("Pending...")
+                    color: sysActivePalette.text // tweak dark mode
             }
 
             ScrollView {
@@ -1100,6 +1121,7 @@ MuseScore {
                     cursorVisible: true
                     readOnly: true
                     focus: true
+                    color: sysActivePalette.text // tweak dark mode
                 }
 
                 ScrollBar.horizontal.policy: ScrollBar.AsNeeded
