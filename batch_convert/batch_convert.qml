@@ -24,10 +24,11 @@ import FileIO 3.0
 /*  4.2.0: Bug when the current score was new and unsaved
 /*  4.2.1: Add a Apply! button in the Preview summary
 /*  4.2.1: More dark mode tweaks
+/*  4.2.2: Export choice was not saved in the settings
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.2.1"
+    version: "4.2.2"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
@@ -859,8 +860,16 @@ MuseScore {
                     text: /*qsTr("Cancel")*/ qsTranslate("QPlatformTheme", "Close")
                     onClicked: {
                         for (var i = 0; i < importWhat.buttons.length; i++) {
+                            console.log(importWhat.buttons[i].text+": "+importWhat.buttons[i].checked);
                             if (importWhat.buttons[i].checked) {
                                 settings.importWhat = i;
+                                break;
+                            }
+                        }
+                        for (var i = 0; i < exportParts.buttons.length; i++) {
+                            console.log(exportParts.buttons[i].text+": "+exportParts.buttons[i].checked);
+                            if (exportParts.buttons[i].checked) {
+                                settings.exportParts = i;
                                 break;
                             }
                         }
