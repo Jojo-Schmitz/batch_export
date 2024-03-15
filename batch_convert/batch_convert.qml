@@ -407,7 +407,7 @@ MuseScore {
                 }
                 SmallCheckBox {
                     id: inMei
-                    visible: mscoreMajorVersion > 3 ? true : false // MuseScore 4 and later
+                    visible: ((mscoreMajorVersion > 4) || (mscoreMajorVersion == 4 && mscoreMinorVersion >= 2)) ? true : false // MuseScore 4.2 and later
                     //ButtonGroup.group: mei
                     onClicked: {
                         if (checked && outMei.checked)
@@ -650,7 +650,7 @@ MuseScore {
                 }
                 SmallCheckBox {
                     id: outMei
-                    visible: mscoreMajorVersion > 3 ? true : false // MuseScore 4 and later
+                    visible: ((mscoreMajorVersion > 4) || (mscoreMajorVersion == 4 && mscoreMinorVersion >= 2)) ? true : false // MuseScore 4.2 and later
                     //ButtonGroup.group: mei
                     onClicked: {
                         if (checked && inMei.checked)
