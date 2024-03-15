@@ -95,6 +95,7 @@ MuseScore {
     ButtonGroup  { id: mid }
     ButtonGroup  { id: midi }
     ButtonGroup  { id: pdf }
+    ButtonGroup  { id: mei }
 
     GridLayout {
         id: mainRow
@@ -404,6 +405,18 @@ MuseScore {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTranslate("project", "MuseScore developer files")
                 }
+                SmallCheckBox {
+                    id: inMei
+                    visible: mscoreMajorVersion > 3 ? true : false // MuseScore 4 and later
+                    //ButtonGroup.group: mei
+                    onClicked: {
+                        if (checked && outMei.checked)
+                            outMei.checked = false
+                    }
+                    text: "*.mei"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project", "MEI files")
+                }
             } // Column
         } // inFormats
 
@@ -634,6 +647,18 @@ MuseScore {
                     text: "*.brf"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTranslate("project/export", "Braille files")
+                }
+                SmallCheckBox {
+                    id: outMei
+                    visible: mscoreMajorVersion > 3 ? true : false // MuseScore 4 and later
+                    //ButtonGroup.group: mei
+                    onClicked: {
+                        if (checked && inMei.checked)
+                            inMei.checked = false
+                    }
+                    text: "*.mei"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project/export", "MEI files")
                 }
             } //Column
         } //outFormats
@@ -903,6 +928,7 @@ MuseScore {
         property alias inPtb:   inPtb.checked
         property alias inMsczComma: inMsczComma.checked
         property alias inMscxComma: inMscxComma.checked
+        property alias inMei:   inMei.checked
         // out options
         property alias outMscz: outMscz.checked
         property alias outMscx: outMscx.checked
@@ -925,6 +951,7 @@ MuseScore {
         property alias outMlog: outMlog.checked
         property alias outMetaJson: outMetaJson.checked
         property alias outBrf: outBrf.checked
+        property alias outMei: outMei.checked
         // other options
         property alias travers: traverseSubdirs.checked
         property alias diffEPath: differentExportPath.checked  // different export path
@@ -992,12 +1019,12 @@ MuseScore {
                 inCapx.checked = inMgu.checked = inSgu.checked = inOve.checked = inScw.checked =
                 inBmw.checked = inBww.checked = inGp4.checked = inGp5.checked = inGpx.checked =
                 inGp.checked = inPtb.checked = inMsczComma.checked = inMscxComma.checked =
-                inMscs.checked = false
+                inMscs.checked = inMei.checked = false
         outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
                 outMid.checked = outMidi.checked = outPdf.checked = outPs.checked = outPng.checked =
                 outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
                 outOgg.checked = outMp3.checked = outMpos.checked = outSpos.checked =
-                outMlog.checked = outMetaJson.checked = outBrf.checked = false
+                outMlog.checked = outMetaJson.checked = outBrf.checked = outMei.checked = false
         traverseSubdirs.checked = false
         rdbExpScore.checked = true;
         filterWithRegExp.checked=false;
@@ -1044,6 +1071,7 @@ MuseScore {
         if (inMsczComma.checked) inFormats.extensions.push(mscoreMajorVersion > 3 ? "mscz~" : "mscz,")
         if (inMscxComma.checked) inFormats.extensions.push("mscx,")
         if (inMscs.checked) inFormats.extensions.push("mscs")
+        if (inMei.checked) inFormats.extensions.push("mei")
         if (!inFormats.extensions.length)
             console.warn("No input format selected")
 
@@ -1068,6 +1096,7 @@ MuseScore {
         if (outMlog.checked) outFormats.extensions.push("mlog")
         if (outMetaJson.checked) outFormats.extensions.push("metajson")
         if (outBrf.checked)  outFormats.extensions.push("brf")
+        if (outMei.checked)  outFormats.extensions.push("mei")
         if (!outFormats.extensions.length)
             console.warn("No output format selected")
 
