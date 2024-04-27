@@ -28,6 +28,7 @@ import FileIO 3.0
 /*  4.3.0: Allow to export to dedicaded folder when parsing subdirs
 /*  4.3.0: Export the main score when only the parts are to be exported and there are no parts
 /*  4.3.1: New optin to rename the files
+/*  4.3.1: mei support in 4.2
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
@@ -1630,16 +1631,16 @@ MuseScore {
                         // reset list
                         excerptsList = []
                         // do we have excertps?
-                        var excerpts = thisScore.excerpts;
-                        for (var ex = 0; ex < excerpts.length; ex++) {
-                            var partScore=excerpts[ex].partScore;
-                            var partName=excerpts[ex].title;
+                        var tExcerpts = thisScore.excerpts
+                        for (var ex = 0; ex < tExcerpts.length; ex++) {
+                            var partScore=tExcerpts[ex].partScore;
+                            var partName=tExcerpts[ex].title;
                             if (partScore === thisScore) continue; // only list when not base score
                             if (partName.charAt(0) === ".") continue; // only list when not starting with a "."
-                            excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath, isCurScore])
+                            excerptsList.push([tExcerpts[ex], filePath, fileName, srcModifiedTime, targetPath, isCurScore])
                         }
                         // if we have files start timer
-                        if (excerpts.length > 0) {
+                        if (tExcerpts.length > 0) {
                             curBaseScore = thisScore // to be able to close this later
                             excerptTimer.running = true
                             return
