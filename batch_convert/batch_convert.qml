@@ -1636,10 +1636,10 @@ MuseScore {
                             var partName=excerpts[ex].title;
                             if (partScore === thisScore) continue; // only list when not base score
                             if (partName.charAt(0) === ".") continue; // only list when not starting with a "."
-                            excerptsList.push([Excerpts[ex], filePath, fileName, srcModifiedTime, targetPath, isCurScore])
+                            excerptsList.push([excerpts[ex], filePath, fileName, srcModifiedTime, targetPath, isCurScore])
                         }
                         // if we have files start timer
-                        if (Excerpts.length > 0) {
+                        if (excerpts.length > 0) {
                             curBaseScore = thisScore // to be able to close this later
                             excerptTimer.running = true
                             return
