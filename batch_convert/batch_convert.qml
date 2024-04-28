@@ -24,10 +24,15 @@ import FileIO 3.0
 /*  4.2.0: Bug when the current score was new and unsaved
 /*  4.2.1: Add a Apply! button in the Preview summary
 /*  4.2.1: More dark mode tweaks
+/*  4.2.2: Export choice was not saved in the settings
+/*  4.3.0: Allow to export to dedicaded folder when parsing subdirs
+/*  4.3.0: Export the main score when only the parts are to be exported and there are no parts
+/*  4.3.1: New optin to rename the files
+/*  4.3.1: mei support in 4.2
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.2.1"
+    version: "4.3.1"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
@@ -735,6 +740,7 @@ MuseScore {
                 id: traverseSubdirs
                 Layout.columnSpan: 2
                 enabled: rdbImport.checked
+                property var valid : traverseSubdirs.enabled && traverseSubdirs.checked
                 text: qsTr("Process Subdirectories")
             } // traverseSubdirs
             SmallCheckBox {
@@ -760,9 +766,11 @@ MuseScore {
             }
             SmallCheckBox {
                 id: differentExportPath
-                // Only allow different export path if not traversing subdirs.
-                enabled: !traverseSubdirs.checked
-                property var valid: !traverseSubdirs.checked && differentExportPath.checked
+                // // Only allow different export path if not traversing subdirs.
+                // enabled: !traverseSubdirs.checked
+                // property var valid: !traverseSubdirs.checked && differentExportPath.checked
+                enabled: true
+                property var valid: differentExportPath.checked
                 text: qsTr("Export to") + ":"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Use a different export path")
@@ -777,47 +785,107 @@ MuseScore {
                 }
                 Button {
                     text: qsTr("Browse") + "..."
-                    enabled: differentExportPath.checked && differentExportPath.enabled
+                    enabled: differentExportPath.checked && differentExportPath.valid
                     onClicked: {
                         targetFolderDialog.open()
                     }
                 }
+                Item {
+                    Layout.minimumWidth: 50
+                    Layout.fillHeight: true
+                    Label {
+                        text: "⚠"
+                        color: "red"
+                        font.bold: true
+                        ToolTip.visible: maAlert.containsMouse
+                        ToolTip.text: qsTr("The parsed subdirs will be flatten into the select folder")
+                        visible: traverseSubdirs.valid && differentExportPath.checked
+                        MouseArea {
+                            id: maAlert
+                            anchors.fill: parent
+                            hoverEnabled: true
+                        }
+                        anchors.fill: parent
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        
+                    }                    
+                }
             }
             SmallCheckBox {
                 id: useExportStructure
-                // Only allow different export path if not traversing subdirs.
-                enabled: !traverseSubdirs.checked
-                property var valid: !traverseSubdirs.checked && useExportStructure.checked
+                // // Only allow different export path if not traversing subdirs.
+                // enabled: !traverseSubdirs.checked
+                // property var valid: !traverseSubdirs.checked && useExportStructure.checked
+                enabled: true
+                property var valid: useExportStructure.checked
                 text: qsTr("Export structure") + ":"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Stucture the export folder depending on the file properties")
             } // useExportStructure
-            TextField {
-                Layout.preferredWidth: 400
-                id: exportStructure
-                text: ""
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Allowed keywords") + ":\n" +
-                "%FORMAT%\n%TITLE%\n%LYRICIST%\n%COMPOSER%\n%ARRANGER%\n%WORKNUMBER%\n%MOVEMENTNUMBER%\n%MOVEMENTTITLE%\n%YEAR%\n%PART%\n"
-                  + "%1: %*?\"<>:|".arg(qsTr("Any character except")) + "\n"
-                  + "%1: /".arg(qsTr("Folder separator"));
-                enabled: useExportStructure.valid
+            RowLayout {
+                spacing: 2
+                TextField {
+                    Layout.preferredWidth: 400
+                    id: exportStructure
+                    text: ""
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Allowed keywords") + ":\n" +
+                    "%FORMAT%\n%TITLE%\n%LYRICIST%\n%COMPOSER%\n%ARRANGER%\n%WORKNUMBER%\n%MOVEMENTNUMBER%\n%MOVEMENTTITLE%\n%YEAR%\n%PART%\n"
+                      + "%1: %*?\"<>:|".arg(qsTr("Any character except")) + "\n"
+                      + "%1: /".arg(qsTr("Folder separator"));
+                    enabled: useExportStructure.valid
+                }
+                SmallCheckBox {
+                    id: includeMissingProperty
+                    // Only allow different export path if not traversing subdirs.
+                    enabled: useExportStructure.valid
+                    property var valid: useExportStructure.valid && includeMissingProperty.checked
+                    text: qsTr("With missing properties") + ":"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Include the files with missing properties, and replace these properties by a keyword such as \"unspecified\".")
+                } // includeMissingProperty
+                TextField {
+                    Layout.preferredWidth: 200
+                    id: missingPropertyDefault
+                    text: qsTr("unspecified")
+                    placeholderText: qsTr("E.g. \"unspecified\"")
+                    enabled: includeMissingProperty.valid
+                }
             }
             SmallCheckBox {
-                id: includeMissingProperty
-                // Only allow different export path if not traversing subdirs.
-                enabled: useExportStructure.valid
-                property var valid: useExportStructure.valid && includeMissingProperty.checked
-                text: qsTr("With missing properties") + ":"
+                id: renameFiles
+                property var valid: renameFiles.checked
+                text: qsTr("Rename files") + ":"
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("Include the files with missing properties, and replace these properties by a keyword such as \"unspecified\".")
-            } // includeMissingProperty
-            TextField {
-                Layout.preferredWidth: 200
-                id: missingPropertyDefault
-                text: qsTr("unspecified")
-                placeholderText: qsTr("E.g. \"unspecified\"")
-                enabled: includeMissingProperty.valid
+                ToolTip.text: qsTr("rename_file_explnantion")
+            } 
+            RowLayout {
+                spacing: 5
+                Label {
+                    text: qsTr("Replace")
+                    color: sysActivePalette.text 
+                    opacity: renameFiles.valid ? 1 : 0.3
+                }
+                TextField {
+                    Layout.preferredWidth: 200
+                    id: renameRegExp
+                    placeholderText: qsTr("Regular expression")
+                    enabled: renameFiles.valid
+                }
+                Label {
+                    text: qsTr("With")
+                    color: sysActivePalette.text 
+                    opacity: renameFiles.valid ? 1 : 0.3
+                }
+                TextField {
+                    Layout.preferredWidth: 200
+                    id: renameReplace
+                    placeholderText: qsTr("Text")
+                    enabled: renameFiles.valid
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Use $1 for matching group 1")
+                }
             }
         } // options Column
 
@@ -884,8 +952,16 @@ MuseScore {
                     text: /*qsTr("Cancel")*/ qsTranslate("QPlatformTheme", "Close")
                     onClicked: {
                         for (var i = 0; i < importWhat.buttons.length; i++) {
+                            console.log(importWhat.buttons[i].text+": "+importWhat.buttons[i].checked);
                             if (importWhat.buttons[i].checked) {
                                 settings.importWhat = i;
+                                break;
+                            }
+                        }
+                        for (var i = 0; i < exportParts.buttons.length; i++) {
+                            console.log(exportParts.buttons[i].text+": "+exportParts.buttons[i].checked);
+                            if (exportParts.buttons[i].checked) {
+                                settings.exportParts = i;
                                 break;
                             }
                         }
@@ -964,6 +1040,9 @@ MuseScore {
         property alias useExportStructure: useExportStructure.checked
         property alias includeMissingProperty: includeMissingProperty.checked
         property alias missingPropertyDefault: missingPropertyDefault.text
+        property alias renameFiles: renameFiles.checked;
+        property alias renameRegExp: renameRegExp.text;
+        property alias renameReplace: renameReplace.text;
 
         property int importWhat
         property int exportParts
@@ -1035,6 +1114,10 @@ MuseScore {
         exportStructure.text="";
         includeMissingProperty.checked=false;
         missingPropertyDefault.text=qsTr("unspecified");
+        renameFiles.checked=false;
+        renameRegExp.text="";
+        renameReplace.text="";
+        
 
         // 'uncheck' everything, then 'check' the next few
         inMscz.checked = outPdf.checked = true
@@ -1138,7 +1221,7 @@ MuseScore {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.maximumHeight: 700
-                Layout.maximumWidth: 900
+                Layout.minimumWidth: 900
                 clip: true
 
                 TextArea {
@@ -1216,6 +1299,8 @@ MuseScore {
     property var exportToPath
     // regxep to filter the files to convert
     property var regexp
+    // regxep to rename the file names
+    property var regexpRename
     // conversion mode : effectively do the conversion, or preview only
     property bool convert: false
 
@@ -1286,7 +1371,8 @@ MuseScore {
 
                     var format = outFormats.extensions[j];
                     var tb = buildExportPath(targetBase, /%format%/i, format);
-                    var dest = tb + partFileName + format;
+                    var partFileNameExtension = partFileName + format;
+                    var dest = tb + partFileNameExtension;
 
                     // - checking if the target folder exists
                     fileExcerpt.source = tb;
@@ -1302,8 +1388,8 @@ MuseScore {
                     // get modification time of destination file (if it exists)
                     // modifiedTime() will return 0 for non-existing files
                     // if src is newer than existing write this file
-                    fileExcerpt.source = dest
-                        logTargetName = (fileExcerpt.source.startsWith(exportToPath)) ? fileExcerpt.source.substring(exportToPath.length) : fileExcerpt.source;
+                    fileExcerpt.source = dest;
+                    logTargetName = (fileExcerpt.source.startsWith(exportToPath)) ? fileExcerpt.source.substring(exportToPath.length) : fileExcerpt.source;
                     if (srcModifiedTime > fileExcerpt.modifiedTime()) {
                         var res = convert ? writeScore(thisScore, fileExcerpt.source, outFormats.extensions[j]) : true;
                         if (res)
@@ -1478,12 +1564,28 @@ MuseScore {
                 }
 
                 if (doExport) {
+                    // constuct the export filename
+                    if (regexpRename) {
+                        console.log("Checking file rename on "+fileName)
+                        var match = regexpRename.test(fileName);
+                        console.log("match: "+match);
+                        
+                        if (match) {
+                            var test = fileName.replace(regexpRename, renameReplace.text);
+                            console.log("result: "+test);
+                            if (test !== "") {
+                                fileName = test;
+                            }
+                        }
+
+                    }
                     // - write for all target formats
                     for (var j = 0; j < outFormats.extensions.length; j++) {
 
                         var format=outFormats.extensions[j];
                         var tb=buildExportPath(targetBase,/%format%/i, format);
-                        var dest=tb + fileName + "." + format;
+                        var fileNameExtension = fileName + "." + format;
+                        var dest=tb + fileNameExtension;
 
                         // - checking if the target folder exists
                         fileScore.source =  tb;
@@ -1499,14 +1601,17 @@ MuseScore {
                         fileScore.source =  dest;
                         logTargetName = (fileScore.source.startsWith(exportToPath))?fileScore.source.substring(exportToPath.length):fileScore.source;
 
-                        // get modification time of destination file (if it exists)
-                        // modifiedTime() will return ta0 for non-existing files
-                        // if src is newer than existing write this file
-                        if (rdbExpPartsOnly.checked) {
-                            // Export only the parts : log as "not applicable"
+                        var hasExcerpts = (thisScore.excerpts.length>0)
+
+
+                        if (rdbExpPartsOnly.checked && hasExcerpts) {
+                            // Export only the parts ( <=> there are parts)
+                            // => log as "not applicable"
                             resultText.append("%1 - %2".arg(logSourceName).arg(qsTr("n/a")))
                         } else if (srcModifiedTime > fileScore.modifiedTime()) {
-                            // Export the score, an the current score is more recent than the last export
+                            // Export the score or export the parts only but there are no parts
+                            // if an the current score is more recent than the last export
+                            // => export
                             var res = convert ? writeScore(thisScore, fileScore.source, outFormats.extensions[j]) : true
 
                             if (res)
@@ -1515,7 +1620,8 @@ MuseScore {
                                 resultText.append(qsTr("Error")+": %1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Not exported")))
                         }
                         else
-                            // Export the score, an the current score is older/same as the last export
+                            // Export the score, and the current score is older/same as the last export
+                            // => Log as up to date
                             resultText.append("%1 → %2 - %3".arg(logSourceName).arg(logTargetName).arg(qsTr("Up to date")))
                     }  
 
@@ -1748,6 +1854,19 @@ MuseScore {
             regexp=undefined;
         }
 
+        // 4) Rename Regexp
+        if (renameFiles.valid && renameRegExp.text!== "") {
+            try {
+                regexpRename = new RegExp(renameRegExp.text);
+            } catch(err) {
+                resultText.append(err.message);
+                validation=false;
+            }
+
+        } else {
+            regexpRename=undefined;
+        }
+
         // 4) export structuture
         if (useExportStructure.valid) {
 
@@ -1802,7 +1921,7 @@ MuseScore {
         //importFromPath=importFromPath.toUpperCase(); //21/11/22 Linux testing
 
         // 1b) Export Path
-        if (differentExportPath.checked && !traverseSubdirs.checked) {
+        if (differentExportPath.valid) {
             exportToPath = urlToPath(exportTo.text);
             if (!exportToPath.endsWith('/')) exportToPath += '/';
             //exportToPath=exportToPath.toUpperCase(); //21/11/22 Linux testing
