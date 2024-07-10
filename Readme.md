@@ -5,6 +5,9 @@ This Plugin for MuseScore will go through a specified folder and in its default 
 
 <p align="center"><img src="/demo/batch-convert.png" alt="Screenshot" width="500"/></p>
 
+## What's new in 4.3.2 ?
+* [Improvement]: prepare for MuseScore 4.4
+
 ## What's new in 4.3.1 ?
 * [Improvement]: Allow to export the files to the dedicated folder when even parsing subdirs
 * [Improvement]: Export the main score when only the parts are to be exported and there are no parts

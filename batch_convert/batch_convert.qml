@@ -29,20 +29,25 @@ import FileIO 3.0
 /*  4.3.0: Export the main score when only the parts are to be exported and there are no parts
 /*  4.3.1: New optin to rename the files
 /*  4.3.1: mei support in 4.2
+/*  4.3.2: prepare for 4.4
 /**********************************************/
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.3.1"
+    version: "4.3.2"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
     description: qsTr("This plugin converts multiple files from various formats"
                       + " into various formats")
     pluginType: "dialog"
-    
+
+    id: batchConvert
+    //4.4 title: qsTr("Batch Convert")
+    //4.4 thumbnailName: "batch_convert_thumbnail.png"
+    //4.4 categoryCode: "batch-processing"
     Component.onCompleted : {
-        if (mscoreMajorVersion >= 4) {
-            batchConvert.title = qsTr("Batch Convert") ;
+        if (mscoreMajorVersion >= 4 && mscoreMinorVersion <= 3) {
+            batchConvert.title = qsTr("Batch Convert");
             batchConvert.thumbnailName = "batch_convert_thumbnail.png";
             batchConvert.categoryCode = "batch-processing";
         }
@@ -83,8 +88,6 @@ MuseScore {
         var lastoptionES = exportParts.buttons[settings.exportParts];
         if (lastoptionES) lastoptionES.checked=true;
     }
-
-    id: batchConvert
 
     // `width` and `height` allegedly are not valid property names, works regardless and seems needed?!
     width: mainRow.childrenRect.width + mainRow.anchors.margins*2
