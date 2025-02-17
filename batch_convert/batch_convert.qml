@@ -1438,7 +1438,7 @@ MuseScore {
                 }
                 return;
             }
-            console.log("--Remaing items to convert: "+fileList.length+"--");
+            console.log("--Remaing items to convert: " + fileList.length + "--");
 
             var curFileInfo = fileList.shift();
             var filePath, fileName, fileExt;
@@ -1458,18 +1458,18 @@ MuseScore {
                 // Rem: MS fails a reading a score ("readScore" above) if the score is already opened. 
                 // => So we check if a score with the same path is already opened.
                 if (!thisScore) {
-                    console.log("Failed to read "+fileFullPath+".\nChecking if it is already open.");
+                    console.log("Failed to read " + fileFullPath + ".\nChecking if it is already open.");
                     var opened = scores;
-                    for(var i=0;i<opened.length;i++) {
+                    for(var i = 0;  i< opened.length; i++) {
                         var score=opened[i];
-                        console.log("--> Checking if curScore is this file: "+score.path);
-                        if (score.path.toLowerCase()===fileFullPath.toLowerCase()) {
-                            thisScore=score;
-                            isCurScore=true;
+                        console.log("--> Checking if curScore is this file: " + score.path);
+                        if (score.path.toLowerCase() === fileFullPath.toLowerCase()) {
+                            thisScore = score;
+                            isCurScore = true;
                             break;
                         }
                     }
-                    console.log("==> And it "+((!thisScore)?"is not":"is"));
+                    console.log("==> And it " + ((!thisScore) ? "is not" : "is"));
                 }
 
             } else {
