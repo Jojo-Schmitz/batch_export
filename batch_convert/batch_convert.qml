@@ -31,11 +31,17 @@ import FileIO 3.0
 //  4.3.1: mei import/export support in 4.2
 //  4.3.2: prepare for 4.4
 //  4.3.3: kar export support in 4.0 (import is supported since long)
+//  4.7.0: tef import support in 4.7
+//         mnx import/export support in 4.7
+//         json import support in 4.7 (same as mnx import)
+//         lrc export support in 4.7
+//         mp4 export support in 4.7
+//         aac export support in 4.7
 // **********************************************
 
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.3.3"
+    version: "4.7.0"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
@@ -107,6 +113,7 @@ MuseScore {
     ButtonGroup  { id: kar }
     ButtonGroup  { id: pdf }
     ButtonGroup  { id: mei }
+    ButtonGroup  { id: mnx }
 
     GridLayout {
         id: mainRow
@@ -433,6 +440,32 @@ MuseScore {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTranslate("project", "MEI files")
                 }
+                SmallCheckBox {
+                    id: inTef
+                    visible: ((mscoreMajorVersion > 4) || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 7)) ? true : false // MuseScore 4.7 and later
+                    text: "*.tef"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project", "TableEdit files (experimental)")
+                }
+                SmallCheckBox {
+                    id: inMnx
+                    visible: (mscoreMajorVersion > 4 && mscoreMinorVersion >= 7) ? true : false // MuseScore 4.7 and later
+                    //ButtonGroup.group: mmx
+                    onClicked: {
+                        if (checked && outMmx.checked)
+                            outMmx.checked = false
+                    }
+                    text: "*.mmx"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project", "MNX files (experimental)")
+                }
+                SmallCheckBox {
+                    id: inJson
+                    visible: (mscoreMajorVersion > 4 && mscoreMinorVersion >= 7) ? true : false // MuseScore 4.7 and later
+                    text: "*.json"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project", "MNX files (experimental)")
+                }
             } // Column
         } // inFormats
 
@@ -688,6 +721,39 @@ MuseScore {
                     text: "*.mei"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTranslate("project/export", "MEI files")
+                }
+                SmallCheckBox {
+                    id: outMnx
+                    visible: (mscoreMajorVersion > 4 && mscoreMinorVersion >= 7) ? true : false // MuseScore 4.7 and later
+                    //ButtonGroup.group: mnx
+                    onClicked: {
+                        if (checked && inMnx.checked)
+                            inMei.checked = false
+                    }
+                    text: "*.mnx"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project/export", "MNX files (experimental)")
+                }
+                SmallCheckBox {
+                    id: outLrc
+                    visible: (mscoreMajorVersion > 4 && mscoreMinorVersion >= 7) ? true : false // MuseScore 4.7 and later
+                    text: "*.lrc"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project/export", "LRC file")
+                }
+                SmallCheckBox {
+                    id: outMp4
+                    visible: (mscoreMajorVersion > 4 && mscoreMinorVersion >= 7) ? true : false // MuseScore 4.7 and later
+                    text: "*.mp4"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project/export", "MP4 video")
+                }
+                SmallCheckBox {
+                    id: outAac
+                    visible: (mscoreMajorVersion > 4 && mscoreMinorVersion >= 7) ? true : false // MuseScore 4.7 and later
+                    text: "*.aac"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTranslate("project/export", "AAC audio files")
                 }
             } //Column
         } //outFormats
@@ -1029,6 +1095,9 @@ MuseScore {
         property alias inMsczComma: inMsczComma.checked
         property alias inMscxComma: inMscxComma.checked
         property alias inMei:   inMei.checked
+        property alias inTef:   inTef.checked
+        property alias inMnx:   inMnx.checked
+        property alias inJson:  inJson.checked
         // out options
         property alias outMscz: outMscz.checked
         property alias outMscx: outMscx.checked
@@ -1052,6 +1121,10 @@ MuseScore {
         property alias outMetaJson: outMetaJson.checked
         property alias outBrf: outBrf.checked
         property alias outMei: outMei.checked
+        property alias outMnx: outMnx.checked
+        property alias outLrc: outLrc.checked
+        property alias outMp4: outMp4.checked
+        property alias outAac: outAac.checked
         // other options
         property alias travers: traverseSubdirs.checked
         property alias diffEPath: differentExportPath.checked  // different export path
@@ -1122,12 +1195,13 @@ MuseScore {
                 inCapx.checked = inMgu.checked = inSgu.checked = inOve.checked = inScw.checked =
                 inBmw.checked = inBww.checked = inGp4.checked = inGp5.checked = inGpx.checked =
                 inGp.checked = inPtb.checked = inMsczComma.checked = inMscxComma.checked =
-                inMscs.checked = inMei.checked = false
+                inMscs.checked = inMei.checked = inTef.checked = inMnx.checked = inJson.checked = false
         outMscz.checked = outMscx.checked = outXml.checked = outMusicXml.checked = outMxl.checked =
                 outMid.checked = outMidi.checked = outPdf.checked = outPs.checked = outPng.checked =
                 outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
                 outOgg.checked = outMp3.checked = outMpos.checked = outSpos.checked =
-                outMlog.checked = outMetaJson.checked = outBrf.checked = outMei.checked = outKar.checked = false
+                outMlog.checked = outMetaJson.checked = outBrf.checked = outMei.checked = outKar.checked =
+                outMnx.checked = outLrc.checked = outMp4.checked = outAac.checked = false
         traverseSubdirs.checked = false
         rdbExpScore.checked = true;
         filterWithRegExp.checked=false;

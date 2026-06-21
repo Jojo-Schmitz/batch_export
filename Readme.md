@@ -5,6 +5,13 @@ This Plugin for MuseScore will go through a specified folder and in its default 
 
 <p align="center"><img src="/demo/batch-convert.png" alt="Screenshot" width="500"/></p>
 
+## What's new in 4.7.0 ?
+*  [Improvement]: Allow .tef format for import
+*  [Improvement]: Allow .mnx format for import and export, and .json for omport
+*  [Improvement]: Allow .lrc format for export
+*  [Improvement]: Allow .mp4 format for export
+*  [Improvement]: Allow .aac format for export
+
 ## What's new in 4.3.3 ?
 *  [Improvement]: Allow .kar format for export too
 
