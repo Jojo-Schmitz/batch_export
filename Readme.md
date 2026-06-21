@@ -5,6 +5,9 @@ This Plugin for MuseScore will go through a specified folder and in its default 
 
 <p align="center"><img src="/demo/batch-convert.png" alt="Screenshot" width="500"/></p>
 
+## What's new in 4.3.3 ?
+*  [Improvement]: Allow .kar format for export too
+
 ## What's new in 4.3.2 ?
 * [Improvement]: prepare for MuseScore 4.4
 

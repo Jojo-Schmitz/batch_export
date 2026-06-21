@@ -9,31 +9,33 @@ import QtQml 2.8
 import MuseScore 3.0
 import FileIO 3.0
 
-/**********************
-/*  2.0.1: Initial version with new UI
-/*  4.1.0: Use Composer if Arranger, Lyricist, Copywriter are missing
-/*  4.1.0: Error when dealing with parts of an already opened score.
-/*  4.1.0: The score name was added twice to the excported file when exporting parts.
-/*  4.1.0: Parts of which name starts with a "." will not be exported.
-/*  4.1.0: Unnecessary folders were created when exporting parts. 
-/*  4.1.0: Port to MuseScore 4.0 
-/*  4.1.0: Export current score 
-/*  4.1.0: Creation of folders in Windows with name without spaces was not working 
-/*  4.2.0: Parts export choice
-/*  4.2.0: Bug when the current score was opened on part (insread of the main score)
-/*  4.2.0: Bug when the current score was new and unsaved
-/*  4.2.1: Add a Apply! button in the Preview summary
-/*  4.2.1: More dark mode tweaks
-/*  4.2.2: Export choice was not saved in the settings
-/*  4.3.0: Allow to export to dedicaded folder when parsing subdirs
-/*  4.3.0: Export the main score when only the parts are to be exported and there are no parts
-/*  4.3.1: New optin to rename the files
-/*  4.3.1: mei support in 4.2
-/*  4.3.2: prepare for 4.4
-/**********************************************/
+// **********************************************
+//  2.0.1: Initial version with new UI
+//  4.1.0: Use Composer if Arranger, Lyricist, Copywriter are missing
+//  4.1.0: Error when dealing with parts of an already opened score.
+//  4.1.0: The score name was added twice to the excported file when exporting parts.
+//  4.1.0: Parts of which name starts with a "." will not be exported.
+//  4.1.0: Unnecessary folders were created when exporting parts. 
+//  4.1.0: Port to MuseScore 4.0 
+//  4.1.0: Export current score 
+//  4.1.0: Creation of folders in Windows with name without spaces was not working 
+//  4.2.0: Parts export choice
+//  4.2.0: Bug when the current score was opened on part (insread of the main score)
+//  4.2.0: Bug when the current score was new and unsaved
+//  4.2.1: Add a Apply! button in the Preview summary
+//  4.2.1: More dark mode tweaks
+//  4.2.2: Export choice was not saved in the settings
+//  4.3.0: Allow to export to dedicaded folder when parsing subdirs
+//  4.3.0: Export the main score when only the parts are to be exported and there are no parts
+//  4.3.1: New option to rename the files
+//  4.3.1: mei import/export support in 4.2
+//  4.3.2: prepare for 4.4
+//  4.3.3: kar export support in 4.0 (import is supported since long)
+// **********************************************
+
 MuseScore {
     menuPath: "Plugins." + qsTr("Batch Convert")
-    version: "4.3.2"
+    version: "4.3.3"
     // currently not working in MuseScore 4, so an open score is required regardless of this setting
     // see https://github.com/musescore/MuseScore/issues/13162 and https://github.com/musescore/MuseScore/pull/13582
     requiresScore: false
@@ -102,6 +104,7 @@ MuseScore {
     ButtonGroup  { id: musicxml }
     ButtonGroup  { id: mid }
     ButtonGroup  { id: midi }
+    ButtonGroup  { id: kar }
     ButtonGroup  { id: pdf }
     ButtonGroup  { id: mei }
 
@@ -260,6 +263,11 @@ MuseScore {
                 SmallCheckBox {
                     id: inKar
                     text: "*.kar"
+                    //ButtonGroup.group: kar
+                    onClicked: {
+                        if (checked && outKar.checked)
+                            outKar.checked = false
+                    }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "MIDI files")
                      : qsTranslate("Ms::MuseScore", "MIDI Files")
@@ -547,6 +555,19 @@ MuseScore {
                     onClicked: {
                         if (checked && inMidi.checked)
                             inMidi.checked = false
+                    }
+                    ToolTip.visible: hovered
+                    ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "MIDI files")
+                      : qsTranslate("Ms::MuseScore", "Standard MIDI File") // "MIDI"?
+                }
+                SmallCheckBox {
+                    id: outKar
+                    visible: (mscoreMajorVersion > 4 || (mscoreMajorVersion == 3 && mscoreMinorVersion >= 7)) ? true : false // MuseScore 3.7 and later
+                    text: "*.kar"
+                    //ButtonGroup.group: kar
+                    onClicked: {
+                        if (checked && inKar.checked)
+                            inKar.checked = false
                     }
                     ToolTip.visible: hovered
                     ToolTip.text: mscoreMajorVersion > 3 ? qsTranslate("project/export", "MIDI files")
@@ -1106,7 +1127,7 @@ MuseScore {
                 outMid.checked = outMidi.checked = outPdf.checked = outPs.checked = outPng.checked =
                 outSvg.checked = outLy.checked = outWav.checked = outFlac.checked =
                 outOgg.checked = outMp3.checked = outMpos.checked = outSpos.checked =
-                outMlog.checked = outMetaJson.checked = outBrf.checked = outMei.checked = false
+                outMlog.checked = outMetaJson.checked = outBrf.checked = outMei.checked = outKar.checked = false
         traverseSubdirs.checked = false
         rdbExpScore.checked = true;
         filterWithRegExp.checked=false;
@@ -1168,6 +1189,7 @@ MuseScore {
         if (outMxl.checked)  outFormats.extensions.push("mxl")
         if (outMid.checked)  outFormats.extensions.push("mid")
         if (outMidi.checked) outFormats.extensions.push("midi")
+        if (outKar.checked)  outFormats.extensions.push("kar")
         if (outPdf.checked)  outFormats.extensions.push("pdf")
         if (outPs.checked)   outFormats.extensions.push("ps")
         if (outPng.checked)  outFormats.extensions.push("png")
